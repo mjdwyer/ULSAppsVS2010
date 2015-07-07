@@ -1,0 +1,20 @@
+C:\Users\mjdwyer\projects\ULSCopy2\ULS_Site\ULS_Site\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\mjdwyer\projects\ULSCopy2\ULS_Site\ULS_Site\bin\ULS_Site.dll
+C:\Users\mjdwyer\projects\ULSCopy2\ULS_Site\ULS_Site\bin\ULS_Site.pdb
+C:\Users\mjdwyer\projects\ULSCopy2\ULS_Site\ULS_Site\obj\Debug\ULS_Site.dll
+C:\Users\mjdwyer\projects\ULSCopy2\ULS_Site\ULS_Site\obj\Debug\ULS_Site.pdb
+C:\Users\mjdwyer\Documents\GitHub\ULS_Site\ULS_Site\bin\ULS_Site.dll
+C:\Users\mjdwyer\Documents\GitHub\ULS_Site\ULS_Site\bin\ULS_Site.pdb
+C:\Users\mjdwyer\Documents\GitHub\ULS_Site\ULS_Site\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\mjdwyer\Documents\GitHub\ULS_Site\ULS_Site\obj\Debug\ULS_Site.dll
+C:\Users\mjdwyer\Documents\GitHub\ULS_Site\ULS_Site\obj\Debug\ULS_Site.pdb
+D:\New Stuff\ULS_Site\ULS_Site\bin\ULS_Site.dll
+D:\New Stuff\ULS_Site\ULS_Site\bin\ULS_Site.pdb
+D:\New Stuff\ULS_Site\ULS_Site\obj\Debug\ResolveAssemblyReference.cache
+D:\New Stuff\ULS_Site\ULS_Site\obj\Debug\ULS_Site.dll
+D:\New Stuff\ULS_Site\ULS_Site\obj\Debug\ULS_Site.pdb
+C:\Stuff\ULS_Site\ULS_Site\bin\ULS_Site.dll
+C:\Stuff\ULS_Site\ULS_Site\bin\ULS_Site.pdb
+C:\Stuff\ULS_Site\ULS_Site\obj\Debug\ULS_Site.dll
+C:\Stuff\ULS_Site\ULS_Site\obj\Debug\ULS_Site.pdb
+C:\Stuff\ULS_Site\ULS_Site\obj\Debug\ULS_Site.csprojResolveAssemblyReference.cache
