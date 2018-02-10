@@ -6,7 +6,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="EquipHeadContent" runat="server">
     <link rel="stylesheet" type="text/css" media="screen" href="../../Content/superfish.css" />
 
-    <script type="text/javascript" src="/Scripts/Qualificatons2.js?15"></script> 
+    <script type="text/javascript" src="/Scripts/Qualificatons2.js?16"></script> 
     <script type="text/javascript" src="/Scripts/hoverIntent.js"></script>
     <script type="text/javascript" src="/Scripts/superfish.js"></script>
     <script type="text/javascript" src="/Scripts/supersubs.js"></script>
@@ -54,6 +54,12 @@
 	background-color: #999999;
 }
 
+.dlg table { 
+    border-spacing: 10px;
+    border-collapse: separate;
+}
+
+
 </style>
 	
 </asp:Content>
@@ -90,7 +96,7 @@
   <center><h2><span id="success" style="color:green"></span></h2></center>
 
 
-    <div id="employee_edit_dlg" title="">
+    <div id="employee_edit_dlg" title=""  class="dlg">
         <center><h2><span id="employee_success" style="color:red">Save Successful!</span></h2></center>
         <form id="employee_edit_form"  action="/Qualification/EditEmp" method="post">
         <table>
@@ -304,9 +310,14 @@
 <!--        <input type="text" id="txtState" name="txtState" autocomplete="off" /> -->
         <select name="ddlDLClass" id ="ddlDLClass">
 	        <option value=""></option>
-	        <option value="A">A</option>
+	        <option value="A">CDL-A</option>
+	        <option value="B">CDL-B</option>
+	        <option value="C">CDL-C</option>
+	        <option value="D">Basic-D</option> 
+	        <%--<option value="A">A</option>
 	        <option value="B">B</option>
 	        <option value="C">C</option>
+	        <option value="D">D</option>--%>
         </select>
         </td>
         <td>
@@ -352,9 +363,9 @@
         <input type="button" onclick="CloseEmployeeDialog()" value="Close" id="btnCloseEmployee" /></p>
         </td>
         <td>
-        <a onclick="OpenEmpWRDlg('W')" href="#">Warnings</a>
+        <a onclick="OpenEmpWRDlg('W')" href="#" style="color: #6F6FE8;text-decoration: underline">Warnings</a>
         <div style="padding-top:10px">
-        <a onclick="OpenEmpWRDlg('R')" href="#">Recognitions</a>
+        <a onclick="OpenEmpWRDlg('R')" href="#" style="color: #6F6FE8;text-decoration: underline">Recognitions</a>
         </div>
         </td>
         </tr>
@@ -368,7 +379,7 @@
         </form>         
     </div>
     
-    <div id="empqual_edit_dlg" title="">
+    <div id="empqual_edit_dlg" title="" class="dlg">
         <center><h2><span id="empqual_success" style="color:red">Save Successful!</span></h2></center>
         <form id="empqual_edit_form"  action="/Qualification/EditQualDlg" method="post">
         <table>
@@ -388,6 +399,9 @@
           <option value="WG">WG</option>
           <option value="PECO">PECO</option>
           <option value="VER">VER</option>
+          <option value="PGW">PGW</option>
+          <option value="ULS">ULS</option>
+          <option value="GWS">GWS</option>
         </select>         
         </div>
         </td>
@@ -453,6 +467,9 @@
           <option value="WG">WG</option>
           <option value="PECO">PECO</option>
           <option value="VER">VER</option>
+          <option value="PGW">PGW</option>
+          <option value="ULS">ULS</option>
+          <option value="GWS">GWS</option>
         </select></center>         
                 
         <center>
@@ -501,6 +518,9 @@
           <option value="WG">WG</option>
           <option value="PECO">PECO</option>
           <option value="VER">VER</option>
+          <option value="PGW">PGW</option>
+          <option value="ULS">ULS</option>
+          <option value="GWS">GWS</option>
           </select>        
         </td>
         </tr>

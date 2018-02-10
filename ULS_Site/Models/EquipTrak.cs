@@ -105,6 +105,7 @@ namespace ULS_Site.Models
 
         public List<vw_EquipGrid> GetGridEquipExport(string div)
         {
+            //mjdexp
             return (from e in ulsDB.vw_EquipGrids
                             .Where("registered_by = @0 || managed_by = @0", div)
                             .OrderBy("equip_id")
@@ -143,6 +144,7 @@ namespace ULS_Site.Models
 
         public IQueryable<vw_EquipGrid> GetGridEquipment(string sidx, string sord, string div, bool searchOn, string searchField, string searchValue, string searchOper)
         {
+            //mjdexp
             string strExclude = " && stolen = false && in_repair = false && totaled = false && sold = false && unknown = false && to_be_sold = false ";
             try
             {
@@ -502,13 +504,13 @@ namespace ULS_Site.Models
 
         }
 
-        public IQueryable<service> GetGridEquipmentSvc(string sidx, string sord, string id)
+        public IQueryable<vw_EquipServiceGrid> GetGridEquipmentSvc(string sidx, string sord, string id)
         {
 
             try
             {
                 return
-                    ulsDB.services
+                    ulsDB.vw_EquipServiceGrids
                         .Where("equip_id = @0", id)
                         .OrderBy(sidx + " " + sord);
 
@@ -1268,7 +1270,7 @@ namespace ULS_Site.Models
                 return
 
                     (from d in ulsDB.division_avts
-                     where d.div_name != "ULS-PA2" && d.div_name != "ULS-PA-RO"
+                     where d.div_name != "ULS-PA2" && d.div_name != "ULS-PA-RO" && d.div_name != "GW-PLUS"
                      orderby d.div_name
                      select new DropDownData
                      {
@@ -1373,8 +1375,11 @@ namespace ULS_Site.Models
             {
                 string strULSPA2 = "ULS-PA2";
                 string strULSPARO = "ULS-PA-RO";
+                string strGWPLUS = "GW-PLUS";
+                string strNJPLUS = "NJ-PLUS";
+
                 var list = ulsDB.division_avts
-                   .Where("div_name != @0 && div_name != @1", strULSPA2, strULSPARO)
+                   .Where("div_name != @0 && div_name != @1 && div_name != @2 && div_name != @3", strULSPA2, strULSPARO, strGWPLUS, strNJPLUS)
                    .Select(d => new SelectListItem
                    {
                        Text = d.div_name,
@@ -1398,8 +1403,10 @@ namespace ULS_Site.Models
             {
                 string strULSPA2 = "ULS-PA2";
                 string strULSPARO = "ULS-PA-RO";
+                string strGWPLUS = "GW-PLUS";
+                string strNJPLUS = "NJ-PLUS";
                 var list = ulsDB.division_avts
-                   .Where("div_name != @0 && div_name != @1", strULSPA2, strULSPARO)
+                   .Where("div_name != @0 && div_name != @1 && div_name != @2 && div_name != @3", strULSPA2, strULSPARO, strGWPLUS, strNJPLUS)
                    .Select(d => new SelectListItem
                    {
                        Text = d.div_name,
@@ -1750,8 +1757,11 @@ namespace ULS_Site.Models
 
                 string strULSPA2 = "ULS-PA2";
                 string strULSPARO = "ULS-PA-RO";
+                string strGWPLUS = "GW-PLUS";
+                string strNJPLUS = "NJ-PLUS";
+
                 var list = ulsDB.division_avts
-                   .Where("div_name != @0 && div_name != @1", strULSPA2, strULSPARO)
+                   .Where("div_name != @0 && div_name != @1 && div_name != @2 && div_name != @3", strULSPA2, strULSPARO, strGWPLUS, strNJPLUS)
                    .OrderBy("div_name")
                    .Select(d => new SelectListItem
                    {

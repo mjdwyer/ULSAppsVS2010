@@ -1,23 +1,33 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<ULS_Site.Models.EquipTrackViewModel>" %>
 <%@ Register Assembly="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304"
     Namespace="CrystalDecisions.Web" TagPrefix="CR" %> 
 
 <asp:Content ID="HeadContentFromPage" ContentPlaceHolderId="EquipHeadContent" runat="server">
-
+    <script  type="text/javascript" >
+        var GWPlus = "<%=Model.DefaultDiv  %>";
+    </script>
+<style>
+.center {
+    margin: auto;
+    width: 60%;
+    border: 3px solid #73AD21;
+    padding: 10px;
+}
+</style>
     <link rel="stylesheet" type="text/css" media="screen" href="../../Content/superfish.css" />
 
 	<%if (Convert.ToString(ViewData["default_division"]) == "ULS-PA")
    { %>
-    <script type="text/javascript" src="/Scripts/EquipTracker.js?76"></script> 
+    <script type="text/javascript" src="/Scripts/EquipTracker.js?87"></script> 
     <%}%>
 	<%else if (Convert.ToString(ViewData["default_division"]) == "ULS-PA-RO")
    { %>
-    <script type="text/javascript" src="/Scripts/EquipTrackerRO2.js?67"></script>
+    <script type="text/javascript" src="/Scripts/EquipTrackerRO2.js?75"></script>
     <%}%>
-   <%else { %>7
-    <script type="text/javascript" src="/Scripts/EquipTrackerRO.js?69"></script>
+   <%else { %>
+    <script type="text/javascript" src="/Scripts/EquipTrackerRO.js?84"></script>
    <% }%>
-    <script type="text/javascript" src="/Scripts/EquipTrackerFuncs.js?43"></script>
+    <script type="text/javascript" src="/Scripts/EquipTrackerFuncs.js?55"></script>
     <script type="text/javascript" src="/Scripts/hoverIntent.js"></script>
     <script type="text/javascript" src="/Scripts/superfish.js"></script>
     <script type="text/javascript" src="/Scripts/supersubs.js"></script>
@@ -38,13 +48,13 @@
                 $('input').filter('.datepicker').datepicker({
                     changeMonth: true,
                     changeYear: true
+                }).keyup(function (e) {
+                    if (e.keyCode == 8 || e.keyCode == 46) {
+                        $.datepicker._clearDate(this);
+                    }
                 });
             });
-           
-            
 	</script>
-	
-
 </asp:Content>
 
 
@@ -58,9 +68,14 @@
 	background-color: #999999;
 }
 
+.dlg table { 
+    border-spacing: 10px;
+    border-collapse: separate;
+}
+
 </style>
-<div id = "menu">
-		<ul class="sf-menu">
+<div id = "menu" style="padding-bottom:0px;margin-bottom:0px">
+		<ul class="sf-menu" style="padding-bottom:0px;margin-bottom:0px">
 			<li class="current">
 				<a href="#a">Main</a>
 			</li>
@@ -101,9 +116,7 @@
 					<li>
 						<a href="#" onclick="AdminUsers()">User Administration</a>
 					</li>
-					<li>
-						<a href="#" onclick="AdminXferAssignments()">Transfer Employee Assignments</a>
-					</li>
+   					<li><a href="#" onclick="AdminXferAssignments()">Transfer Employee Assignments</a></li>
 				</ul>
 			</li>
 			<%} else{ %>
@@ -116,6 +129,10 @@
 					<li>
 						<a href="#" onclick="AdminLocations()">Equipment Locations</a>
 					</li>
+			        <%if (Convert.ToString(ViewData["default_division"]) == "NJ-PLUS")
+                    { %>
+        					<li><a href="#" onclick="AdminXferAssignments()">Transfer Employee Assignments</a></li>
+                    <%} %>
 				</ul>
 			</li>
 			
@@ -128,20 +145,14 @@
                             <li><a href="#">Inventory</a>
 				            <ul>
 					            <li><a href="#" onclick="AssignedToReport()" >Currently Assigned To</a></li>
-					            <li><a href="#" onclick="AssignedToHistReport()">Assigned To History</a></li>
+					            <li><a href="#" onclick="MultiAssignedTo()" >Currently Assigned To (Multiple)</a></li>
+                                <li><a href="#" onclick="AssignedToHistReport()">Assigned To History</a></li>
 					            <li><a href="#" onclick="EquipTotalInvReport()">Total Inventory</a></li>
 					            <li><a href="#" onclick="EquipTotalInvReportRegBy()">Total Inventory - Registered To</a></li>
 					            <li><a href="#" onclick="EquipTotalInvWithCost()">Total Inventory - With Cost / Value</a></li>
 					            <li><a href="#" onclick="EquipBrokenHistReport()">Returned Broken History</a></li>
 					            <li><a href="#" onclick="EquipOnLoanReport()">On Loan</a></li>
 					            <li><a href="#" onclick="EquipInvByTypeReport()">Inventory By Type</a></li>
-			                    <%if (Convert.ToString(ViewData["default_division"]) == "ULS-PL")
-                                { %>
-    					            <li><a href="#" onclick="EquipInspectionsDueReportMngBy()">Inspections Due</a></li>
-                                <%} %>
-			                    <% else{ %>
-    					            <li><a href="#" onclick="EquipInspectionsDueReportMngBy()">Inspections Due</a></li>
-			                    <%}  %>
 					            <li><a href="#" onclick="EquipInvByLocReport()">Inventory By Location</a></li>
 					            <li><a href="#" onclick="EquipInvByTypeandLocReport()">Inventory By Type And Location</a></li>
 					            <li><a href="#" onclick="EquipHUTReport()">HUT Sticker Inventory</a></li>
@@ -177,6 +188,8 @@
 				            <ul>
 					            <li><a href="#" onclick="EquipChangeLogByID()">Change Log By ID</a></li>
 					            <li><a href="#" onclick="EquipChangeLogHist()">Change Log History</a></li> 
+					            <li><a href="#" onclick="EquipAssignLogByID()">Assignment Log By ID</a></li>
+					            <li><a href="#" onclick="EquipAssignLogHist()">Assignment Log History</a></li> 
                             </ul>
                             </li>
                             <li><a href="#">Manage By History</a>
@@ -185,6 +198,12 @@
                             </ul>
                             </li>
                             <%} %>
+                            <li><a href="#">Miscellaneous</a>
+				            <ul>
+    					        <li><a href="#" onclick="EquipInspectionsDueReportMngBy()">Inspections Due</a></li>
+					            <li><a href="#" onclick="EquipSvcDue()">Service Due</a></li>
+                            </ul>
+                            </li>
 				        </ul>
 					</li>
 					<li><a href="#">Tools</a>
@@ -192,6 +211,7 @@
                             <li><a href="#">Inventory</a>
 				            <ul>
 					            <li><a href="#" onclick="ToolAssignedToReport()">Currently Assigned To</a></li>
+					            <li><a href="#" onclick="ToolMultiAssignedTo()" >Currently Assigned To (Multiple)</a></li>
 					            <li><a href="#" onclick="ToolsAssignedToHistReport()">Assigned To History</a></li>
 					            <li><a href="#" onclick="ToolsBrokenHistReport()">Returned Broken History</a></li>
 					            <li><a href="#" onclick="ToolsOnLoanReport()">On Loan</a></li>
@@ -218,15 +238,25 @@
 				            <ul>
 					            <li><a href="#" onclick="ToolsChangeLogByID()">Change Log By ID</a></li>
 					            <li><a href="#" onclick="ToolsChangeLogHist()">Change Log History</a></li> 
+					            <li><a href="#" onclick="ToolsAssignLogByID()">Assignment Log By ID</a></li>
+					            <li><a href="#" onclick="ToolsAssignLogHist()">Assignment Log History</a></li> 
                             </ul>
                             </li>
                             <%} %>
+                            <li><a href="#">Miscellaneous</a>
+				            <ul>
+    					        <li><a href="#" onclick="ToolsCalibrationDue()">Calibration Due</a></li>
+                            </ul>
+                            </li>
+
 				        </ul>
 					</li>
 					<li><a href="#">SmallTools</a>
 				        <ul>
 					        <li><a href="#" onclick="SmallToolAssignedToReport()">Currently Assigned To</a></li>
+    					        <li><a href="#" onclick="SmalltoolsCalibrationDue()">Calibration Due</a></li>
 				        </ul>
+
 					</li>
 				</ul>
 			</li>
@@ -263,10 +293,15 @@
         <input type="button" onclick="CloseExportDialog()" value="Close" id="Button4" /></p>
         <p></p> 
         <input type="hidden"  id="hdnExportType" name="hdnExportType" value=""/>
+        <input type="hidden"  id="hdnExportSidx" name="hdnExportSidx" value=""/>
+        <input type="hidden"  id="hdnExportSord" name="hdnExportSord" value=""/>
+        <input type="hidden"  id="hdnExportSearch" name="hdnExportSearch" value=""/>
+        <input type="hidden"  id="hdnExportSearchField" name="hdnExportSearchField" value=""/>
+        <input type="hidden"  id="hdnExportSearchString" name="hdnExportSearchString" value=""/>
+        <input type="hidden"  id="hdnExportSearchOper" name="hdnExportSearchOper" value=""/>
         <br />
         </form>         
     </div>
-
 
     <div id="rpt_dialog" title="">
         <form id="rptDlgForm"  action="/EquipTrack/ShowReport" method="post">         
@@ -286,8 +321,7 @@
         </form>         
     </div>
 
-    <div id="equip_svc_edit_dlg" title="">
-        <center><h2><span id="equip_svc_success" style="color:red">Save Successful!</span></h2></center>
+    <div id="equip_svc_edit_dlg" title="" class="dlg">
         <form id="equip_svc_edit_form"  action="/EquipTrack/EditEquipSvc" method="post">
         <table>
         <tr>
@@ -365,6 +399,7 @@
         </tr> 
         <tr>
         <td colspan="2">
+        <a href="" id="equip_svc_order_link" target="_blank" style="color:Blue;padding-top:10px">View Service Order</a>
         <p style="padding-left:180px"><input type="submit" value="Save" id="btnSaveEquipSvc" style="float:left" onclick="ShowEditSvcFormWait()"/> 
         <input type="button" onclick="CloseEquipSvcDialog()" value="Close" id="Button5" /></p>
         </td>
@@ -385,11 +420,11 @@
         </tr> 
         </table>
         <center><img id="equip_svc_loading" src="/Content/images/ajax-loader.gif" alt=""/></center>
+        <center><h4><span id="equip_svc_success" style="color:red">Save Successful!</span></h4></center>
         </form>         
     </div>
 
-    <div id="tool_svc_edit_dlg" title="">
-        <center><h2><span id="tool_svc_success" style="color:red">Save Successful!</span></h2></center>
+    <div id="tool_svc_edit_dlg" title=""  class="dlg">
         <form id="tool_svc_edit_form"  action="/EquipTrack/EditToolSvcDlg" method="post">
         <table>
         <tr>
@@ -465,11 +500,11 @@
         </tr> 
         </table>
         <center><img id="tool_svc_loading" src="/Content/images/ajax-loader.gif" alt=""/></center>
+        <center><h4><span id="tool_svc_success" style="color:red">Save Successful!</span></h4></center>
         </form>         
     </div>
 
-    <div id="equip_asgn_edit_dlg" title="">
-        <center><h2><span id="equip_asgn_success" style="color:red">Save Successful!</span></h2></center>
+    <div id="equip_asgn_edit_dlg" title="" class="dlg">
         <form id="equip_asgn_edit_form"  action="/EquipTrack/EditEquipAsgn" method="post">
         <table>
         <tr>
@@ -489,13 +524,13 @@
         </td>
         <td>
         <div>Return Date</div>
-        <input  class="datepicker" id="dtEquipRetDt" name="dtEquipRetDt" type="text" style="float:left" />
+        <input  class="datepicker" id="dtEquipRetDt" name="dtEquipRetDt" type="text" style="float:left" onchange="CheckEquipAssignForm()" />
         </td>
         </tr>  
         <tr>
         <td>
         <div>Assign Condition</div>
-        <select name="ddlAsgnCond" id="ddlAsgnCond" >
+        <select name="ddlAsgnCond" id="ddlAsgnCond" onchange="CheckEquipAssignForm()">
         <option value=""></option>
         <option value="1">Totaled</option>
         <option value="2">Poor</option>
@@ -511,7 +546,7 @@
         </td>
         <td>
         <div>Return Condition</div>
-        <select name="ddlRetCond" id="ddlRetCond" >
+        <select name="ddlRetCond" id="ddlRetCond"  onchange="CheckEquipAssignForm()">
         <option value=""></option>
         <option value="1">Totaled</option>
         <option value="2">Poor</option>
@@ -574,11 +609,11 @@
         </tr> 
         </table>
         <center><img id="equip_asgn_loading" src="/Content/images/ajax-loader.gif" alt=""/></center>
+        <center><h4><span id="equip_asgn_success" style="color:red">Save Successful!</span></h4></center>
         </form>         
     </div>
 
-    <div id="tool_asgn_edit_dlg" title="">
-        <center><h2><span id="tool_asgn_success" style="color:red">Save Successful!</span></h2></center>
+    <div id="tool_asgn_edit_dlg" title="" class="dlg">
         <form id="tool_asgn_edit_form"  action="/EquipTrack/EditToolAsgnDlg" method="post">
         <table>
         <tr>
@@ -658,11 +693,11 @@
         </tr> 
         </table>
         <center><img id="tool_asgn_loading" src="/Content/images/ajax-loader.gif" alt=""/></center>
+        <center><h4><span id="tool_asgn_success" style="color:red">Save Successful!</span></h4></center>
         </form>         
     </div>
 
-    <div id="equip_edit_dlg" title="" style="z-index:9999">
-        <center><h2><span id="equip_success" style="color:red">Save Successful!</span></h2></center>
+    <div id="equip_edit_dlg" title="" style="z-index:9999" class="dlg">
         <form id="equip_edit_form"  action="/EquipTrack/EditEquip" method="post">
         <table>
         <tr>
@@ -842,11 +877,9 @@
         <input type="checkbox" id="chkEquipApportioned" name="chkEquipApportioned" onclick="CheckEquipApportioned()" />
         </td>
         <td>
-        <div style="float:left">Fuel Card</div>
-        <span id="divFuelCard" style="float:left;padding-left:40px">#</span>
-        <div style="width:1px;height:20px"></div>
-        <input type="checkbox" id="chkEquipFuelCard" name="chkEquipFuelCard"  onclick="CheckEquipFuelCard()" style="float:left" />
-        <div style="float:left;padding-left:25px;width:70px"><input type="text" id="txtFuelCardNum" name="txtFuelCardNum" autocomplete="off" style="width:70px"/></div>
+        <div>Fuel Card #</div>
+       <input type="checkbox" id="chkEquipFuelCard" name="chkEquipFuelCard"  onclick="CheckEquipFuelCard()" style="float:left" />
+        <div style="float:left;padding-left:25px;margin-right:10px;width:70px"><input type="text" id="txtFuelCardNum" name="txtFuelCardNum" autocomplete="off" style="width:70px"/></div>
         <div style="float:left;padding-left:25px;width:60px"><select name="ddlFuelCardLoc" id="ddlFuelCardLoc" style="width:60px" >
         <option value=" "></option>
         <option value="ULS">ULS</option>
@@ -868,12 +901,9 @@
         <input type="checkbox" id="chkIFTASticker" name="chkIFTASticker"  onclick="CheckIFTASticker()"/>
         </td>
         <td>
-        <div style="float:left">EZPASS</div>
-        <span  id="divEZPASS" style="float:left;padding-left:20px">#</span>
-        <div style="width:1px;height:20px"></div>
-        <input type="checkbox" id="chkEquipEZPASS" name="chkEquipEZPASS"  onclick="CheckEquipEZPASS()" style="float:left" />
-        <div style="float:left;padding-left:25px"><input type="text" id="txtEZPASSNum" name="txtEZPASSNum" autocomplete="off"  /></div>
-        
+        <div>EZPASS #</div>
+        <input type="checkbox" id="chkEquipEZPASS" name="chkEquipEZPASS"  onclick="CheckEquipEZPASS()" style="float:left; margin-right:10px" />
+        <div style="float:left"><input type="text" id="txtEZPASSNum" name="txtEZPASSNum" autocomplete="off"  /></div>
         </td>
         </tr>
         <tr>
@@ -890,11 +920,9 @@
         <input type="checkbox" id="chkEquipLeased" name="chkEquipLeased"  onclick="CheckEquipLeased()" />
         </td>
         <td>
-        <div style="float:left">GPS</div>
-        <span id="divGPS" style="float:left;padding-left:40px">#</span>
-        <div style="width:1px;height:20px"></div>
-        <input type="checkbox" id="chkEquipGPS" name="chkEquipGPS"  onclick="CheckEquipGPS()" style="float:left" />
-        <div style="float:left;padding-left:25px"><input type="text" id="txtGPSNum" name="txtGPSNum" autocomplete="off"  /></div>
+        <div>GPS #</div>
+        <input type="checkbox" id="chkEquipGPS" name="chkEquipGPS"  onclick="CheckEquipGPS()" style="float:left; margin-right:10px" />
+        <div style="float:left"><input type="text" id="txtGPSNum" name="txtGPSNum" autocomplete="off"  /></div>
         
         </td>
         </tr>
@@ -913,6 +941,7 @@
         <div style="float:left;padding-left:15px;width:60px"><select name="ddlOtherAntiTheftTypes" id="ddlOtherAntiTheftTypes" style="width:100px" >
         <option value=" "></option>
         <option value="JD LINK">JD LINK</option>
+        <option value="PRODUCT LINK">PRODUCT LINK</option>
         <option value="SITEWATCH">SITEWATCH</option>
         </select></div>
         
@@ -959,12 +988,12 @@
         </td> 
         </tr> 
         </table>
+        <center><h4><span id="equip_success" style="color:red">Save Successful!</span></h4></center>
         <center><img id="equip_loading" src="/Content/images/ajax-loader.gif" alt=""/></center>
         </form>         
     </div>
 
-    <div id="tool_edit_dlg" title="">
-        <center><h2><span id="tool_dlg_success" style="color:red">Save Successful!</span></h2></center>
+    <div id="tool_edit_dlg" title="" class="dlg">
         <form id="tool_edit_form"  action="/EquipTrack/EditToolDlg" method="post">
         <table>
         <tr>
@@ -1106,11 +1135,11 @@
         </tr> 
         </table>
         <center><img id="tool_loading" src="/Content/images/ajax-loader.gif" alt=""/></center>
+        <center><h4><span id="tool_dlg_success" style="color:red">Save Successful!</span></h4></center>
         </form>         
     </div>
 
-    <div id="smalltool_edit_dlg" title="">
-        <center><h2><span id="smalltool_dlg_success" style="color:red">Save Successful!</span></h2></center>
+    <div id="smalltool_edit_dlg" title="" class="dlg">
         <form id="smalltool_edit_form"  action="/EquipTrack/EditSmallToolDlg" method="post">
         <table>
         <tr>
@@ -1187,7 +1216,43 @@
         <div>Return Date</div>
         <input  class="datepicker" id="dtSmallToolRetDt" name="dtSmallToolRetDt" type="text" style="float:left">
         </td>
-        </tr>  
+        </tr>
+        <tr>
+        <td>
+        <div>Calibration Due</div>
+        <input  class="datepicker" id="dtStCalibrationDue" name="dtStCalibrationDue" type="text" style="float:left" />
+        </td>
+        <td>
+        <div>Cal Rmndr (wks)</div>
+        <select name="ddlStCalibrationRmndr" id="ddlStCalibrationRmndr" >
+        <option value=""></option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
+        </select>
+        </td>
+        </tr> 
         <tr>
         <td colspan="3">
         <div>Comments</div>
@@ -1197,10 +1262,16 @@
         <td></td>
         </tr>       
         <tr>
-        <td colspan="3">
+        <td colspan="5">
         <p style="padding-left:250px"><input type="submit" value="Save" id="btnSmallToolSave" style="float:left" onclick="ShowSmallToolFormWait()"/> 
         <input type="button" onclick="CloseSmallToolDialog()" value="Close" id="Button9" /></p>
+
+        <div style="float:left;padding-left:25px">Add Small Tool Multiplier</div>
+        <div style="float:left;padding-left:25px;width:30px"><input type="text" id="txtAddSmallToolMultiplier" name="txtAddSmallToolMultiplier" autocomplete="off" style="width:60px"/></div>
+
         </td>
+
+
         </tr>
         <tr> 
         <td>  
@@ -1211,10 +1282,11 @@
         </tr> 
         </table>
         <center><img id="smalltool_loading" src="/Content/images/ajax-loader.gif" alt=""/></center>
+        <center><h4><span id="smalltool_dlg_success" style="color:red">Save Successful!</span></h4></center>
         </form>         
     </div>
 
-    <div id="rpt_dialog_hist" title="">
+    <div id="rpt_dialog_hist" title="" class="dlg">
         <form id="rptDlgHistForm"  action="/EquipTrack/ShowReport" method="post">         
         <center>
         <div id="rpt_dlg_hist_results"></div>
@@ -1250,9 +1322,9 @@
         <center><img id="img_loading" src="/Content/images/ajax-loader.gif" alt=""/></center>
         </form>         
     </div>
-    <div id="tool_svc_attachment_dialog" title="Images for ">
+    <div id="svc_attachment_dialog" title="Images for ">
         <form id="svcAttachmentForm"  action="/EquipTrack/UploadAttachment" method="post">         
-        <p><input type="file" id="toolSvcFileAttach" name="toolSvcFileAttach" size="60" value="Select File" onchange="CheckSvcAttacmentForm()" style="border: solid 1px red"/> </p>
+        <p><input type="file" id="svcFileAttach" name="svcFileAttach" size="60" value="Select File" onchange="CheckSvcAttacmentForm()" style="border: solid 1px red"/> </p>
         <p><input type="submit" value="Attach File" id="btnAttachFile" style="float:left;padding-right:10px" onclick="ShowAttachFormWait()"/> 
         <input type="button" onclick="CloseToolAttachDialog()" value="Close" id="Button10" /></p> 
         <p></p> 
@@ -1267,7 +1339,7 @@
 
     <div id="img_dialog_assign" title="Assignment Images for ">
         <form id="imageAssgnBeforeDlgForm"  action="/EquipTrack/Upload/EQUIP_ASSIGN_B" method="post">
-        <h2>Before Assignment</h2>         
+        <h4>Before Assignment</h4>         
         <p><input type="file" id="fileUploadAssignBefore" name="fileUpload" size="23" value="Select Image" onchange="CheckBeforeImgForm()"/> </p>
         <p><input type="submit" value="Upload Image" id="btnSaveBefore" style="float:left;padding-right:10px" onclick="ShowAssignImageFormWait()"/> 
         <input type="button" onclick="CloseAssignDialog()" value="Close" id="Button1" /></p> 
@@ -1280,7 +1352,7 @@
         </form>  
                
         <form id="imageAssgnAfterDlgForm"  action="/EquipTrack/Upload/EQUIP_ASSIGN_A" method="post">
-        <h2>After Assignment</h2>         
+        <h4>After Assignment</h4>         
         <p><input type="file" id="fileUploadAssignAfter" name="fileUpload" size="23" value="Select Image" onchange="CheckAfterImgForm()"/> </p>
         <p><input type="submit" value="Upload Image" id="btnSaveAfter" onclick="ShowAssignImageFormWait()"/> </p> 
         <center>
@@ -1413,10 +1485,6 @@
         <td >
         <br />
         <br />
-        <br />
-        <br />
-        <br />
-        <br />
         <input type="button" onclick="AddAdminUsersDialog()" value="Add" id="btnAddUser" style="float:left;padding-right:10px"/> 
         <input type="button" onclick="confirmUsersDelete()" value="Delete" id="btnDelUser" style="float:left;padding-right:10px" /> 
         <input type="submit" value="Save" id="btnSaveUser" style="float:left;padding-right:10px" /> 
@@ -1440,7 +1508,37 @@
         </table>
     </div>
 
-    <div id="admin_xfer_assignments" title="">
+    <div id="multiSelectAsgntoRptDlg" title="">
+        <form id="multiSelectAsgntoRptForm"  action="/EquipTrack/ShowMultiAssignToReport" method="post">
+        <div style="float:left;padding-left:50px"> 
+        <table id="tblMultiSelectAsgnTo" cellpadding="0" cellspacing="0" /></table> 
+        </div>
+        
+        <div style="float:right;padding-left:50px;padding-top:20px">
+        <input type="submit" value="Show Report" id="btnSaveMultiAsgn" style="float:left;padding-right:10px" onclick="multiSelectAssignTo()" /> 
+       <input type="button" onclick="CloseMultiAssgndToDialog()" value="Close" id="btnAssigntoM" style="float:left;padding-right:10px"/>
+       <br/><br/> 
+        <img src="/Content/images/help3.gif" alt=" " width="32" height="32" onclick="ShowHelp()" style="cursor:pointer; margin-left:250px" /> 
+        <input type="hidden"  id="hdnMultiAssigntoType" name="hdnMultiAssigntoType" value=""/>
+        <input type="hidden"  id="hdnMultiAssignTos" name="hdnMultiAssignTos" value=""/>
+        </div>
+        </form>
+    </div>
+
+<%--    <div id="multiSelectAsgntoRptDlg" title="">
+        <form id="multiSelectAsgntoRptForm"  action="/EquipTrack/SaveAdminUsers" method="post">
+        <div style="float:left;padding-right:10px"> 
+        <table id="tblMultiSelectAsgnTo" cellpadding="0" cellspacing="0" /></table> 
+        </div>
+        <div style="float:right;padding-right:10px">
+        <input type="submit" value="Save" id="Submit1" style="float:left;padding-right:10px" /> 
+       <input type="button" onclick="CloseAdminUsersDialog()" value="Close" id="Button13" style="float:left;padding-right:10px"/>
+       <br/><br/> 
+        <img src="/Content/images/help3.gif" alt=" " width="32" height="32" onclick="ShowHelp()" style="cursor:pointer; margin-left:250px" /> 
+        <input type="hidden"  id="Hidden1" name="hdnAdminUsersOper" value=""/>
+    </div>
+
+--%>    <div id="admin_xfer_assignments" title="">
         <form id="xfer_assignments_form"  action="/EquipTrack/SaveAdminXferAssignments" method="post">
         <div style="float:left;padding-right:10px"> 
         <img src="/Content/images/help3.gif" alt=" " width="32" height="32" onclick="ShowHelp()" style="cursor:pointer; float:right" /> 
@@ -1655,7 +1753,7 @@
     <div id="equipsvcp"  style="text-align:center"></div>
         <table id="equip_asgn" cellpadding="0" cellspacing="0"></table>
     <div id="equipasgnp"  style="text-align:center"></div>
-  <center><h2><span id="success" style="color:green"></span></h2></center>
+  <center><h4><span id="success" style="color:green"></span></h4></center>
   </div> 
 	<div id="tabs-2">
         <table id="toolgrid" cellpadding="0" cellspacing="0"></table>
@@ -1664,12 +1762,12 @@
     <div id="toolsvcp"  style="text-align:center"></div>
         <table id="tool_asgn" cellpadding="0" cellspacing="0"></table>
     <div id="toolasgnp"  style="text-align:center"></div>
-  <center><h2><span id="tool_success" style="color:green"></span></h2></center>
+  <center><h4><span id="tool_success" style="color:green"></span></h4></center>
 	</div>
 	<div id="tabs-3">
         <table id="smalltoolgrid" cellpadding="0" cellspacing="0"></table>
     <div id="smalltoolgridp"  style="text-align:center"></div>
-  <center><h2><span id="smalltool_success" style="color:green"></span></h2></center>
+  <center><h4><span id="smalltool_success" style="color:green"></span></h4></center>
 	</div> 
 </div> 
 

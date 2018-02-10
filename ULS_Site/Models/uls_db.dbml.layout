@@ -105,7 +105,7 @@
         <elementListCompartment Id="abbddd4b-f510-44ad-9c58-4deefddaab60" absoluteBounds="5.39, 24.46, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(5.375 : 24.5969962565104); (3.27083333333333 : 24.5969962565104 : JumpStart); (3.10416666666667 : 24.5969962565104 : JumpEnd); (2.75 : 24.5969962565104)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.375 : 24.5969962565104); (3.27083333333333 : 24.5969962565104 : JumpStart); (3.10416666666667 : 24.5969962565104 : JumpEnd); (2.75 : 24.5969962565104)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/uls_dbDataContext/tools_serv_avt/tools_serv_avt_tools_serv" />
       <nodes>
         <classShapeMoniker Id="3600e48d-f2a2-4dbe-bd0f-3c8932c14aa8" />
@@ -131,18 +131,6 @@
         <classShapeMoniker Id="06f83cc6-f091-4e81-9b57-4cf29fa49ddb" />
       </nodes>
     </associationConnector>
-    <classShape Id="83de9635-29aa-4c10-baa2-36a56679aea8" absoluteBounds="0.875, 27, 2, 4.2708154296875">
-      <DataClassMoniker Name="/uls_dbDataContext/smalltool" />
-      <nestedChildShapes>
-        <elementListCompartment Id="5ae3df18-68fe-4f2c-9c7e-a7b0e54f79ca" absoluteBounds="0.89, 27.46, 1.9700000000000002, 3.7108154296875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="3d51517e-e265-4794-933d-5305581b4267" absoluteBounds="3.25, 29.875, 2, 4.4631168619791666">
-      <DataClassMoniker Name="/uls_dbDataContext/vw_SmallToolsGrid" />
-      <nestedChildShapes>
-        <elementListCompartment Id="bf42927b-9d20-4f98-b473-55e2f4f49841" absoluteBounds="3.2649999999999997, 30.335, 1.9700000000000002, 3.903116861979167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="652254d0-fb7e-4668-8814-faf304da5d34" absoluteBounds="5.375, 25.375, 2, 2.5401025390625">
       <DataClassMoniker Name="/uls_dbDataContext/tools_assign" />
       <nestedChildShapes>
@@ -414,6 +402,30 @@
       <DataClassMoniker Name="/uls_dbDataContext/vw_ToolsServiceGrid" />
       <nestedChildShapes>
         <elementListCompartment Id="31673720-79df-4ea8-955d-e0ade77cac97" absoluteBounds="0.765, 75.21, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="55a251fb-6cb0-4b93-a179-081c825e63d4" absoluteBounds="3.5, 73.125, 2, 3.5016097005208326">
+      <DataClassMoniker Name="/uls_dbDataContext/vw_EquipServiceGrid" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e0653aea-b65f-4e1b-a216-42579e388f8a" absoluteBounds="3.515, 73.585, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f2704652-1a33-47cb-b9d3-d40b5074b8f9" absoluteBounds="8.125, 26.125, 2, 5.0400211588541657">
+      <DataClassMoniker Name="/uls_dbDataContext/vw_SmallToolsGrid" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5b6152b5-e173-4549-8eaa-d835367da692" absoluteBounds="8.14, 26.585, 1.9700000000000002, 4.4800211588541661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d92ed594-7905-4875-bc79-c2e063a69279" absoluteBounds="4.375, 28.625, 2, 4.6554182942708326">
+      <DataClassMoniker Name="/uls_dbDataContext/smalltool" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0b6a0115-676c-426d-b4dc-da0a246fcec5" absoluteBounds="4.39, 29.085, 1.9700000000000002, 4.095418294270833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="78d66218-c24d-4dc1-af64-bc685cdf2dcf" absoluteBounds="0.875, 30.25, 2, 1.9631982421875">
+      <DataClassMoniker Name="/uls_dbDataContext/assign_log" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a54fbbdd-49e1-413e-aa5f-5aa1e464d319" absoluteBounds="0.89, 30.71, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

@@ -391,6 +391,24 @@
         </table>
     </div>
 
+    <div id="multiSelectAsgntoRptDlg" title="">
+        <form id="multiSelectAsgntoRptForm"  action="/EquipTrack/ShowMultiAssignToReport" method="post">
+        <div style="float:left;padding-left:50px"> 
+        <table id="tblMultiSelectAsgnTo" cellpadding="0" cellspacing="0" /></table> 
+        </div>
+        
+        <div style="float:right;padding-left:50px;padding-top:20px">
+        <input type="submit" value="Show Report" id="btnSaveMultiAsgn" style="float:left;padding-right:10px" onclick="multiSelectAssignTo()" /> 
+       <input type="button" onclick="CloseMultiAssgndToDialog()" value="Close" id="btnAssigntoM" style="float:left;padding-right:10px"/>
+       <br/><br/> 
+        <img src="/Content/images/help3.gif" alt=" " width="32" height="32" onclick="ShowHelp()" style="cursor:pointer; margin-left:250px" /> 
+        <input type="hidden"  id="hdnMultiAssigntoType" name="hdnMultiAssigntoType" value=""/>
+        <input type="hidden"  id="hdnMultiAssignTos" name="hdnMultiAssignTos" value=""/>
+        </div>
+        </form>
+    </div>
+
+
     <div id="admin_svc_dlg" title="">
         <form id="adminsvcform"  action="/EquipTrack/SaveAdminSvc" method="post">
         <div style="float:left;padding-right:10px"> 
@@ -560,6 +578,7 @@
                             <li><a href="#">Inventory</a>
 				            <ul>
 					            <li><a href="#" onclick="AssignedToReport()" >Currently Assigned To</a></li>
+					            <li><a href="#" onclick="MultiAssignedTo()" >Currently Assigned To (Multiple)</a></li> 				            <li><a href="#" onclick="AssignedToHistReport()">Assigned To History</a></li>
 					            <li><a href="#" onclick="AssignedToHistReport()">Assigned To History</a></li>
 					            <li><a href="#" onclick="EquipTotalInvReport()">Total Inventory</a></li>
 					            <li><a href="#" onclick="EquipTotalInvReportRegBy()">Total Inventory - Registered To</a></li>
@@ -567,13 +586,6 @@
 					            <li><a href="#" onclick="EquipBrokenHistReport()">Returned Broken History</a></li>
 					            <li><a href="#" onclick="EquipOnLoanReport()">On Loan</a></li>
 					            <li><a href="#" onclick="EquipInvByTypeReport()">Inventory By Type</a></li>
-			                    <%if (Convert.ToString(ViewData["default_division"]) == "ULS-PL")
-                                { %>
-    					            <li><a href="#" onclick="EquipInspectionsDueReportMngBy()">Inspections Due</a></li>
-                                <%} %>
-			                    <% else{ %>
-    					            <li><a href="#" onclick="EquipInspectionsDueReportMngBy()">Inspections Due</a></li>
-			                    <%}  %>
 					            <li><a href="#" onclick="EquipInvByLocReport()">Inventory By Location</a></li>
 					            <li><a href="#" onclick="EquipInvByTypeandLocReport()">Inventory By Type And Location</a></li>
 					            <li><a href="#" onclick="EquipHUTReport()">HUT Sticker Inventory</a></li>
@@ -609,11 +621,19 @@
 				            <ul>
 					            <li><a href="#" onclick="EquipChangeLogByID()">Change Log By ID</a></li>
 					            <li><a href="#" onclick="EquipChangeLogHist()">Change Log History</a></li> 
+					            <li><a href="#" onclick="EquipAssignLogByID()">Assignment Log By ID</a></li>
+					            <li><a href="#" onclick="EquipAssignLogHist()">Assignment Log History</a></li> 
                             </ul>
                             </li>
                             <li><a href="#">Manage By History</a>
 				            <ul>
 					            <li><a href="#" onclick="EquipMngByHist()">Manage By History</a></li>
+                            </ul>
+                            </li>
+                            <li><a href="#">Miscellaneous</a>
+				            <ul>
+    					        <li><a href="#" onclick="EquipInspectionsDueReportMngBy()">Inspections Due</a></li>
+					            <li><a href="#" onclick="EquipSvcDue()">Service Due</a></li>
                             </ul>
                             </li>
                             <%} %>
@@ -624,6 +644,7 @@
                             <li><a href="#">Inventory</a>
 				            <ul>
 					            <li><a href="#" onclick="ToolAssignedToReport()">Currently Assigned To</a></li>
+					            <li><a href="#" onclick="ToolMultiAssignedTo()" >Currently Assigned To (Multiple)</a></li>
 					            <li><a href="#" onclick="ToolsAssignedToHistReport()">Assigned To History</a></li>
 					            <li><a href="#" onclick="ToolsBrokenHistReport()">Returned Broken History</a></li>
 					            <li><a href="#" onclick="ToolsOnLoanReport()">On Loan</a></li>
@@ -650,14 +671,23 @@
 				            <ul>
 					            <li><a href="#" onclick="ToolsChangeLogByID()">Change Log By ID</a></li>
 					            <li><a href="#" onclick="ToolsChangeLogHist()">Change Log History</a></li> 
+					            <li><a href="#" onclick="ToolsAssignLogByID()">Assignment Log By ID</a></li>
+					            <li><a href="#" onclick="ToolsAssignLogHist()">Assignment Log History</a></li> 
                             </ul>
                             </li>
                             <%} %>
+                            <li><a href="#">Miscellaneous</a>
+				            <ul>
+    					        <li><a href="#" onclick="ToolsCalibrationDue()">Calibration Due</a></li>
+                            </ul>
+                            </li>
+
 				        </ul>
 					</li>
 					<li><a href="#">SmallTools</a>
 				        <ul>
 					        <li><a href="#" onclick="SmallToolAssignedToReport()">Currently Assigned To</a></li>
+    					     <li><a href="#" onclick="SmalltoolsCalibrationDue()">Calibration Due</a></li>
 				        </ul>
 					</li>
 				</ul>

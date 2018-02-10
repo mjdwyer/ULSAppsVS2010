@@ -18,3 +18,8 @@ C:\Stuff\ULS_Site\ULS_Site\bin\ULS_Site.pdb
 C:\Stuff\ULS_Site\ULS_Site\obj\Debug\ULS_Site.dll
 C:\Stuff\ULS_Site\ULS_Site\obj\Debug\ULS_Site.pdb
 C:\Stuff\ULS_Site\ULS_Site\obj\Debug\ULS_Site.csprojResolveAssemblyReference.cache
+C:\Users\mjdwyer\Documents\GitHub\ULSAppsVS2010\ULS_Site\bin\ULS_Site.dll
+C:\Users\mjdwyer\Documents\GitHub\ULSAppsVS2010\ULS_Site\bin\ULS_Site.pdb
+C:\Users\mjdwyer\Documents\GitHub\ULSAppsVS2010\ULS_Site\obj\Debug\ULS_Site.dll
+C:\Users\mjdwyer\Documents\GitHub\ULSAppsVS2010\ULS_Site\obj\Debug\ULS_Site.pdb
+C:\Users\mjdwyer\Documents\GitHub\ULSAppsVS2010\ULS_Site\obj\Debug\ULS_Site.csprojResolveAssemblyReference.cache

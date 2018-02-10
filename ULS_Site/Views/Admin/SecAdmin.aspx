@@ -38,24 +38,24 @@
 
                     $.get("/Admin/GetUserRoles/" + data.id, {}, function(data) {
                         if (data.secRole == true)
-                            $('#chkSecAdmin').attr('checked', true);
+                            $('#chkSecAdmin').prop('checked', true);
                         else
-                            $('#chkSecAdmin').attr('checked', false);
+                            $('#chkSecAdmin').prop('checked', false);
 
                         if (data.shopRole == true)
-                            $('#chkShpMgr').attr('checked', true);
+                            $('#chkShpMgr').prop('checked', true);
                         else
-                            $('#chkShpMgr').attr('checked', false);
+                            $('#chkShpMgr').prop('checked', false);
 
                         if (data.frmRole == true)
-                            $('#chkSvcFrmn').attr('checked', true);
+                            $('#chkSvcFrmn').prop('checked', true);
                         else
-                            $('#chkSvcFrmn').attr('checked', false);
+                            $('#chkSvcFrmn').prop('checked', false);
                             
                         if (data.certRole == true)
-                            $('#chkEmpQual').attr('checked', true);
+                            $('#chkEmpQual').prop('checked', true);
                         else
-                            $('#chkEmpQual').attr('checked', false);
+                            $('#chkEmpQual').prop('checked', false);
 
                     }, "json");
                 }
@@ -230,8 +230,8 @@
 </script>
 
 <div id="maincontent3">
-<center><h1>Security Administration</h1></center>
-<h2>Users</h2>
+<center><h3>Security Administration</h3></center>
+<h4>Users</h4>
         <form id="SecUserForm"  action="/Admin/SaveUserRoles" method="post">
         <div style="float:left;padding-right:30px"> 
         <table id="usersgrid" cellpadding="0" cellspacing="0" /></table> 
@@ -252,7 +252,7 @@
         </tr>
         <tr>
         <td>
-        <h2>Roles</h2>
+        <h4>Roles</h4>
         </td>
         </tr>
         <tr>

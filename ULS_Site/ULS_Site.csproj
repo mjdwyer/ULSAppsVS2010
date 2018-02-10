@@ -114,6 +114,7 @@
       <DependentUpon>ViewElectronicReports.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\Electronics.cs" />
+    <Compile Include="Models\EquipTrackViewModel.cs" />
     <Compile Include="Models\EquipTrak.cs" />
     <Compile Include="Models\Qualifications.cs" />
     <Compile Include="Models\SecAdmin.cs" />
@@ -205,6 +206,28 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EquipAssignedToHist.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\EquipAssignLogById.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EquipAssignLogById.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\EquipAssignLogByIdDs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EquipAssignLogByIdDs.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\EquipAssignLogHist.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EquipAssignLogHist.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\EquipAssignLogHistDs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EquipAssignLogHistDs.xsd</DependentUpon>
     </Compile>
     <Compile Include="Reports\EquipAssignToHist.cs">
       <AutoGen>True</AutoGen>
@@ -434,6 +457,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EquipMngByHistDS.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Reports\EquipMultiAssignedTo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EquipMultiAssignedTo.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\EquipMultiAssignedTpDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EquipMultiAssignedTpDS.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\EquipOneReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -471,6 +505,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EquipOtherAntiTheftInventory.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\EquipServiceDueDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EquipServiceDueDS.xsd</DependentUpon>
     </Compile>
     <Compile Include="Reports\EquipSvcCostHist.cs">
       <AutoGen>True</AutoGen>
@@ -526,6 +565,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EquipSvcCostHistDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\EquipSvcDue.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EquipSvcDue.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\EquipToBeSold.cs">
       <AutoGen>True</AutoGen>
@@ -613,6 +658,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>QualEmpListByCompanyDS.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Reports\SmalltoolCalibrationDueDs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SmalltoolCalibrationDueDs.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\SmallToolsAssignedTo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -623,6 +673,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SmallToolsAssignedToDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SmallToolsCalibrationDueReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SmallToolsCalibrationDueReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\SvcAllCrewHistDS.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -662,11 +718,32 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TollSvcCostHistAllDS.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Reports\ToolAssignLogById.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToolAssignLogById.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ToolAssignLogDs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToolAssignLogDs.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ToolAssignLogHist.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToolAssignLogHist.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\ToolInvByLoc.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ToolInvByLoc.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\ToolInvByTypeDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToolInvByTypeDS.xsd</DependentUpon>
     </Compile>
     <Compile Include="Reports\ToolLojackInventory.cs">
       <AutoGen>True</AutoGen>
@@ -718,6 +795,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ToolsAssignedToHistDS.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Reports\ToolsAssignLogById.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToolsAssignLogById.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\ToolsBrokenHist.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -728,6 +811,17 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ToolsBrokenHistDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ToolsCalibrationDueDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToolsCalibrationDueDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ToolsCalibrationDueRpt.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToolsCalibrationDueRpt.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\ToolsChangeLogById.cs">
       <AutoGen>True</AutoGen>
@@ -757,15 +851,21 @@
       <DependentUpon>ToolsInvByType.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\ToolsInvByTypeDS.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ToolsInvByTypeDS.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Reports\ToolsLojackInv.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ToolsLojackInv.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ToolsMultiAssignedToDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToolsMultiAssignedToDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ToolsMutiAssignedTo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToolsMutiAssignedTo.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\ToolsOnLoan.cs">
       <AutoGen>True</AutoGen>
@@ -942,6 +1042,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="banner1.jpg" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\ajax-loader.gif" />
     <Content Include="Content\images\arrows-ffffff.png" />
     <Content Include="Content\images\backinup.jpg" />
@@ -985,8 +1089,11 @@
     <Content Include="Content\images\shadow.png" />
     <Content Include="Content\images\sub_hoe1.jpg" />
     <Content Include="Content\images\test.jpg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Legacy\ViewCertReports.aspx" />
     <Content Include="Legacy\ViewElectronicReports.aspx" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\ElectronicTracker.js" />
     <Content Include="Scripts\ElectronicTrackerFuncs.js" />
     <Content Include="Scripts\ElectronicTrackerRO.js" />
@@ -998,6 +1105,9 @@
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.1.js" />
     <Content Include="Scripts\jquery-1.4.1.min.js" />
+    <Content Include="Scripts\jquery-1.9.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery.alphanumeric.js" />
     <Content Include="Scripts\jquery.maskedinput.min.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
@@ -1166,9 +1276,127 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\bootstrap-theme.css.map" />
+    <None Include="Content\bootstrap.css.map" />
+    <None Include="fonts\glyphicons-halflings-regular.eot" />
+    <None Include="fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="fonts\glyphicons-halflings-regular.woff" />
+    <None Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Models\uls_db.dbml.layout">
       <DependentUpon>uls_db.dbml</DependentUpon>
     </None>
+    <Content Include="packages.config" />
+    <None Include="Reports\EquipAssignLogByIdDs.xsc">
+      <DependentUpon>EquipAssignLogByIdDs.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\EquipAssignLogByIdDs.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>EquipAssignLogByIdDs.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\EquipAssignLogByIdDs.xss">
+      <DependentUpon>EquipAssignLogByIdDs.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\EquipAssignLogHistDs.xsc">
+      <DependentUpon>EquipAssignLogHistDs.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\EquipAssignLogHistDs.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>EquipAssignLogHistDs.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\EquipAssignLogHistDs.xss">
+      <DependentUpon>EquipAssignLogHistDs.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\EquipGPSInvDS.xsc">
+      <DependentUpon>EquipGPSInvDS.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\EquipGPSInvDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>EquipGPSInvDS.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\EquipGPSInvDS.xss">
+      <DependentUpon>EquipGPSInvDS.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\EquipMultiAssignedTpDS.xsc">
+      <DependentUpon>EquipMultiAssignedTpDS.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\EquipMultiAssignedTpDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>EquipMultiAssignedTpDS.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\EquipMultiAssignedTpDS.xss">
+      <DependentUpon>EquipMultiAssignedTpDS.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\SmalltoolCalibrationDueDs.xsc">
+      <DependentUpon>SmalltoolCalibrationDueDs.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\SmalltoolCalibrationDueDs.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SmalltoolCalibrationDueDs.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\SmalltoolCalibrationDueDs.xss">
+      <DependentUpon>SmalltoolCalibrationDueDs.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\ToolAssignLogById.xsc">
+      <DependentUpon>ToolAssignLogById.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\ToolAssignLogById.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ToolAssignLogById.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\ToolAssignLogById.xss">
+      <DependentUpon>ToolAssignLogById.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\ToolAssignLogDs.xsc">
+      <DependentUpon>ToolAssignLogDs.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\ToolAssignLogDs.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ToolAssignLogDs.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\ToolAssignLogDs.xss">
+      <DependentUpon>ToolAssignLogDs.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\ToolInvByTypeDS.xsc">
+      <DependentUpon>ToolInvByTypeDS.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\ToolInvByTypeDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ToolInvByTypeDS.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\ToolInvByTypeDS.xss">
+      <DependentUpon>ToolInvByTypeDS.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\ToolsCalibrationDueDS.xsc">
+      <DependentUpon>ToolsCalibrationDueDS.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\ToolsCalibrationDueDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ToolsCalibrationDueDS.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\ToolsCalibrationDueDS.xss">
+      <DependentUpon>ToolsCalibrationDueDS.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\ToolsMultiAssignedToDS.xsc">
+      <DependentUpon>ToolsMultiAssignedToDS.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\ToolsMultiAssignedToDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ToolsMultiAssignedToDS.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\ToolsMultiAssignedToDS.xss">
+      <DependentUpon>ToolsMultiAssignedToDS.xsd</DependentUpon>
+    </None>
+    <None Include="Scripts\jquery-1.9.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Models\uls_db.dbml">
@@ -1329,17 +1557,6 @@
     </None>
     <None Include="Reports\EquipFuelCrdInvDivDS.xss">
       <DependentUpon>EquipFuelCrdInvDivDS.xsd</DependentUpon>
-    </None>
-    <None Include="Reports\EquipGPSInvDS.xsc">
-      <DependentUpon>EquipGPSInvDS.xsd</DependentUpon>
-    </None>
-    <None Include="Reports\EquipGPSInvDS.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>EquipGPSInvDS.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Reports\EquipGPSInvDS.xss">
-      <DependentUpon>EquipGPSInvDS.xsd</DependentUpon>
     </None>
     <None Include="Reports\EquipHUTInvDS.xsc">
       <DependentUpon>EquipHUTInvDS.xsd</DependentUpon>
@@ -1505,6 +1722,17 @@
     </None>
     <None Include="Reports\EquipOtherAntiTheftDS.xss">
       <DependentUpon>EquipOtherAntiTheftDS.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\EquipServiceDueDS.xsc">
+      <DependentUpon>EquipServiceDueDS.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\EquipServiceDueDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>EquipServiceDueDS.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\EquipServiceDueDS.xss">
+      <DependentUpon>EquipServiceDueDS.xsd</DependentUpon>
     </None>
     <None Include="Reports\EquipSvcCostHistAllDS.xsc">
       <DependentUpon>EquipSvcCostHistAllDS.xsd</DependentUpon>
@@ -1803,17 +2031,6 @@
     <None Include="Reports\ToolsInvByLocDS.xss">
       <DependentUpon>ToolsInvByLocDS.xsd</DependentUpon>
     </None>
-    <None Include="Reports\ToolsInvByTypeDS.xsc">
-      <DependentUpon>ToolsInvByTypeDS.xsd</DependentUpon>
-    </None>
-    <None Include="Reports\ToolsInvByTypeDS.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ToolsInvByTypeDS.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Reports\ToolsInvByTypeDS.xss">
-      <DependentUpon>ToolsInvByTypeDS.xsd</DependentUpon>
-    </None>
     <None Include="Reports\ToolsLojackInv.xsc">
       <DependentUpon>ToolsLojackInv.xsd</DependentUpon>
     </None>
@@ -1948,6 +2165,14 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>EquipApportionedInv.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\EquipAssignLogById.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>EquipAssignLogById.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\EquipAssignLogHist.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>EquipAssignLogHist.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\EquipAssignToHist.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>EquipAssignToHist.cs</LastGenOutput>
@@ -2040,6 +2265,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>EquipMngByHist.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\EquipMultiAssignedTo.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>EquipMultiAssignedTo.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\EquipOneReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>EquipOneReport.cs</LastGenOutput>
@@ -2072,6 +2301,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>EquipSvcCostHistByType.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\EquipSvcDue.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>EquipSvcDue.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\EquipToBeSold.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>EquipToBeSold.cs</LastGenOutput>
@@ -2100,6 +2333,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>SmallToolsAssignedTo.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\SmallToolsCalibrationDueReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SmallToolsCalibrationDueReport.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\SvcSchedAllCrewsHist.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>SvcSchedAllCrewsHist.cs</LastGenOutput>
@@ -2111,6 +2348,10 @@
     <EmbeddedResource Include="Reports\Test1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Test1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ToolAssignLogHist.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ToolAssignLogHist.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\ToolInvByLoc.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -2136,9 +2377,17 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ToolsAssignedToHist.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ToolsAssignLogById.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ToolsAssignLogById.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\ToolsBrokenHist.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ToolsBrokenHist.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ToolsCalibrationDueRpt.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ToolsCalibrationDueRpt.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\ToolsChangeLogById.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -2151,6 +2400,10 @@
     <EmbeddedResource Include="Reports\ToolsInvByType.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ToolsInvByType.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ToolsMutiAssignedTo.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ToolsMutiAssignedTo.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\ToolsOnLoan.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -2216,7 +2469,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>25844</DevelopmentServerPort>
+          <DevelopmentServerPort>30415</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

@@ -15,11 +15,16 @@ var curEquipAssignColor;
 var curToolAssignColor;
 
 // this gives exact match in dropdown
-$.expr[":"].econtains = function(obj, index, meta, stack) {
+$.expr[":"].econtains = function (obj, index, meta, stack) {
     return (obj.textContent || obj.innerText || $(obj).text() || "").toLowerCase() == meta[3].toLowerCase();
 }
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
+    var ww = $(window).width();
+    var tw = ((ww * 5) / 6) - 25;
+    var gw = tw - 50;
+
+    $('#tabs').css('width', tw);
 
     curDiv = $("#hdnDivision").val();
     curDefaultDiv = $("#hdnDefaultDiv").val();
@@ -32,18 +37,18 @@ jQuery(document).ready(function() {
         hoverrows: false,
         altRows: false,
         height: 255,
-        width: 740,
+        width: gw,
         rowNum: 5000,
         colNames: ['ID', 'Type', 'Make', 'Model', 'Year', 'Location', 'Insp Due', 'Serv Due', 'Miles/Hrs', 'Milage Dt', 'Reg By', 'Mngd By', 'Mngd By Dt', 'Tag Exp', '', '', '', '', 'Vin Num', 'Title Num', 'GVW', 'Unlaiden Wt', 'Tag Num', 'Tag State', 'Fuel', 'Cost', 'Inspect Rmndr(wks)', 'Tag Rmndr(wks)', 'Stolen', 'Sold', 'Lojack', 'In Repair', 'Totaled', 'Hut Sticker', 'Apportioned', 'IFTA Sticker', 'GPS', 'Comment', '', 'Unknown', 'Current Value', 'ImgCnt', 'Leased', 'GCW', '', '', '', '', '', 'To Be Sold', '', '', ''],
         colModel: [
    		        { name: 'equip_id', index: 'equip_id', width: 65, editable: true, search: true, searchoptions: { sopt: ['eq', 'bw', 'ew']} },
   		        { name: 'type_desc', index: 'type_desc', width: 130, editable: true, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetTypesSearch'} },
-   		        { name: 'make_descr', index: 'make_descr', width: 80, editable: true, search: true, stype: "select", searchoptions: { sopt: ['cn','eq'], dataUrl: '/EquipTrack/GetMakesSearch'} },
+   		        { name: 'make_descr', index: 'make_descr', width: 80, editable: true, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetMakesSearch'} },
    		        { name: 'model_descr', index: 'model_descr', width: 80, editable: true, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetModelsSearch'} },
    		        { name: 'equip_year', index: 'equip_year', width: 60, editable: true, search: false },
    		        { name: 'work_loc', index: 'work_loc', width: 80, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetLocations' }, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetLocations'} },
                 { name: 'insp_due_dt', index: 'insp_due_dt', width: 100, editable: true, search: false,
-                    editoptions: { size: 12, dataInit: function(el) {
+                    editoptions: { size: 12, dataInit: function (el) {
                         $(el).datepicker({ dateFormat: 'mm/dd/yy' });
                     }
                     }
@@ -51,7 +56,7 @@ jQuery(document).ready(function() {
    		        { name: 'service_due_num', index: 'service_due_num', width: 80, editable: true, search: false },
    		        { name: 'miles_hours', index: 'miles_hours', width: 80, editable: true, search: false },
                 { name: 'miles_dt', index: 'miles_dt', width: 100, editable: true, search: false,
-                    editoptions: { size: 12, dataInit: function(el) {
+                    editoptions: { size: 12, dataInit: function (el) {
                         $(el).datepicker({ dateFormat: 'mm/dd/yy' });
                     }
                     }
@@ -59,13 +64,13 @@ jQuery(document).ready(function() {
    		        { name: 'registered_by', index: 'registered_by', width: 80, editable: true, search: false },
    		        { name: 'managed_by', index: 'managed_by', width: 80, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetDivisions' }, search: false },
    		        { name: 'managed_by_dt', hidden: true, editable: true, editrules: { edithidden: true }, search: false,
-   		            editoptions: { size: 12, dataInit: function(el) {
+   		            editoptions: { size: 12, dataInit: function (el) {
    		                $(el).datepicker({ dateFormat: 'mm/dd/yy' });
    		            }
    		            }
    		        },
    		        { name: 'tag_expire_dt', index: 'tag_expire_dt', width: 100, editable: true, search: false,
-   		            editoptions: { size: 12, dataInit: function(el) {
+   		            editoptions: { size: 12, dataInit: function (el) {
    		                $(el).datepicker({ dateFormat: 'mm/dd/yy' });
    		            }
    		            }
@@ -105,11 +110,14 @@ jQuery(document).ready(function() {
             { name: 'ezpass_num', hidden: true, editable: true, editrules: { edithidden: true }, search: false },
             { name: 'fuelcard', hidden: true, editable: true, editrules: { edithidden: true }, search: false },
             { name: 'fuelcard_num', hidden: true, editable: true, editrules: { edithidden: true }, search: false },
-            { name: 'to_be_sold', hidden: true, editable: true, edittype: "checkbox", editoptions: { value: "True:False" }, editrules: { edithidden: true }, search: true, stype: "select", searchoptions: { sopt: ['eq'], value: "True:Yes;False:No", searchhidden: true} }
+            { name: 'to_be_sold', hidden: true, editable: true, edittype: "checkbox", editoptions: { value: "True:False" }, editrules: { edithidden: true }, search: true, stype: "select", searchoptions: { sopt: ['eq'], value: "True:Yes;False:No", searchhidden: true} },
+            { name: 'fuel_card_loc', hidden: true, editable: true, editrules: { edithidden: true }, search: false },
+            { name: 'other_antitheft', hidden: true, editable: true, edittype: "checkbox", editoptions: { value: "True:False" }, editrules: { edithidden: true }, search: true, stype: "select", searchoptions: { sopt: ['eq'], value: "True:Yes;False:No", searchhidden: true} },
+            { name: 'other_antitheft_type', hidden: true, editable: true, editrules: { edithidden: true }, search: false }
             ],
         sortname: 'equip_id',
         sortorder: "asc",
-        afterInsertRow: function(rowid, rowdata, rowelem) {
+        afterInsertRow: function (rowid, rowdata, rowelem) {
 
             if (rowelem[14] == 'SET_RED') {
                 jQuery("#equipgrid").setCell(rowid, 'insp_due_dt', '', { color: 'red' })
@@ -135,7 +143,8 @@ jQuery(document).ready(function() {
         },
         viewrecords: true,
         pager: jQuery('#equipgridp'),
-        ondblClickRow: function(rowid) {
+        caption: 'yo',
+        ondblClickRow: function (rowid) {
             var data = $("#equipgrid").getRowData(curRow);
             if (data.equip_id == null)
                 alert("  Please Select a Row!");
@@ -190,6 +199,11 @@ jQuery(document).ready(function() {
                 $("#txtGPSNum").val('');
                 $("#txtEZPASSNum").val('');
                 $("#txtFuelCardNum").val('');
+                $("#ddlFuelCardLoc").val('');
+
+                $('#chkOtherAntiTheft').prop('checked', false);
+                $('#hdnOtherAntiTheft').val('');
+                $("#ddlOtherAntiTheftTypes").val('');
 
                 $('#hdnEquipApportioned').val('');
                 $('#hdnEquipInRepair').val('');
@@ -232,6 +246,18 @@ jQuery(document).ready(function() {
                 $("#txtGPSNum").val(data.gps_num);
                 $("#txtEZPASSNum").val(data.ezpass_num);
                 $("#txtFuelCardNum").val(data.fuelcard_num);
+                $("#ddlFuelCardLoc").val(data.fuel_card_loc);
+                $("#ddlOtherAntiTheftTypes").val(data.other_antitheft_type);
+
+                if (data.other_antitheft == 'True') {
+                    $('#chkOtherAntiTheft').prop('checked', true);
+                    $('#hdnOtherAntiTheft').val('on');
+                }
+                else {
+                    $('#chkOtherAntiTheft').prop('checked', false);
+                    $('#hdnOtherAntiTheft').val('off');
+                }
+
                 if (data.lojack == 'True') {
                     $('#chkEquipLojack').prop('checked', true);
                     $('#hdnEquipLojack').val('on');
@@ -351,7 +377,7 @@ jQuery(document).ready(function() {
             return false;
 
         },
-        onSelectRow: function(ids) {
+        onSelectRow: function (ids) {
             if (ids != null) {
                 $("#img_results").html('');
 
@@ -366,7 +392,7 @@ jQuery(document).ready(function() {
                 curEquipAssignColor = data.equip_assign_color;
             }
         },
-        loadComplete: function() {
+        loadComplete: function () {
             var uData = jQuery('#equipgrid').getGridParam('userData');
             var strCap;
 
@@ -375,8 +401,7 @@ jQuery(document).ready(function() {
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-             'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>,&nbsp<div style="background-color:#FFFFCC;width: 55px;float:right">has photo</div>';
+             'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>,&nbsp<div style="background-color:#FFFFCC;width: 70px;float:right">has photo</div>';
             }
             else {
 
@@ -385,7 +410,7 @@ jQuery(document).ready(function() {
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             '<font color="red">FILTER ON:</font>' + '&nbsp;&nbsp;&nbsp;' + uData.searchVal +
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-             'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>, &nbsp<div style="background-color:#FFFFCC;width: 55px;float:right">has photo</div>';
+             'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>, &nbsp<div style="background-color:#FFFFCC;width: 70px;float:right">has photo</div>';
                 if (uData.searchLojack != '') {
                     alert(uData.searchVal + " is not available.\n Registered By: " + uData.searchRegBy + "\n Stolen: " + uData.searchStolen + "\n Unknown: " + uData.searchUnknown + "\n Leased: " + uData.searchLeased + "\n Sold: " + uData.searchSold + "\n Lojack: " + uData.searchLojack + "\n In Repair: " + uData.searchInRepair + "\n Totaled: " + uData.searchTotaled + "\n ID: " + uData.searchId + "\n To Be Sold: " + uData.searchToBeSold);
                 }
@@ -401,12 +426,12 @@ jQuery(document).ready(function() {
 		{odata: [{ oper: 'eq', text: 'equal' }, { oper: 'ne', text: 'not equal' }, { oper: 'lt', text: 'less' }, { oper: 'le', text: 'less or equal' }, { oper: 'gt', text: 'greater' }, { oper: 'ge', text: 'greater or equal' }, { oper: 'bw', text: 'begins with' }, { oper: 'bn', text: 'does not begin with' }, { oper: 'in', text: 'is in' }, { oper: 'ni', text: 'is not in' }, { oper: 'ew', text: 'ends with' }, { oper: 'en', text: 'does not end with' }, { oper: 'cn', text: 'contains' }, { oper: 'nc', text: 'does not contain' }, { oper: 'nu', text: 'is null' }, { oper: 'nn', text: 'is not null'}],
 		//            {odata: ['equals', 'not equal', 'less', 'less or equal', 'greater', 'greater or equal', 'begins with', 'does not begin with', 'is in', 'is not in', 'ends with', 'does not end with', 'contains', 'does not contain'],
 		closeAfterSearch: true, closeOnEscape: true
-        }, // search options
+}, // search options
          {} // view options
           ).navButtonAdd('#equipgridp', {
               caption: "Photo",
               buttonicon: "ui-icon-image",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#equipgrid").getRowData(curRow);
                   if (data.equip_id == null)
                       alert("  Please Select a Row!");
@@ -417,7 +442,7 @@ jQuery(document).ready(function() {
                       var eID = document.getElementById("hdnEquipIDInit");
                       eID.value = data.equip_id;
                       $("#img_dialog").dialog('option', 'title', "Images for ID: " + data.equip_id);
-                      $.get("/EquipTrack/GetEquipImages/" + data.equip_id + "/EQUIP", {}, function(data) {
+                      $.get("/EquipTrack/GetEquipImages/" + data.equip_id + "/EQUIP", {}, function (data) {
                           $("#img_results").html(data);
                       });
 
@@ -432,7 +457,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#equipgridp', {
               caption: "Print",
               buttonicon: "ui-icon-print",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#equipgrid").getRowData(curRow);
                   if (data.equip_id == null)
                       alert("  Please Select a Row!");
@@ -452,7 +477,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#equipgridp', {
               caption: "Edit",
               buttonicon: "ui-icon-pencil",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#equipgrid").getRowData(curRow);
                   if (data.equip_id == null)
                       alert("  Please Select a Row!");
@@ -484,8 +509,7 @@ jQuery(document).ready(function() {
                       $("#txtEquipGCW").val('');
                       $("#txtEquipUnlaidenWt").val('');
                       $("#ddlTagSt").val('');
-                      if (data.fuel_descr.length > 0)
-                          $("#ddlFuel option:econtains(" + data.fuel_descr + ")").prop('selected', 'selected');
+                      $("#ddlFuel").val('');
                       $("#txtCost").val('');
                       $("#txtCurrentValue").val('');
                       $("#ddlInspRmndr").val('');
@@ -508,6 +532,12 @@ jQuery(document).ready(function() {
                       $("#txtGPSNum").val('');
                       $("#txtEZPassNum").val('');
                       $("#txtFuelCardNum").val('');
+                      $("#ddlFuelCardLoc").val('');
+
+                      $('#chkOtherAntiTheft').prop('checked', false);
+                      $('#hdnOtherAntiTheft').val('');
+                      $("#ddlOtherAntiTheftTypes").val('');
+
 
                       $('#hdnEquipApportioned').val('');
                       $('#hdnEquipInRepair').val('');
@@ -539,7 +569,8 @@ jQuery(document).ready(function() {
                       $("#txtEquipGCW").val(data.gross_c_wt);
                       $("#txtEquipUnlaidenWt").val(data.unlaiden_wt);
                       $("#ddlTagSt").val(data.tag_state);
-                      $("#ddlFuel").val(data.fuel_descr);
+                      if (data.fuel_descr.length > 0)
+                          $("#ddlFuel option:econtains(" + data.fuel_descr + ")").prop('selected', 'selected');
                       $("#txtCost").val(data.cost);
                       $("#txtCurrentValue").val(data.current_value);
                       $("#ddlInspRmndr").val(data.insp_rmdr_wks);
@@ -548,6 +579,19 @@ jQuery(document).ready(function() {
                       $("#txtGPSNum").val(data.gps_num);
                       $("#txtEZPassNum").val(data.ezpass_num);
                       $("#txtFuelCardNum").val(data.fuelcard_num);
+                      $("#ddlFuelCardLoc").val(data.fuel_card_loc);
+                      $("#ddlOtherAntiTheftTypes").val(data.other_antitheft_type);
+
+                      if (data.other_antitheft == 'True') {
+                          $('#chkOtherAntiTheft').prop('checked', true);
+                          $('#hdnOtherAntiTheft').val('on');
+                      }
+                      else {
+                          $('#chkOtherAntiTheft').prop('checked', false);
+                          $('#hdnOtherAntiTheft').val('off');
+                      }
+
+
                       if (data.lojack == 'True') {
                           $('#chkEquipLojack').prop('checked', true);
                           $('#hdnEquipLojack').val('on');
@@ -679,14 +723,14 @@ jQuery(document).ready(function() {
         datatype: 'json',
         mtype: 'GET',
         height: 100,
-        width: 740,
+        width: gw,
         rowNum: 5000,
-        colNames: ['Service ID', 'ID', 'Service Date', 'Type', 'Mechanic', 'Miles/Hours', '', 'Labor Cost', 'Parts Cost', 'Total Cost', 'Update Next Svc Due', 'Service Requested', 'Service Performed', 'Parts Required', 'Comments'],
+        colNames: ['Service ID', 'ID', 'Service Date', 'Type', 'Mechanic', 'Miles/Hours', '', 'Labor Cost', 'Parts Cost', 'Total Cost', 'Update Next Svc Due', 'Service Requested', 'Service Performed', 'Parts Required', 'Comments', '', ''],
         colModel: [
                 { name: 'service_id', hidden: true, editable: true },
    		        { name: 'equip_id', index: 'equip_id', width: 65, editable: true, editoptions: { readonly: 'readonly'} }, //, editoptions: {readonly: 'readonly'}
                 {name: 'service_dt', index: 'service_dt', width: 100, editable: true,
-                editoptions: { size: 12, dataInit: function(el) {
+                editoptions: { size: 12, dataInit: function (el) {
                     $(el).datepicker({ dateFormat: 'mm/dd/yy' });
                 }
                 }
@@ -698,18 +742,35 @@ jQuery(document).ready(function() {
    		        { name: 'labor_cost', index: 'labor_cost', width: 60, editable: true },
    		        { name: 'parts_cost', index: 'parts_cost', width: 60, editable: true },
    		        { name: 'total_cost', index: 'total_cost', width: 60, editable: true },
-                { name: 'calc_next_svc', hidden: true, editable: true, edittype: "checkbox", editoptions: { value: "True:False" }, editrules: { edithidden: true} },
-                { name: 'serv_reqstd', hidden: true, editable: true, editrules: { edithidden: true }, edittype: "textarea", editoptions: { rows: "2", cols: "27"} },
-                { name: 'serv_perf_descr', hidden: true, editable: true, editrules: { edithidden: true }, edittype: "textarea", editoptions: { rows: "2", cols: "27"} },
-                { name: 'parts_reqrd', hidden: true, editable: true, editrules: { edithidden: true }, edittype: "textarea", editoptions: { rows: "2", cols: "27"} },
-                { name: 'comments', hidden: true, editable: true, editrules: { edithidden: true }, edittype: "textarea", editoptions: { rows: "2", cols: "27"} }
+                { name: 'calc_next_svc', hidden: true },
+                { name: 'serv_reqstd', hidden: true },
+                { name: 'serv_perf_descr', hidden: true },
+                { name: 'parts_reqrd', hidden: true },
+                { name: 'comments', hidden: true },
+                { name: 'attachment_path', hidden: true },
+                { name: 'attachment_flag', hidden: true }
             ],
         sortname: 'service_dt',
         sortorder: "desc",
         viewrecords: true,
+        afterInsertRow: function (rowid, rowdata, rowelem) {
+            if (rowelem[16] == 'HAS_ATTACHMENT') {
+                jQuery("#equip_svc").setCell(rowid, 'equip_id', '', { 'background-color': '#FFFFCC' });
+            }
+        },
         pager: jQuery('#equipsvcp'),
-        caption: 'Services',
-        ondblClickRow: function(rowid) {
+        caption: 'Services ' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                 'ID Color Key: <div style="background-color:#FFFFCC;width: 105px;float:right;padding-right:20px">has attachment</div>',
+        ondblClickRow: function (rowid) {
 
             var data = $("#equip_svc").getRowData(curRowSvc);
             if (data.equip_id == null)
@@ -750,7 +811,7 @@ jQuery(document).ready(function() {
             }
             return false;
         },
-        onSelectRow: function(ids) {
+        onSelectRow: function (ids) {
             if (ids != null) {
                 curRowSvc = ids;
                 var data = $("#equip_svc").getRowData(ids);
@@ -768,7 +829,7 @@ jQuery(document).ready(function() {
          {}, // edit options
          {}, // add options
          {reloadAfterSubmit: false, closeOnEscape: true, closeAfterAdd: true,
-         afterSubmit: function(response, postdata) {
+         afterSubmit: function (response, postdata) {
 
              var respArray = response.responseText.split(",");
 
@@ -789,7 +850,7 @@ jQuery(document).ready(function() {
           ).navButtonAdd('#equipsvcp', {
               caption: "Print",
               buttonicon: "ui-icon-print",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#equip_svc").getRowData(curRowSvc);
                   if (data.equip_id == null)
                       alert("  Please Select a Row!");
@@ -799,7 +860,7 @@ jQuery(document).ready(function() {
                       eID.value = data.service_id;
                       var eRpt = document.getElementById("hdnReportName");
                       eRpt.value = "EquipOneSvcRpt";
-                      $("#rpt_dialog").dialog('option', 'title', "Service Report for ID: " + data.equip_id);
+                      $("#rpt_dialog").dialog('option', 'title', "Service Report for ID: " + data.tool_id);
 
                       jQuery('#rpt_dialog').dialog('open');
                   }
@@ -807,9 +868,31 @@ jQuery(document).ready(function() {
               },
               position: "last"
           }).navButtonAdd('#equipsvcp', {
+              caption: "Attach Order",
+              buttonicon: "ui-icon-copy",
+              onClickButton: function () {
+                  var data = $("#equip_svc").getRowData(curRowSvc);
+                  if (data.equip_id == null)
+                      alert("  Please Select a Row!");
+                  else {
+                      $("#attach_loading").hide();
+                      var eID = document.getElementById("hdnSvcIDAttach");
+                      eID.value = data.service_id;
+                      var svcT = document.getElementById("hdnAttachType");
+                      svcT.value = "EQUIP_SVC";
+                      $("#svc_attachment_dialog").dialog('option', 'title', "Attach Service Order For: " + data.equip_id);
+
+                      $('#svcFileAttach').val('');
+                      $("#btnAttachFile").attr("disabled", "disabled");
+                      jQuery('#svc_attachment_dialog').dialog('open');
+                  }
+                  return false;
+              },
+              position: "last"
+          }).navButtonAdd('#equipsvcp', {
               caption: "Edit",
               buttonicon: "ui-icon-pencil",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#equip_svc").getRowData(curRowSvc);
                   if (data.equip_id == null)
                       alert("  Please Select a Row!");
@@ -854,7 +937,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#equipsvcp', {
               caption: "Add",
               buttonicon: "ui-icon-plus",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#equipgrid").getRowData(curRow);
                   if (data.equip_id == null)
                       alert("  Please Select a Row!");
@@ -894,20 +977,20 @@ jQuery(document).ready(function() {
         datatype: 'json',
         mtype: 'GET',
         height: 100,
-        width: 740,
+        width: gw,
         rowNum: 5000,
         colNames: ['ID', 'Assign To', 'Date Assigned', 'Return Date', 'Assign Condition', 'Return Condition', 'Assign Miles', 'Return Miles', 'Assign Hours', 'Return Hours', 'Comments', 'AssignID', 'ImgCnt'],
         colModel: [
    		        { name: 'equip_id', index: 'equip_id', width: 65, editable: true },
    		        { name: 'assigned_to', index: 'assigned_to', width: 80, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetAssignTo'} },
                 { name: 'assigned_dt', index: 'assigned_dt', width: 100, editable: true,
-                    editoptions: { size: 12, dataInit: function(el) {
+                    editoptions: { size: 12, dataInit: function (el) {
                         $(el).datepicker({ dateFormat: 'mm/dd/yy' });
                     }
                     }
                 },
                 { name: 'return_dt', index: 'return_dt', width: 100, editable: true,
-                    editoptions: { size: 12, dataInit: function(el) {
+                    editoptions: { size: 12, dataInit: function (el) {
                         $(el).datepicker({ dateFormat: 'mm/dd/yy' });
                     }
                     }
@@ -924,7 +1007,7 @@ jQuery(document).ready(function() {
             ],
         sortname: 'assigned_dt',
         sortorder: "desc",
-        afterInsertRow: function(rowid, rowdata, rowelem) {
+        afterInsertRow: function (rowid, rowdata, rowelem) {
             if (rowelem[12] == 'HAS_PHOTOS') {
                 jQuery("#equip_asgn").setCell(rowid, 'equip_id', '', { 'background-color': '#FFFFCC' })
             }
@@ -932,7 +1015,7 @@ jQuery(document).ready(function() {
         viewrecords: true,
         pager: jQuery('#equipasgnp'),
         caption: 'Assignments',
-        ondblClickRow: function(rowid) {
+        ondblClickRow: function (rowid) {
             var data = $("#equip_asgn").getRowData(curRowAsgn);
             if (data.equip_id == null)
                 alert("  Please Select an Assignment Row!");
@@ -975,7 +1058,7 @@ jQuery(document).ready(function() {
 
             return false;
         },
-        onSelectRow: function(ids) {
+        onSelectRow: function (ids) {
             if (ids != null) {
                 $("#img_assign_before_results").html('');
                 $("#img_assign_after_results").html('');
@@ -994,7 +1077,7 @@ jQuery(document).ready(function() {
           ).navButtonAdd('#equipasgnp', {
               caption: "Photo",
               buttonicon: "ui-icon-image",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#equip_asgn").getRowData(curRowAsgn);
                   if (data.assign_id == null)
                       alert("  Please Select a Row in Assignments!");
@@ -1009,11 +1092,11 @@ jQuery(document).ready(function() {
                       var aID = document.getElementById("hdnEquipAssignAfterIDInit");
                       aID.value = data.assign_id;
                       $("#img_dialog_assign").dialog('option', 'title', "Assignment Images for ID: " + data.equip_id);
-                      $.get("/EquipTrack/GetEquipImages/" + data.assign_id + "/EQUIP_ASSIGN_B", {}, function(data) {
+                      $.get("/EquipTrack/GetEquipImages/" + data.assign_id + "/EQUIP_ASSIGN_B", {}, function (data) {
                           $("#img_assign_before_results").html(data);
                       });
 
-                      $.get("/EquipTrack/GetEquipImages/" + data.assign_id + "/EQUIP_ASSIGN_A", {}, function(data) {
+                      $.get("/EquipTrack/GetEquipImages/" + data.assign_id + "/EQUIP_ASSIGN_A", {}, function (data) {
                           $("#img_assign_after_results").html(data);
                       });
 
@@ -1032,7 +1115,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#equipasgnp', {
               caption: "Edit",
               buttonicon: "ui-icon-pencil",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#equip_asgn").getRowData(curRowAsgn);
                   if (data.equip_id == null)
                       alert("  Please Select an Assignment Row!");
@@ -1078,7 +1161,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#equipasgnp', {
               caption: "Add",
               buttonicon: "ui-icon-plus",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#equipgrid").getRowData(curRow);
                   if (data.equip_id == null)
                       alert("  Please Select a Row!");
@@ -1123,7 +1206,7 @@ jQuery(document).ready(function() {
         hoverrows: false,
         altRows: false,
         height: 255,
-        width: 740,
+        width: gw,
         rowNum: 5000,
         colNames: ['ID', 'Item', 'Description', 'Manufacturer', 'Size', 'Work Loc', 'Reg By', 'Mng By', 'Calibrate Due', '', '', 'Managed By Date', 'Model #', 'Serial #', 'Year Bought', 'Cost', 'Stolen', 'Sold', 'Electrical', 'Lojack', 'In Repair', 'Totaled', 'Comments', '', '', 'Unknown', 'ImgCnt', 'To Be Sold'],
         colModel: [
@@ -1136,7 +1219,7 @@ jQuery(document).ready(function() {
    		        { name: 'registered_by', index: 'registered_by', width: 80, editable: true, search: false },
    		        { name: 'managed_by', index: 'managed_by', width: 80, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetDivisions' }, search: false },
    		        { name: 'calibration_due_dt', index: 'calibration_due_dt', width: 80, editable: true, search: false,
-   		            editoptions: { size: 12, dataInit: function(el) {
+   		            editoptions: { size: 12, dataInit: function (el) {
    		                $(el).datepicker({ dateFormat: 'mm/dd/yy' });
    		            }
    		            }
@@ -1144,7 +1227,7 @@ jQuery(document).ready(function() {
    		        { name: 'calibration_due_warn', hidden: true, search: false },
                 { name: 'calibration_rmdr_wks', editable: true, hidden: true, edittype: "select", editoptions: { value: ":;1:1;2:2;3:3;4:4;5:5;6:6;7:7;8:8;9:9;10:10;11:11;12:12;13:13;14:14;15:15;16:16;17:17;18:18;19:19;20:20;21:21;22:22;23:23;24:24" }, editrules: { edithidden: true }, search: false },
    		        { name: 'managed_by_dt', hidden: true, editable: true, editrules: { edithidden: true }, search: false,
-   		            editoptions: { size: 12, dataInit: function(el) {
+   		            editoptions: { size: 12, dataInit: function (el) {
    		                $(el).datepicker({ dateFormat: 'mm/dd/yy' });
    		            }
    		            }
@@ -1168,7 +1251,7 @@ jQuery(document).ready(function() {
             ],
         sortname: 'tool_id',
         sortorder: "asc",
-        afterInsertRow: function(rowid, rowdata, rowelem) {
+        afterInsertRow: function (rowid, rowdata, rowelem) {
             if (rowelem[9] == 'SET_RED') {
                 jQuery("#toolgrid").setCell(rowid, 'calibration_due_dt', '', { color: 'red' })
             }
@@ -1184,7 +1267,8 @@ jQuery(document).ready(function() {
         },
         viewrecords: true,
         pager: jQuery('#toolgridp'),
-        ondblClickRow: function(rowid) {
+        caption: 'yo',
+        ondblClickRow: function (rowid) {
 
             var data = $("#toolgrid").getRowData(curToolRow);
             if (data.tool_id == null)
@@ -1319,7 +1403,7 @@ jQuery(document).ready(function() {
             return false;
 
         },
-        onSelectRow: function(ids) {
+        onSelectRow: function (ids) {
             if (ids != null) {
                 $("#img_results").html('');
                 curToolRow = ids;
@@ -1332,7 +1416,7 @@ jQuery(document).ready(function() {
 
             }
         },
-        loadComplete: function() {
+        loadComplete: function () {
             var uData = jQuery('#toolgrid').getGridParam('userData');
             var strCap;
 
@@ -1341,8 +1425,7 @@ jQuery(document).ready(function() {
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-            'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>,&nbsp<div style="background-color:#FFFFCC;width: 55px;float:right">has photo</div>';
+            'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>,&nbsp<div style="background-color:#FFFFCC;width: 70px;float:right">has photo</div>';
             }
             else {
 
@@ -1350,21 +1433,25 @@ jQuery(document).ready(function() {
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             '<font color="red">FILTER ON:</font>' + '&nbsp;&nbsp;&nbsp;' + uData.searchVal +
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-            'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>,&nbsp<div style="background-color:#FFFFCC;width: 55px;float:right">has photo</div>';
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+            'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>,&nbsp<div style="background-color:#FFFFCC;width: 70px;float:right">has photo</div>';
                 if (uData.searchElectrical != '') {
                     alert(uData.searchVal + " is not available.\n Registered By: " + uData.searchRegBy + "\n Stolen: " + uData.searchStolen + "\n Unknown: " + uData.searchUnknown + "\n Sold: " + uData.searchSold + "\n Electrical: " + uData.searchElectrical + "\n In Repair: " + uData.searchInRepair + "\n Totaled: " + uData.searchTotaled + "\n ID: " + uData.searchId + "\n To Be Sold: " + uData.searchToBeSold);
                 }
             }
 
             jQuery('#toolgrid').setCaption(strCap);
+            if (GWPlus != "GW-PLUS" && GWPlus != "NJ-PLUS") {
+                $('#toolGridAddBut').hide();
+            }
+
 
         }
     }).navGrid('#toolgridp', { searchtext: "Find", refreshtext: "Reload", edit: false, add: false, del: false, search: true, refresh: true }, //options
          {}, // edit options
          {}, // add options
          {reloadAfterSubmit: false, closeOnEscape: true, closeAfterAdd: true,
-         afterSubmit: function(response, postdata) {
+         afterSubmit: function (response, postdata) {
 
              if (response.responseText == "Success") {
                  jQuery("#tool_success").show();
@@ -1381,13 +1468,13 @@ jQuery(document).ready(function() {
 		{odata: [{ oper: 'eq', text: 'equal' }, { oper: 'ne', text: 'not equal' }, { oper: 'lt', text: 'less' }, { oper: 'le', text: 'less or equal' }, { oper: 'gt', text: 'greater' }, { oper: 'ge', text: 'greater or equal' }, { oper: 'bw', text: 'begins with' }, { oper: 'bn', text: 'does not begin with' }, { oper: 'in', text: 'is in' }, { oper: 'ni', text: 'is not in' }, { oper: 'ew', text: 'ends with' }, { oper: 'en', text: 'does not end with' }, { oper: 'cn', text: 'contains' }, { oper: 'nc', text: 'does not contain' }, { oper: 'nu', text: 'is null' }, { oper: 'nn', text: 'is not null'}],
 		//            {odata: ['equals', 'not equal', 'less', 'less or equal', 'greater', 'greater or equal', 'begins with', 'does not begin with', 'is in', 'is not in', 'ends with', 'does not end with', 'contains', 'does not contain'],
 		//         {odata: ['equals','begins with'],
-            closeAfterSearch: true, closeOnEscape: true
-        }, // search options
+		closeAfterSearch: true, closeOnEscape: true
+}, // search options
          {} // view options
           ).navButtonAdd('#toolgridp', {
               caption: "Photo",
               buttonicon: "ui-icon-image",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#toolgrid").getRowData(curToolRow);
                   if (data.tool_id == null)
                       alert("  Please Select a Row!");
@@ -1398,7 +1485,7 @@ jQuery(document).ready(function() {
                       var eID = document.getElementById("hdnEquipIDInit");
                       eID.value = data.tool_id;
                       $("#img_dialog").dialog('option', 'title', "Images for ID: " + data.tool_id);
-                      $.get("/EquipTrack/GetEquipImages/" + data.tool_id + "/TOOL", {}, function(data) {
+                      $.get("/EquipTrack/GetEquipImages/" + data.tool_id + "/TOOL", {}, function (data) {
                           $("#img_results").html(data);
                       });
 
@@ -1413,7 +1500,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#toolgridp', {
               caption: "Print",
               buttonicon: "ui-icon-print",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#toolgrid").getRowData(curToolRow);
                   if (data.tool_id == null)
                       alert("  Please Select a Row!");
@@ -1433,7 +1520,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#toolgridp', {
               caption: "Edit",
               buttonicon: "ui-icon-pencil",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#toolgrid").getRowData(curToolRow);
                   if (data.tool_id == null)
                       alert("  Please Select a Row!");
@@ -1567,8 +1654,58 @@ jQuery(document).ready(function() {
 
               },
               position: "first"
-          });
+          }).navButtonAdd('#toolgridp', {
+              caption: "Add",
+              id: "toolGridAddBut",
+              buttonicon: "ui-icon-plus",
+              onClickButton: function () {
 
+                  var data = "";
+
+                  var eID = document.getElementById("hdnToolOper");
+                  eID.value = "Add";
+
+                  $("#hdnToolID").val('');
+                  $("#ddlToolMfg").val('');
+                  $("#ddlToolType").val('');
+                  $("#ddlToolDesc").val('');
+                  $("#ddlToolSize").val('');
+                  $("#ddlToolRegBy").val('');
+                  $("#ddlToolMngBy").val('');
+                  $("#ddlToolLoc").val('');
+                  $("#txtToolYearPur").val('');
+                  $("#dtToolMngByDt").val('');
+                  $("#dtCalibrationDue").val('');
+                  $("#ddlCalibrationRmndr").val('');
+                  $("#txtToolCost").val('');
+                  $("#txtToolSerialNum").val('');
+                  $("#txtToolModelNum").val('');
+                  $("#txtToolComment").val('');
+                  $('#chkToolStolen').prop('checked', false);
+                  $('#chkToolSold').prop('checked', false);
+                  $('#chkToolToBeSold').prop('checked', false);
+                  $('#chkToolElectrical').prop('checked', false);
+                  $('#chkToolLojack').prop('checked', false);
+                  $('#chkToolUnknown').prop('checked', false);
+                  $('#chkToolInRepair').prop('checked', false);
+                  $('#chkToolTotaled').prop('checked', false);
+
+                  $("#hdnToolStolen").val('');
+                  $("#hdnToolSold").val('');
+                  $("#hdnToolToBeSold").val('');
+                  $("#hdnToolElectrical").val('');
+                  $("#hdnToolLojack").val('');
+                  $("#hdnToolUnknown").val('');
+                  $("#hdnToolInRepair").val('');
+                  $("#hdnToolTotaled").val('');
+
+                  $("#tool_dlg_results").html('');
+                  OpenToolEditDlg(data);
+
+                  return false;
+              },
+              position: "first"
+          });
     $('#toolgridp_center').remove();
     $('#toolgridp_right').remove();
 
@@ -1579,14 +1716,14 @@ jQuery(document).ready(function() {
         datatype: 'json',
         mtype: 'GET',
         height: 100,
-        width: 740,
+        width: gw,
         rowNum: 5000,
-        colNames: ['Service ID', 'ID', 'Service Date', 'Type', 'Mechanic', 'Labor Cost', 'Parts Cost', 'Total Cost', 'Service Requested', 'Service Performed', 'Parts Required', 'Comments'],
+        colNames: ['Service ID', 'ID', 'Service Date', 'Type', 'Mechanic', 'Labor Cost', 'Parts Cost', 'Total Cost', 'Service Requested', 'Service Performed', 'Parts Required', 'Comments', '', ''],
         colModel: [
                 { name: 'service_id', hidden: true, editable: true },
    		        { name: 'tool_id', index: 'tool_id', width: 65, editable: true, editoptions: { readonly: 'readonly'} }, //, editoptions: {readonly: 'readonly'}
                 {name: 'service_dt', index: 'service_dt', width: 100, editable: true,
-                editoptions: { size: 12, dataInit: function(el) {
+                editoptions: { size: 12, dataInit: function (el) {
                     $(el).datepicker({ dateFormat: 'mm/dd/yy' });
                 }
                 }
@@ -1599,14 +1736,31 @@ jQuery(document).ready(function() {
                 { name: 'serv_reqstd', hidden: true, editable: true, editrules: { edithidden: true }, edittype: "textarea", editoptions: { rows: "2", cols: "27"} },
                 { name: 'serv_perf_descr', hidden: true, editable: true, editrules: { edithidden: true }, edittype: "textarea", editoptions: { rows: "2", cols: "27"} },
                 { name: 'parts_reqrd', hidden: true, editable: true, editrules: { edithidden: true }, edittype: "textarea", editoptions: { rows: "2", cols: "27"} },
-                { name: 'comments', hidden: true, editable: true, editrules: { edithidden: true }, edittype: "textarea", editoptions: { rows: "2", cols: "27"} }
+                { name: 'comments', hidden: true, editable: true, editrules: { edithidden: true }, edittype: "textarea", editoptions: { rows: "2", cols: "27"} },
+                { name: 'attachment_path', hidden: true, editable: false, editrules: { edithidden: true }, edittype: "textarea", editoptions: { rows: "2", cols: "27"} },
+                { name: 'attach_cnt', hidden: true, editable: false, editrules: { edithidden: true }, edittype: "textarea", editoptions: { rows: "2", cols: "27"} }
             ],
         sortname: 'service_dt',
         sortorder: "desc",
         viewrecords: true,
+        afterInsertRow: function (rowid, rowdata, rowelem) {
+            if (rowelem[13] == 'HAS_ATTACHMENT') {
+                jQuery("#tool_svc").setCell(rowid, 'tool_id', '', { 'background-color': '#FFFFCC' });
+            }
+        },
         pager: jQuery('#toolsvcp'),
-        caption: 'Services',
-        ondblClickRow: function(rowid) {
+        caption: 'Services ' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                 'ID Color Key: <div style="background-color:#FFFFCC;width: 105px;float:right;padding-right:20px">has attachment</div>',
+        ondblClickRow: function (rowid) {
 
             var data = $("#tool_svc").getRowData(curToolRowSvc);
             if (data.tool_id == null)
@@ -1641,7 +1795,7 @@ jQuery(document).ready(function() {
             }
             return false;
         },
-        onSelectRow: function(ids) {
+        onSelectRow: function (ids) {
             if (ids != null) {
                 curToolRowSvc = ids;
                 var data = $("#tool_svc").getRowData(ids);
@@ -1658,7 +1812,7 @@ jQuery(document).ready(function() {
           ).navButtonAdd('#toolsvcp', {
               caption: "Print",
               buttonicon: "ui-icon-print",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#tool_svc").getRowData(curToolRowSvc);
                   if (data.tool_id == null)
                       alert("  Please Select a Row!");
@@ -1668,7 +1822,7 @@ jQuery(document).ready(function() {
                       eID.value = data.service_id;
                       var eRpt = document.getElementById("hdnReportName");
                       eRpt.value = "ToolOneSvcRpt";
-                      $("#rpt_dialog").data("title.dialog", "Service Report for ID: " + data.tool_id)
+                      $("#rpt_dialog").dialog('option', 'title', "Service Report for ID: " + data.tool_id);
 
                       jQuery('#rpt_dialog').dialog('open');
                   }
@@ -1676,9 +1830,31 @@ jQuery(document).ready(function() {
               },
               position: "last"
           }).navButtonAdd('#toolsvcp', {
+              caption: "Attach Order",
+              buttonicon: "ui-icon-copy",
+              onClickButton: function () {
+                  var data = $("#tool_svc").getRowData(curToolRowSvc);
+                  if (data.tool_id == null)
+                      alert("  Please Select a Row!");
+                  else {
+                      $("#attach_loading").hide();
+                      var eID = document.getElementById("hdnSvcIDAttach");
+                      eID.value = data.service_id;
+                      var svcT = document.getElementById("hdnAttachType");
+                      svcT.value = "TOOL_SVC";
+                      $("#svc_attachment_dialog").dialog('option', 'title', "Attach Service Order For: " + data.tool_id);
+
+                      $('#svcFileAttach').val('');
+                      $("#btnAttachFile").attr("disabled", "disabled");
+                      jQuery('#svc_attachment_dialog').dialog('open');
+                  }
+                  return false;
+              },
+              position: "last"
+          }).navButtonAdd('#toolsvcp', {
               caption: "Edit",
               buttonicon: "ui-icon-pencil",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#tool_svc").getRowData(curToolRowSvc);
                   if (data.tool_id == null)
                       alert("  Please Select a Row!");
@@ -1716,7 +1892,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#toolsvcp', {
               caption: "Add",
               buttonicon: "ui-icon-plus",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#toolgrid").getRowData(curToolRow);
                   if (data.tool_id == null)
                       alert("  Please Select a Row!");
@@ -1753,20 +1929,20 @@ jQuery(document).ready(function() {
         datatype: 'json',
         mtype: 'GET',
         height: 100,
-        width: 740,
+        width: gw,
         rowNum: 5000,
         colNames: ['ID', 'Assign To', 'Date Assigned', 'Return Date', 'Assign Condition', 'Return Condition', 'Comments', 'AssignID', 'ImgCnt'],
         colModel: [
    		        { name: 'tool_id', index: 'tool_id', width: 65, editable: true },
    		        { name: 'assigned_to', index: 'assigned_to', width: 80, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetAssignTo'} },
                 { name: 'assigned_dt', index: 'assigned_dt', width: 100, editable: true,
-                    editoptions: { size: 12, dataInit: function(el) {
+                    editoptions: { size: 12, dataInit: function (el) {
                         $(el).datepicker({ dateFormat: 'mm/dd/yy' });
                     }
                     }
                 },
                 { name: 'return_dt', index: 'return_dt', width: 100, editable: true,
-                    editoptions: { size: 12, dataInit: function(el) {
+                    editoptions: { size: 12, dataInit: function (el) {
                         $(el).datepicker({ dateFormat: 'mm/dd/yy' });
                     }
                     }
@@ -1779,7 +1955,7 @@ jQuery(document).ready(function() {
             ],
         sortname: 'assigned_dt',
         sortorder: "desc",
-        afterInsertRow: function(rowid, rowdata, rowelem) {
+        afterInsertRow: function (rowid, rowdata, rowelem) {
             if (rowelem[8] == 'HAS_PHOTOS') {
                 jQuery("#tool_asgn").setCell(rowid, 'tool_id', '', { 'background-color': '#FFFFCC' })
             }
@@ -1787,7 +1963,7 @@ jQuery(document).ready(function() {
         viewrecords: true,
         pager: jQuery('#toolasgnp'),
         caption: 'Assignments',
-        ondblClickRow: function(rowid) {
+        ondblClickRow: function (rowid) {
 
             var data = $("#tool_asgn").getRowData(curToolRowAsgn);
             if (data.tool_id == null)
@@ -1823,7 +1999,7 @@ jQuery(document).ready(function() {
 
             return false;
         },
-        onSelectRow: function(ids) {
+        onSelectRow: function (ids) {
             if (ids != null) {
                 curToolRowAsgn = ids;
                 var data = $("#tool_asgn").getRowData(curToolRowAsgn);
@@ -1840,7 +2016,7 @@ jQuery(document).ready(function() {
           ).navButtonAdd('#toolasgnp', {
               caption: "Photo",
               buttonicon: "ui-icon-image",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#tool_asgn").getRowData(curToolRowAsgn);
                   if (data.assign_id == null)
                       alert("  Please Select a Row in Assignments!");
@@ -1854,12 +2030,12 @@ jQuery(document).ready(function() {
                       bID.value = data.assign_id;
                       var aID = document.getElementById("hdnEquipAssignAfterIDInit");
                       aID.value = data.assign_id;
-                      $("#img_dialog_assign").data("title.dialog", "Assignment Images for ID: " + data.tool_id)
-                      $.get("/EquipTrack/GetEquipImages/" + data.assign_id + "/TOOL_ASSIGN_B", {}, function(data) {
+                      $("#img_dialog_assign").dialog('option', 'title', "Assignment Images for ID: " + data.tool_id);
+                      $.get("/EquipTrack/GetEquipImages/" + data.assign_id + "/TOOL_ASSIGN_B", {}, function (data) {
                           $("#img_assign_before_results").html(data);
                       });
 
-                      $.get("/EquipTrack/GetEquipImages/" + data.assign_id + "/TOOL_ASSIGN_A", {}, function(data) {
+                      $.get("/EquipTrack/GetEquipImages/" + data.assign_id + "/TOOL_ASSIGN_A", {}, function (data) {
                           $("#img_assign_after_results").html(data);
                       });
 
@@ -1878,7 +2054,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#toolasgnp', {
               caption: "Edit",
               buttonicon: "ui-icon-pencil",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#tool_asgn").getRowData(curToolRowAsgn);
                   if (data.tool_id == null)
                       alert("  Please Select an Assignment Row!");
@@ -1916,7 +2092,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#toolasgnp', {
               caption: "Add",
               buttonicon: "ui-icon-plus",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#toolgrid").getRowData(curToolRow);
                   if (data.tool_id == null)
                       alert("  Please Select a Row!");
@@ -1957,9 +2133,9 @@ jQuery(document).ready(function() {
         hoverrows: false,
         altRows: false,
         height: 355,
-        width: 740,
+        width: gw,
         rowNum: 5000,
-        colNames: ['ID', 'Item', 'Description', 'Size', 'Manufacturer', 'Model#', 'Serial#', 'ID', 'Condition', 'Reg By', 'Mngd By', 'Managed By Dt', 'Assigned To', 'Assigned Dt', 'Return Dt', 'Shop', 'Comments', ''],
+        colNames: ['ID', 'Item', 'Description', 'Size', 'Manufacturer', 'Model#', 'Serial#', 'ID', 'Condition', 'Reg By', 'Mngd By', 'Managed By Dt', 'Assigned To', 'Assigned Dt', 'Calibrate Due', '', '', 'Return Dt', 'Shop', 'Comments', ''],
         colModel: [
                 { name: 'stID', hidden: true, editable: true, search: false },
    		        { name: 'item', index: 'item', width: 95, editable: true, search: true, searchoptions: { sopt: ['eq', 'bw', 'ew']} },
@@ -1973,20 +2149,28 @@ jQuery(document).ready(function() {
    		        { name: 'reg_by', index: 'reg_by', width: 85, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetDivisions' }, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetDivisions'} },
    		        { name: 'managed_by', index: 'managed_by', width: 85, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetDivisions' }, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetDivisions'} },
    		        { name: 'managed_by_dt', hidden: true, editable: true, editrules: { edithidden: true }, search: false,
-   		            editoptions: { size: 12, dataInit: function(el) {
+   		            editoptions: { size: 12, dataInit: function (el) {
    		                $(el).datepicker({ dateFormat: 'mm/dd/yy' });
    		            }
    		            }
    		        },
    		        { name: 'assigned_to', index: 'assigned_to', width: 80, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetAssignTo' }, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetAssignTo'} },
                 { name: 'assigned_dt', index: 'assigned_dt', width: 100, editable: true, search: false,
-                    editoptions: { size: 12, dataInit: function(el) {
+                    editoptions: { size: 12, dataInit: function (el) {
                         $(el).datepicker({ dateFormat: 'mm/dd/yy' });
                     }
                     }
                 },
+   		        { name: 'calibration_due_dt', index: 'calibration_due_dt', width: 80, editable: true, search: false,
+   		            editoptions: { size: 12, dataInit: function (el) {
+   		                $(el).datepicker({ dateFormat: 'mm/dd/yy' });
+   		            }
+   		            }
+   		        },
+   		        { name: 'calibration_due_warn', hidden: true, search: false },
+                { name: 'calibration_rmdr_wks', editable: true, hidden: true, edittype: "select", editoptions: { value: ":;1:1;2:2;3:3;4:4;5:5;6:6;7:7;8:8;9:9;10:10;11:11;12:12;13:13;14:14;15:15;16:16;17:17;18:18;19:19;20:20;21:21;22:22;23:23;24:24" }, editrules: { edithidden: true }, search: false },
                 { name: 'return_dt', index: 'return_dt', width: 100, editable: true, hidden: true, search: false, editrules: { edithidden: true },
-                    editoptions: { size: 12, dataInit: function(el) {
+                    editoptions: { size: 12, dataInit: function (el) {
                         $(el).datepicker({ dateFormat: 'mm/dd/yy' });
                     }
                     }
@@ -1997,17 +2181,21 @@ jQuery(document).ready(function() {
             ],
         sortname: 'item',
         sortorder: "asc",
-        afterInsertRow: function(rowid, rowdata, rowelem) {
-            if (rowelem[17] == 'SET_GREEN') {
-                jQuery("#smalltoolgrid").setCell(rowid, 'item', '', { color: 'green' })
+        afterInsertRow: function (rowid, rowdata, rowelem) {
+            if (rowelem[15] == 'SET_RED') {
+                jQuery("#smalltoolgrid").setCell(rowid, 'calibration_due_dt', '', { color: 'red' });
             }
-            if (rowelem[17] == 'SET_PURPLE') {
-                jQuery("#smalltoolgrid").setCell(rowid, 'item', '', { color: 'purple' })
+            if (rowelem[20] == 'SET_GREEN') {
+                jQuery("#smalltoolgrid").setCell(rowid, 'item', '', { color: 'green' });
+            }
+            if (rowelem[20] == 'SET_PURPLE') {
+                jQuery("#smalltoolgrid").setCell(rowid, 'item', '', { color: 'purple' });
             }
         },
         viewrecords: true,
         pager: jQuery('#smalltoolgridp'),
-        ondblClickRow: function(rowid) {
+        caption: 'yo',
+        ondblClickRow: function (rowid) {
 
             var data = $("#smalltoolgrid").getRowData(curSmallToolRow);
             if (data.stID == null)
@@ -2030,6 +2218,8 @@ jQuery(document).ready(function() {
                 $("#dtSmallToolAsgnDt").val('');
                 $("#dtSmallToolRetDt").val('');
                 $("#txtSmallToolComment").val('');
+                $("#dtStCalibrationDue").val('');
+                $("#ddlStCalibrationRmndr").val('');
 
                 $("#hdnSmallToolID").val(data.stID);
                 $("#txtSmallToolItem").val(data.item);
@@ -2045,6 +2235,8 @@ jQuery(document).ready(function() {
                 $("#dtSmallToolAsgnDt").val(data.assigned_dt);
                 $("#dtSmallToolRetDt").val(data.return_dt);
                 $("#txtSmallToolComment").val(data.comments);
+                $("#dtStCalibrationDue").val(data.calibration_due_dt);
+                $("#ddlStCalibrationRmndr").val(data.calibration_rmdr_wks);
 
                 $("#smalltool_dlg_results").html('');
                 OpenSmallToolEditDlg(data);
@@ -2052,7 +2244,7 @@ jQuery(document).ready(function() {
             return false;
 
         },
-        onSelectRow: function(ids) {
+        onSelectRow: function (ids) {
             if (ids != null) {
                 curSmallToolRow = ids;
                 var data = $("#smalltoolgrid").getRowData(ids);
@@ -2060,7 +2252,7 @@ jQuery(document).ready(function() {
                 eIS.value = data.stID;
             }
         },
-        loadComplete: function() {
+        loadComplete: function () {
             var uData = jQuery('#smalltoolgrid').getGridParam('userData');
             var strCap;
 
@@ -2090,7 +2282,7 @@ jQuery(document).ready(function() {
          {}, // edit options
          {}, // add options
          {reloadAfterSubmit: false, closeOnEscape: true, closeAfterAdd: true,
-         afterSubmit: function(response, postdata) {
+         afterSubmit: function (response, postdata) {
 
              if (response.responseText == "Success") {
                  jQuery("#smalltool_success").show();
@@ -2107,13 +2299,13 @@ jQuery(document).ready(function() {
 		{odata: [{ oper: 'eq', text: 'equal' }, { oper: 'ne', text: 'not equal' }, { oper: 'lt', text: 'less' }, { oper: 'le', text: 'less or equal' }, { oper: 'gt', text: 'greater' }, { oper: 'ge', text: 'greater or equal' }, { oper: 'bw', text: 'begins with' }, { oper: 'bn', text: 'does not begin with' }, { oper: 'in', text: 'is in' }, { oper: 'ni', text: 'is not in' }, { oper: 'ew', text: 'ends with' }, { oper: 'en', text: 'does not end with' }, { oper: 'cn', text: 'contains' }, { oper: 'nc', text: 'does not contain' }, { oper: 'nu', text: 'is null' }, { oper: 'nn', text: 'is not null'}],
 		//            {odata: ['equals', 'not equal', 'less', 'less or equal', 'greater', 'greater or equal', 'begins with', 'does not begin with', 'is in', 'is not in', 'ends with', 'does not end with', 'contains', 'does not contain'],
 		//         {odata: ['equals','begins with'],
-            closeAfterSearch: true, closeOnEscape: true
-        }, // search options
+		closeAfterSearch: true, closeOnEscape: true
+}, // search options
          {} // view options
           ).navButtonAdd('#smalltoolgridp', {
               caption: "Edit",
               buttonicon: "ui-icon-pencil",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#smalltoolgrid").getRowData(curSmallToolRow);
                   if (data.stID == null)
                       alert("  Please Select a Row!");
@@ -2135,6 +2327,8 @@ jQuery(document).ready(function() {
                       $("#dtSmallToolAsgnDt").val('');
                       $("#dtSmallToolRetDt").val('');
                       $("#txtSmallToolComment").val('');
+                      $("#dtStCalibrationDue").val('');
+                      $("#ddlStCalibrationRmndr").val('');
 
                       $("#hdnSmallToolID").val(data.stID);
                       $("#txtSmallToolItem").val(data.item);
@@ -2150,6 +2344,8 @@ jQuery(document).ready(function() {
                       $("#dtSmallToolAsgnDt").val(data.assigned_dt);
                       $("#dtSmallToolRetDt").val(data.return_dt);
                       $("#txtSmallToolComment").val(data.comments);
+                      $("#dtStCalibrationDue").val(data.calibration_due_dt);
+                      $("#ddlStCalibrationRmndr").val(data.calibration_rmdr_wks);
 
                       $("#smalltool_dlg_results").html('');
                       OpenSmallToolEditDlg(data);
@@ -2161,7 +2357,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#smalltoolgridp', {
               caption: "Add",
               buttonicon: "ui-icon-plus",
-              onClickButton: function() {
+              onClickButton: function () {
 
                   var data = "";
 
@@ -2194,7 +2390,7 @@ jQuery(document).ready(function() {
     $('#smalltoolgridp_right').remove();
 
 
-    $(function() {
+    $(function () {
         $("#img_dialog").dialog({
             bgiframe: true,
             width: 540,
@@ -2203,8 +2399,18 @@ jQuery(document).ready(function() {
             resizable: false
         })
     });
-    
-    $(function() {
+
+    $(function () {
+        $("#svc_attachment_dialog").dialog({
+            bgiframe: true,
+            width: 540,
+            modal: true,
+            autoOpen: false,
+            resizable: false
+        });
+    });
+
+    $(function () {
         $("#delete_tool_dlg").dialog({
             bgiframe: true,
             width: 340,
@@ -2214,7 +2420,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#delete_smalltool_dlg").dialog({
             bgiframe: true,
             width: 340,
@@ -2224,7 +2430,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#delete_equip_dlg").dialog({
             bgiframe: true,
             width: 340,
@@ -2234,18 +2440,19 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#admin_xfer_assignments").dialog({
             bgiframe: true,
             width: 1050,
-            height: 625,
+            height: 725,
             modal: true,
             autoOpen: false,
             resizable: false
         })
     });
 
-    $(function() {
+
+    $(function () {
         $("#img_dialog_assign").dialog({
             bgiframe: true,
             width: 540,
@@ -2255,7 +2462,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#rpt_dialog").dialog({
             bgiframe: true,
             width: 540,
@@ -2265,7 +2472,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#export_dlg").dialog({
             bgiframe: true,
             width: 540,
@@ -2275,106 +2482,106 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#rpt_dialog_hist").dialog({
             bgiframe: true,
             width: 540,
             modal: true,
             autoOpen: false,
             resizable: false,
-            open: function(event, ui) {
+            open: function (event, ui) {
                 $('#dtReportFrom').datepicker('enable');
                 $('#dtReportTo').datepicker('enable');
             },
-            close: function(event, ui) {
+            close: function (event, ui) {
                 $('#dtReportFrom').datepicker('hide');
                 $('#dtReportTo').datepicker('hide');
             }
         })
     });
 
-    $(function() {
+    $(function () {
         $("#equip_svc_edit_dlg").dialog({
             bgiframe: true,
-            width: 540,
+            width: 650,
             modal: true,
             autoOpen: false,
             resizable: false,
-            open: function(event, ui) {
+            open: function (event, ui) {
                 $('#dtEquipSvcDt').datepicker('enable');
             },
-            close: function(event, ui) {
+            close: function (event, ui) {
                 $('#dtEquipSvcDt').datepicker('hide');
             }
         })
     });
 
-    $(function() {
+    $(function () {
         $("#tool_svc_edit_dlg").dialog({
             bgiframe: true,
             width: 540,
             modal: true,
             autoOpen: false,
             resizable: false,
-            open: function(event, ui) {
+            open: function (event, ui) {
                 $('#dtToolSvcDt').datepicker('enable');
             },
-            close: function(event, ui) {
+            close: function (event, ui) {
                 $('#dtToolSvcDt').datepicker('hide');
             }
         })
     });
 
-    $(function() {
+    $(function () {
         $("#equip_asgn_edit_dlg").dialog({
             bgiframe: true,
-            width: 450,
+            width: 480,
             modal: true,
             autoOpen: false,
             resizable: false,
-            open: function(event, ui) {
+            open: function (event, ui) {
                 $('#dtEquipAsgnDt').datepicker('enable');
                 $('#dtEquipRetDt').datepicker('enable');
             },
-            close: function(event, ui) {
+            close: function (event, ui) {
                 $('#dtEquipAsgnDt').datepicker('hide');
                 $('#dtEquipRetDt').datepicker('hide');
             }
         })
     });
 
-    $(function() {
+    $(function () {
         $("#tool_asgn_edit_dlg").dialog({
             bgiframe: true,
-            width: 450,
+            width: 480,
             modal: true,
             autoOpen: false,
             resizable: false,
-            open: function(event, ui) {
+            open: function (event, ui) {
                 $('#dtToolAsgnDt').datepicker('enable');
                 $('#dtToolRetDt').datepicker('enable');
             },
-            close: function(event, ui) {
+            close: function (event, ui) {
                 $('#dtToolAsgnDt').datepicker('hide');
                 $('#dtToolRetDt').datepicker('hide');
             }
         })
     });
 
-    $(function() {
+    $(function () {
         $("#equip_edit_dlg").dialog({
             bgiframe: true,
-            width: 650,
+            width: 775,
             modal: true,
             autoOpen: false,
             resizable: false,
-            open: function(event, ui) {
+            open: function (event, ui) {
                 $('#dtEquipInspDue').datepicker('enable');
                 $('#dtEquipMngByDt').datepicker('enable');
                 $('#dtEquipMilesDt').datepicker('enable');
                 $('#dtEquipTagExp').datepicker('enable');
             },
-            close: function(event, ui) {
+            close: function (event, ui) {
                 $('#dtEquipInspDue').datepicker('hide');
                 $('#dtEquipMngByDt').datepicker('hide');
                 $('#dtEquipMilesDt').datepicker('hide');
@@ -2383,45 +2590,47 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#tool_edit_dlg").dialog({
             bgiframe: true,
-            width: 600,
+            width: 700,
             modal: true,
             autoOpen: false,
             resizable: false,
-            open: function(event, ui) {
+            open: function (event, ui) {
                 $('#dtToolMngByDt').datepicker('enable');
                 $('#dtCalibrationDue').datepicker('enable');
             },
-            close: function(event, ui) {
+            close: function (event, ui) {
                 $('#dtToolMngByDt').datepicker('hide');
                 $('#dtCalibrationDue').datepicker('hide');
             }
         })
     });
 
-    $(function() {
+    $(function () {
         $("#smalltool_edit_dlg").dialog({
             bgiframe: true,
             width: 660,
             modal: true,
             autoOpen: false,
             resizable: false,
-            open: function(event, ui) {
+            open: function (event, ui) {
                 $('#dtSmallToolMngByDt').datepicker('enable');
                 $('#dtSmallToolAsgnDt').datepicker('enable');
                 $('#dtSmallToolRetDt').datepicker('enable');
+                $('#dtStCalibrationDue').datepicker('enable');
             },
-            close: function(event, ui) {
+            close: function (event, ui) {
                 $('#dtSmallToolMngByDt').datepicker('hide');
                 $('#dtSmallToolAsgnDt').datepicker('hide');
                 $('#dtSmallToolRetDt').datepicker('hide');
+                $('#dtStCalibrationDue').datepicker('hide');
             }
         })
     });
 
-    $(function() {
+    $(function () {
         $("#help_popup").dialog({
             bgiframe: true,
             width: 300,
@@ -2432,7 +2641,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $('#equip_svc_edit_form').ajaxForm(function(data) {
+    $('#equip_svc_edit_form').ajaxForm(function (data) {
 
         var respArray = data.split(",");
         jQuery('#equip_svc_loading').hide();
@@ -2462,7 +2671,7 @@ jQuery(document).ready(function() {
         }
     });
 
-    $('#tool_svc_edit_form').ajaxForm(function(data) {
+    $('#tool_svc_edit_form').ajaxForm(function (data) {
 
         jQuery('#tool_svc_loading').hide();
 
@@ -2477,7 +2686,7 @@ jQuery(document).ready(function() {
         }
     });
 
-    $('#equip_asgn_edit_form').ajaxForm(function(data) {
+    $('#equip_asgn_edit_form').ajaxForm(function (data) {
 
         var respArray = data.split(",");
 
@@ -2508,7 +2717,7 @@ jQuery(document).ready(function() {
         return [true, respArray[0]]
     });
 
-    $('#tool_asgn_edit_form').ajaxForm(function(data) {
+    $('#tool_asgn_edit_form').ajaxForm(function (data) {
 
         jQuery('#tool_asgn_loading').hide();
 
@@ -2535,7 +2744,7 @@ jQuery(document).ready(function() {
         return [true, data]
     });
 
-    $('#equip_edit_form').ajaxForm(function(data) {
+    $('#equip_edit_form').ajaxForm(function (data) {
 
         var respArray = data.split(",");
         jQuery('#equip_loading').hide();
@@ -2544,12 +2753,12 @@ jQuery(document).ready(function() {
             jQuery("#equip_success").show();
 
             var equipID = $('#txtEquipID').val();
-            var equipMake = $("#ddlEquipMake option:selected").text()
-            var equipModel = $("#ddlEquipModel option:selected").text()
-            var equipType = $("#ddlEquipType option:selected").text()
-            var equipRegBy = $("#ddlEquipRegBy option:selected").text()
-            var equipMngBy = $("#ddlEquipMngBy option:selected").text()
-            var equipLoc = $("#ddlEquipLoc option:selected").text()
+            var equipMake = $("#ddlEquipMake option:selected").text();
+            var equipModel = $("#ddlEquipModel option:selected").text();
+            var equipType = $("#ddlEquipType option:selected").text();
+            var equipRegBy = $("#ddlEquipRegBy option:selected").text();
+            var equipMngBy = $("#ddlEquipMngBy option:selected").text();
+            var equipLoc = $("#ddlEquipLoc option:selected").text();
             var txtEquipYear = $("#txtEquipYear").val();
             var dtEquipInspDue = $("#dtEquipInspDue").val();
             var dtEquipMngByDt = $("#dtEquipMngByDt").val();
@@ -2564,12 +2773,24 @@ jQuery(document).ready(function() {
             var txtEquipGCW = $("#txtEquipGCW").val();
             var txtEquipUnlaidenWt = $("#txtEquipUnlaidenWt").val();
             var ddlTagSt = $("#ddlTagSt").val();
-            var ddlFuel = $("#ddlFuel option:selected").text()
+            var ddlFuel = $("#ddlFuel option:selected").text();
             var txtCost = $("#txtCost").val();
             var txtCurrentValue = $("#txtCurrentValue").val();
             var ddlInspRmndr = $("#ddlInspRmndr").val();
             var ddlTagRmndr = $("#ddlTagRmndr").val();
             var txtEquipComment = $("#txtEquipComment").val();
+
+            var ddlOtherAntiTheftTypes = $("#ddlOtherAntiTheftTypes option:selected").text();
+
+            var chkOtherAntiTheft;
+            if ($('#chkOtherAntiTheft').prop('checked') == true) {
+                chkOtherAntiTheft = "True";
+            }
+            else {
+                chkOtherAntiTheft = "False";
+            }
+
+
             var chkEquipSold;
             if ($('#chkEquipSold').prop('checked') == true) {
                 chkEquipSold = "True";
@@ -2583,13 +2804,6 @@ jQuery(document).ready(function() {
             }
             else {
                 chkEquipToBeSold = "False";
-            }
-            var chkEquipStolen;
-            if ($('#chkEquipStolen').prop('checked') == true) {
-                chkEquipStolen = "True";
-            }
-            else {
-                chkEquipStolen = "False";
             }
             var chkEquipLojack;
             if ($('#chkEquipLojack').prop('checked') == true) {
@@ -2693,7 +2907,6 @@ jQuery(document).ready(function() {
                 miles_hours: txtEquipMilesHours,
                 miles_dt: dtEquipMilesDt,
                 registered_by: equipRegBy,
-                tag_expire_dt: equipMngBy,
                 managed_by: equipMngBy,
                 managed_by_dt: dtEquipMngByDt,
                 tag_expire_dt: dtEquipTagExp,
@@ -2726,7 +2939,9 @@ jQuery(document).ready(function() {
                 ezpass_num: txtEZPASSNum,
                 fuelcard: chkEquipFuelCard,
                 fuelcard_num: txtFuelCardNum,
-                to_be_sold: chkEquipToBeSold
+                to_be_sold: chkEquipToBeSold,
+                other_antitheft: chkOtherAntiTheft,
+                other_antitheft_type: ddlOtherAntiTheftTypes
             };
 
             var oper = $('#hdnEditOper').val();
@@ -2767,7 +2982,7 @@ jQuery(document).ready(function() {
         return [true, data]
     });
 
-    $('#tool_edit_form').ajaxForm(function(data) {
+    $('#tool_edit_form').ajaxForm(function (data) {
 
         var respArray = data.split(",");
         jQuery('#tool_loading').hide();
@@ -2913,7 +3128,7 @@ jQuery(document).ready(function() {
         return [true, data]
     });
 
-    $('#smalltool_edit_form').ajaxForm(function(data) {
+    $('#smalltool_edit_form').ajaxForm(function (data) {
 
         var respArray = data.split(",");
         jQuery('#smalltool_loading').hide();
@@ -2936,6 +3151,8 @@ jQuery(document).ready(function() {
             var stoolIDNum = $("#txtSmallToolID").val();
             var stoolSerNum = $("#txtSmallToolSerNum").val();
             var stoolModelNum = $("#txtSmallToolModelNum").val();
+            var dtCalibrationDue = $("#dtStCalibrationDue").val();
+            var CalibrationRmndr = $("#ddlStCalibrationRmndr option:selected").text();
             var stoolComment = $("#txtSmallToolComment").val();
             var stoolShop = $("#ddlSmallToolShop option:selected").text()
 
@@ -2954,6 +3171,8 @@ jQuery(document).ready(function() {
                 assigned_dt: stoolAsgnDt,
                 return_dt: stoolRetDt,
                 IDnum: stoolIDNum,
+                calibration_due_dt: dtCalibrationDue,
+                calibration_rmdr_wks: CalibrationRmndr,
                 comments: stoolComment,
                 inoutshop: stoolShop
             };
@@ -3000,7 +3219,7 @@ jQuery(document).ready(function() {
         return [true, respArray[0]]
     });
 
-    $(function() {
+    $(function () {
         $("#admin_dialog").dialog({
             bgiframe: true,
             width: 600,
@@ -3011,7 +3230,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#admin_loc_dlg").dialog({
             bgiframe: true,
             width: 600,
@@ -3022,7 +3241,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#admin_users_dlg").dialog({
             bgiframe: true,
             width: 600,
@@ -3033,7 +3252,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#admin_assignto_dlg").dialog({
             bgiframe: true,
             width: 700,
@@ -3044,8 +3263,20 @@ jQuery(document).ready(function() {
         })
     });
 
+    $(function () {
+        $("#multiSelectAsgntoRptDlg").dialog({
+            bgiframe: true,
+            width: 450,
+            height: 400,
+            modal: true,
+            autoOpen: false,
+            resizable: false
+        });
+    });
 
-    $(function() {
+
+
+    $(function () {
         $("#admin_svc_dlg").dialog({
             bgiframe: true,
             width: 600,
@@ -3056,7 +3287,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#admin_id_dlg").dialog({
             bgiframe: true,
             width: 600,
@@ -3067,7 +3298,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#help_popup").dialog({
             bgiframe: true,
             width: 300,
@@ -3081,11 +3312,11 @@ jQuery(document).ready(function() {
     //                    alert('here');
     //                });
 
-    $('#adminidform').ajaxForm(function(data) {
+    $('#adminidform').ajaxForm(function (data) {
 
     });
 
-    $('#adminDlgForm').ajaxForm(function(data) {
+    $('#adminDlgForm').ajaxForm(function (data) {
 
         var respArray = data.split(",");
 
@@ -3115,7 +3346,7 @@ jQuery(document).ready(function() {
         $("#btnAdminSave").attr("disabled", "disabled");
     });
 
-    $('#adminsvcform').ajaxForm(function(data) {
+    $('#adminsvcform').ajaxForm(function (data) {
 
         if (data == "Success") {
 
@@ -3138,7 +3369,7 @@ jQuery(document).ready(function() {
     });
 
 
-    $('#adminlocform').ajaxForm(function(data) {
+    $('#adminlocform').ajaxForm(function (data) {
 
         if (data == "Success") {
 
@@ -3163,7 +3394,7 @@ jQuery(document).ready(function() {
         $("#btnSaveLoc").attr("disabled", "disabled");
     });
 
-    $('#imageDlgForm').ajaxForm(function(data) {
+    $('#imageDlgForm').ajaxForm(function (data) {
         var iID = document.getElementById("hdnImageType");
         var rdata;
         var id;
@@ -3177,14 +3408,51 @@ jQuery(document).ready(function() {
             id = rdata.equip_id
             jQuery("#equipgrid").setCell(curRow, 'equip_id', '', { 'background-color': '#FFFFCC' })
         }
-        $.get("/EquipTrack/GetEquipImages/" + id + "/" + iID.value, {}, function(data2) {
+        $.get("/EquipTrack/GetEquipImages/" + id + "/" + iID.value, {}, function (data2) {
             $("#img_loading").hide();
             $("#img_results").html(data2);
             $("#btnSave").attr("disabled", "disabled");
         });
     });
 
-    $('#imageAssgnBeforeDlgForm').ajaxForm(function(data) {
+    $('#svcAttachmentForm').ajaxForm(function (data) {
+        var iID = document.getElementById("hdnAttachType");
+        var rdata;
+        var id;
+        var respArray = data.split(",");
+
+        if (respArray[0] == "Success") {
+
+            if (iID.value == "TOOL_SVC") {
+                rdata = $("#tool_svc").getRowData(curToolRowSvc);
+                id = rdata.tool_id;
+                jQuery("#tool_svc").setCell(curToolRowSvc, 'tool_id', '', { 'background-color': '#FFFFCC' });
+                jQuery("#tool_svc").setCell(curToolRowSvc, 'attachment_path', respArray[1]);
+            }
+            else if (iID.value == "EQUIP_SVC") {
+                rdata = $("#equip_svc").getRowData(curRowSvc);
+                id = rdata.equip_id;
+                jQuery("#equip_svc").setCell(curRowSvc, 'equip_id', '', { 'background-color': '#FFFFCC' });
+                jQuery("#equip_svc").setCell(curRowSvc, 'attachment_path', respArray[1]);
+            }
+
+
+            jQuery("#attach_success").show();
+            jQuery("#attach_success").html("Successfully attached.");
+            jQuery("#attach_success").fadeOut(6000);
+        }
+        else {
+            jQuery("#attach_success").show();
+            jQuery("#attach_success").html("Error attaching.");
+            jQuery("#attach_success").fadeOut(6000);
+        }
+
+        $("#btnAttachFile").attr("disabled", "disabled");
+        $("#attach_loading").hide();
+
+    });
+
+    $('#imageAssgnBeforeDlgForm').ajaxForm(function (data) {
         var iID = document.getElementById("hdnAssignBeforeImageType");
         var rdata;
         if (iID.value == "TOOL") {
@@ -3198,7 +3466,7 @@ jQuery(document).ready(function() {
 
         //            $('loading').show()
 
-        $.get("/EquipTrack/GetEquipImages/" + rdata.assign_id + "/" + iID.value + "_ASSIGN_B", {}, function(data2) {
+        $.get("/EquipTrack/GetEquipImages/" + rdata.assign_id + "/" + iID.value + "_ASSIGN_B", {}, function (data2) {
             $("#img_assign_loading").hide();
             $("#img_assign_before_results").html(data2);
             $("#btnSaveBefore").attr("disabled", "disabled");
@@ -3206,7 +3474,7 @@ jQuery(document).ready(function() {
         });
     });
 
-    $('#imageAssgnAfterDlgForm').ajaxForm(function(data) {
+    $('#imageAssgnAfterDlgForm').ajaxForm(function (data) {
         var iID = document.getElementById("hdnAssignAfterImageType");
         var rdata;
         var type;
@@ -3222,7 +3490,7 @@ jQuery(document).ready(function() {
             jQuery("#equip_asgn").setCell(curRowAsgn, 'equip_id', '', { 'background-color': '#FFFFCC' })
         }
 
-        $.get("/EquipTrack/GetEquipImages/" + rdata.assign_id + "/" + type, {}, function(data2) {
+        $.get("/EquipTrack/GetEquipImages/" + rdata.assign_id + "/" + type, {}, function (data2) {
             $("#img_assign_loading").hide();
             $("#img_assign_after_results").html(data2);
             $("#btnSaveAfter").attr("disabled", "disabled");
@@ -3247,7 +3515,8 @@ function OpenEquipEditSvcDlg(dta) {
 
     $("#equip_svc_success").hide();
     $("#equip_svc_loading").hide();
-    $("#equip_svc_edit_dlg").data("title.dialog", oper + " Equipment Service")
+    //        $("#equip_svc_edit_dlg").data("title.dialog", oper + " Equipment Service")
+    $("#equip_svc_edit_dlg").dialog('option', 'title', oper + " Equipment Service");
 
     $('#txtEquipSvcID').val(dta.equip_id);
     $("#txtEquipSvcID").attr("disabled", "disabled");
@@ -3260,10 +3529,21 @@ function OpenEquipEditSvcDlg(dta) {
 
     jQuery('#equip_svc_edit_dlg').dialog('open');
 
-    $.get("/EquipTrack/GetEquipSvcEditDlg/", {}, function(data) {
+    $.get("/EquipTrack/GetEquipSvcEditDlg/", {}, function (data) {
         $("#equip_svc_results").html(data);
-        if (dta.serv_descr.length > 0)
-            $("#lstEquipSvcTypes option:econtains(" + dta.serv_descr + ")").prop('selected', 'selected');
+        $("#lstEquipSvcTypes option:econtains(" + dta.serv_descr + ")").prop('selected', 'selected');
+
+        if (dta.attachment_path.length > 0) {
+            $('#equip_svc_order_link').attr("href", dta.attachment_path);
+            $('#equip_svc_order_link').show();
+        }
+        else {
+            $('#equip_svc_order_link').hide();
+        }
+
+        $("#btnSaveEquipSvc").attr("disabled", "disabled");
+
+
     });
 
 }
@@ -3282,7 +3562,7 @@ function OpenToolSvcDlg(dta) {
 
     $("#tool_svc_success").hide();
     $("#tool_svc_loading").hide();
-    $("#tool_svc_edit_dlg").data("title.dialog", oper + " Tool Service")
+    $("#tool_svc_edit_dlg").dialog('option', 'title', oper + " Tool Service");
 
     $('#txtToolSvcID').val(dta.tool_id);
     $("#txtToolSvcID").attr("disabled", "disabled");
@@ -3293,9 +3573,21 @@ function OpenToolSvcDlg(dta) {
 
     jQuery('#tool_svc_edit_dlg').dialog('open');
 
-    $.get("/EquipTrack/GetToolSvcEditDlg/", {}, function(data) {
+    $.get("/EquipTrack/GetToolSvcEditDlg/", {}, function (data) {
         $("#tool_svc_results").html(data);
-        $("#lstToolSvcTypes option:econtains(" + dta.serv_descr + ")").prop('selected', 'selected');
+        if (dta.serv_descr.length > 0)
+            $("#lstToolSvcTypes option:econtains(" + dta.serv_descr + ")").prop('selected', 'selected');
+
+
+        if (dta.attachment_path.length > 0) {
+            $('#svc_order_link').attr("href", dta.attachment_path);
+            $('#svc_order_link').show();
+        }
+        else {
+            $('#svc_order_link').hide();
+        }
+
+        $("#btnSaveToolSvc").attr("disabled", "disabled"); 
     });
 }
 
@@ -3308,12 +3600,13 @@ function OpenEquipEditAsgnDlg(dta) {
     }
     else {
 
-        $("#btnEquipAsgnSave").removeAttr("disabled", "disabled");
+ //       $("#btnEquipAsgnSave").removeAttr("disabled", "disabled");
     }
 
     $("#equip_asgn_success").hide();
     $("#equip_asgn_loading").hide();
-    $("#equip_asgn_edit_dlg").data("title.dialog", oper + " Equipment Assigment")
+    //        $("#equip_asgn_edit_dlg").data("title.dialog", oper + " Equipment Assigment")
+    $("#equip_asgn_edit_dlg").dialog('option', 'title', oper + " Equipment Assigment");
 
     $('#txtEquipAsgnID').val(dta.equip_id);
     $("#txtEquipAsgnID").attr("disabled", "disabled");
@@ -3327,11 +3620,31 @@ function OpenEquipEditAsgnDlg(dta) {
     $('#dtEquipRetDt').val(dta.return_dt);
 
     jQuery('#equip_asgn_edit_dlg').dialog('open');
+    jQuery('#txtEquipAsgnMiles').on('input', function () {
+        CheckEquipAssignForm();
+    });
 
-    $.get("/EquipTrack/GetEquipAsgnEditDlg/", {}, function(data) {
+    jQuery('#txtEquipAsgnHours').on('input', function () {
+        CheckEquipAssignForm();
+    });
+
+    jQuery('#txtEquipRetMiles').on('input', function () {
+        CheckEquipAssignForm();
+    });
+
+    jQuery('#txtEquipRetHours').on('input', function () {
+        CheckEquipAssignForm();
+    });
+
+
+    $.get("/EquipTrack/GetEquipAsgnEditDlg/", {}, function (data) {
         $("#equip_asgn_results").html(data);
         $('#ddlAssignedTo').val(dta.assigned_to);
+
+        $("#btnSaveAssignTo").attr("disabled", "disabled");
+
     });
+
 }
 
 function OpenToolAsgnDlg(dta) {
@@ -3348,7 +3661,8 @@ function OpenToolAsgnDlg(dta) {
 
     $("#tool_asgn_success").hide();
     $("#tool_asgn_loading").hide();
-    $("#tool_asgn_edit_dlg").data("title.dialog", oper + " Tool Assigment")
+    //        $("#tool_asgn_edit_dlg").data("title.dialog", oper + " Tool Assigment")
+    $("#tool_asgn_edit_dlg").dialog('option', 'title', oper + " Tool Assigment");
 
     $('#txtToolAsgnID').val(dta.tool_id);
     $("#txtToolAsgnID").attr("disabled", "disabled");
@@ -3363,9 +3677,13 @@ function OpenToolAsgnDlg(dta) {
 
     jQuery('#tool_asgn_edit_dlg').dialog('open');
 
-    $.get("/EquipTrack/GetToolAsgnEditDlg/", {}, function(data) {
+    $.get("/EquipTrack/GetToolAsgnEditDlg/", {}, function (data) {
         $("#tool_asgn_results").html(data);
         $('#ddlToolAssignedTo').val(dta.assigned_to);
+
+        $("#btnSaveToolAssign").attr("disabled", "disabled"); 
+
+        
     });
 }
 
@@ -3378,7 +3696,8 @@ function OpenEquipEditDlg(dta) {
     $("#equip_success").hide();
     $("#equip_loading").hide();
 
-    $("#equip_edit_dlg").data("title.dialog", oper + " Equipment")
+    //        $("#equip_edit_dlg").data("title.dialog", oper + " Equipment")
+    $("#equip_edit_dlg").dialog('option', 'title', oper + " Equipment");
 
     if (oper == "Edit") {
         $('#txtEquipID').val(dta.equip_id);
@@ -3411,7 +3730,9 @@ function OpenEquipEditDlg(dta) {
         $('#txtGPSNum').attr("disabled", "disabled");
         $('#txtFuelCardNum').attr("disabled", "disabled");
 
-        $("#btnSaveEquip").attr("disabled", "disabled");
+     
+
+        //        $("#btnSaveEquip").attr("disabled", "disabled");
     }
     else {
         $('#txtEquipID').val('');
@@ -3430,13 +3751,14 @@ function OpenEquipEditDlg(dta) {
     $('#dtEquipMilesDt').datepicker('disable');
     $('#dtEquipMilesDt').val(dta.miles_dt);
 
+
     $('#dtEquipTagExp').val('');
     $('#dtEquipTagExp').datepicker('disable');
     $('#dtEquipTagExp').val(dta.tag_expire_dt);
 
     jQuery('#equip_edit_dlg').dialog('open');
 
-    $.get("/EquipTrack/GetEquipEditDlg/", {}, function(data) {
+    $.get("/EquipTrack/GetEquipEditDlg/", {}, function (data) {
         $("#equip_results").html(data);
         if (oper == "Edit") {
             if (dta.make_descr.length != 0)
@@ -3454,7 +3776,11 @@ function OpenEquipEditDlg(dta) {
             $('#ddlEquipModel').attr("disabled", "disabled");
             $('#ddlEquipType').attr("disabled", "disabled");
             $('#ddlEquipRegBy').attr("disabled", "disabled");
+            $('#ddlEquipMngBy').attr("disabled", "disabled");
+            $('#dtEquipMngByDt').datepicker().datepicker('disable');
 
+            $("#btnSaveEquip").attr("disabled", "disabled");
+            
         }
     });
 }
@@ -3468,7 +3794,8 @@ function OpenToolEditDlg(dta) {
     $("#tool_dlg_success").hide();
     $("#tool_loading").hide();
 
-    $("#tool_edit_dlg").data("title.dialog", oper + " Tool")
+    //        $("#tool_edit_dlg").data("title.dialog", oper + " Tool")
+    $("#tool_edit_dlg").dialog('option', 'title', oper + " Tool");
 
     if (oper == "Edit") {
         $('#txtToolID').val(dta.tool_id);
@@ -3486,7 +3813,8 @@ function OpenToolEditDlg(dta) {
         //        $("#chkToolUnknown").attr("disabled", "disabled");
         $("#chkToolTotaled").attr("disabled", "disabled");
 
-        $("#btnSaveToolDlg").attr("disabled", "disabled");
+        //        $("#btnSaveToolDlg").attr("disabled", "disabled");
+
     }
     else {
         $('#txtToolID').val('');
@@ -3504,7 +3832,7 @@ function OpenToolEditDlg(dta) {
 
     jQuery('#tool_edit_dlg').dialog('open');
 
-    $.get("/EquipTrack/GetToolEditDlg/", {}, function(data) {
+    $.get("/EquipTrack/GetToolEditDlg/", {}, function (data) {
         $("#tool_dlg_results").html(data);
         if (oper == "Edit") {
             if (dta.tool_mfg_descr.length != 0)
@@ -3524,8 +3852,10 @@ function OpenToolEditDlg(dta) {
             $("#ddlToolType").attr("disabled", "disabled");
             $("#ddlToolSize").attr("disabled", "disabled");
             $("#ddlToolRegBy").attr("disabled", "disabled");
+            $('#ddlToolMngBy').attr("disabled", "disabled");
+            $('#dtToolMngByDt').datepicker().datepicker('disable');
 
-
+            $("#btnSaveToolDlg").attr("disabled", "disabled");
         }
     });
 
@@ -3540,17 +3870,24 @@ function OpenSmallToolEditDlg(dta) {
     $("#smalltool_dlg_success").hide();
     $("#smalltool_loading").hide();
 
-    $("#smalltool_edit_dlg").data("title.dialog", oper + " Small Tool")
+    //        $("#smalltool_edit_dlg").data("title.dialog", oper + " Small Tool")
+    $("#smalltool_edit_dlg").dialog('option', 'title', oper + " Small Tool");
+
+    $('#dtStCalibrationDue').val('');
+    $('#dtStCalibrationDue').datepicker('disable');
+    $('#dtStCalibrationDue').val(dta.calibration_due_dt);
+    $("#txtAddSmallToolMultiplier").attr("disabled", "disabled");
 
     jQuery('#smalltool_edit_dlg').dialog('open');
 
-    $.get("/EquipTrack/GetSmallToolEditDlg/", {}, function(data) {
+    $.get("/EquipTrack/GetSmallToolEditDlg/", {}, function (data) {
         $("#smalltool_dlg_results").html(data);
         if (oper == "Edit") {
             $('#ddlSmallToolMngBy').val(dta.managed_by);
             $('#ddlSmallToolRegBy').val(dta.reg_by);
             $('#ddlSmallToolAsgnTo').val(dta.assigned_to);
             $("#btnSmallToolSave").attr("disabled", "disabled");
+            
         }
     });
 

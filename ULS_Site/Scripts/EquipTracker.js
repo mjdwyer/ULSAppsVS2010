@@ -15,6 +15,13 @@
             return (obj.textContent || obj.innerText || $(obj).text() || "").toLowerCase() == meta[3].toLowerCase();
     };
     jQuery(document).ready(function () {
+        var ww = $(window).width();
+        var tw = ((ww * 5) / 6) - 25;
+        var gw = tw - 50;
+        //var pw = $('#tabs').parent().width();
+        //   $('#tabs').width($('#tabs').parent().width());
+
+        $('#tabs').css('width', tw);
 
         curDiv = $("#hdnDivision").val();
         curDefaultDiv = $("#hdnDefaultDiv").val();
@@ -26,19 +33,20 @@
             datatype: 'json',
             mtype: 'GET',
             hoverrows: false,
+            //autowidth: true,
             altRows: false,
             height: 255,
-            width: 740,
+            width: gw,
             rowNum: 5000,
             colNames: ['ID', 'Type', 'Make', 'Model', 'Year', 'Location', 'Insp Due', 'Serv Due', 'Miles/Hrs', 'Milage Dt', 'Reg By', 'Mngd By', 'Mngd By Dt', 'Tag Exp', '', '', '', '', 'Vin Num', 'Title Num', 'GVW', 'Unlaiden Wt', 'Tag Num', 'Tag State', 'Fuel', 'Cost', 'Inspect Rmndr(wks)', 'Tag Rmndr(wks)', 'Stolen', 'Sold', 'Lojack', 'In Repair', 'Totaled', 'Hut Sticker', 'Apportioned', 'IFTA Sticker', 'GPS', 'Comment', '', 'Unknown', 'Current Value', 'ImgCnt', 'Leased', 'GCW', '', '', '', '', '', 'To Be Sold', '', '', ''],
             colModel: [
    		        { name: 'equip_id', index: 'equip_id', width: 65, editable: true, search: true, searchoptions: { sopt: ['eq', 'bw', 'ew']} },
   		        { name: 'type_desc', index: 'type_desc', width: 130, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetTypes' }, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetTypesSearch'} },
-   		        { name: 'make_descr', index: 'make_descr', width: 80, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetMakes' }, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetMakesSearch'} },
-   		        { name: 'model_descr', index: 'model_descr', width: 80, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetModels' }, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetModelsSearch'} },
-   		        { name: 'equip_year', index: 'equip_year', width: 60, editable: true, search: false },
+   		        { name: 'make_descr', index: 'make_descr', width: 130, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetMakes' }, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetMakesSearch'} },
+   		        { name: 'model_descr', index: 'model_descr', width: 130, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetModels' }, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetModelsSearch'} },
+   		        { name: 'equip_year', index: 'equip_year', width: 50, editable: true, search: false },
    		        { name: 'work_loc', index: 'work_loc', width: 80, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetLocations' }, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetLocations'} },
-                { name: 'insp_due_dt', index: 'insp_due_dt', width: 100, editable: true, search: false,
+                { name: 'insp_due_dt', index: 'insp_due_dt', width: 80, editable: true, search: false,
                     editoptions: { size: 12, dataInit: function (el) {
                         $(el).datepicker({ dateFormat: 'mm/dd/yy' });
                     }
@@ -46,7 +54,7 @@
                 },
    		        { name: 'service_due_num', index: 'service_due_num', width: 80, editable: true, search: false },
    		        { name: 'miles_hours', index: 'miles_hours', width: 80, editable: true, search: false },
-                { name: 'miles_dt', index: 'miles_dt', width: 100, editable: true, search: false,
+                { name: 'miles_dt', index: 'miles_dt', width: 80, editable: true, search: false,
                     editoptions: { size: 12, dataInit: function (el) {
                         $(el).datepicker({ dateFormat: 'mm/dd/yy' });
                     }
@@ -60,7 +68,7 @@
    		            }
    		            }
    		        },
-   		        { name: 'tag_expire_dt', index: 'tag_expire_dt', width: 100, editable: true, search: false,
+   		        { name: 'tag_expire_dt', index: 'tag_expire_dt', width: 80, editable: true, search: false,
    		            editoptions: { size: 12, dataInit: function (el) {
    		                $(el).datepicker({ dateFormat: 'mm/dd/yy' });
    		            }
@@ -136,7 +144,7 @@
             },
             viewrecords: true,
             pager: jQuery('#equipgridp'),
-            //            caption: 'Inventory for ' + curDiv +
+            caption: 'yo',
             //            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             //            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             //            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
@@ -420,7 +428,7 @@
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-             'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>,&nbsp<div style="background-color:#FFFFCC;width: 55px;float:right;padding-right:20px">has photo</div>';
+             'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>,&nbsp<div style="background-color:#FFFFCC;width: 75px;float:right;padding-right:20px">has photo</div>';
                 }
                 else {
 
@@ -428,7 +436,7 @@
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             '<font color="red">FILTER ON:</font>' + '&nbsp;&nbsp;&nbsp;' + uData.searchVal +
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-             'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>, &nbsp<div style="background-color:#FFFFCC;width: 55px;float:right;padding-right:20px">has photo</div>';
+             'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>, &nbsp<div style="background-color:#FFFFCC;width: 75px;float:right;padding-right:20px">has photo</div>';
                     if (uData.searchLojack != '') {
                         alert(uData.searchVal + " is not available.\n Registered By: " + uData.searchRegBy + "\n Stolen: " + uData.searchStolen + "\n Unknown: " + uData.searchUnknown + "\n Leased: " + uData.searchLeased + "\n Sold: " + uData.searchSold + "\n Lojack: " + uData.searchLojack + "\n In Repair: " + uData.searchInRepair + "\n Totaled: " + uData.searchTotaled + "\n ID: " + uData.searchId + "\n To Be Sold: " + uData.searchToBeSold);
                     }
@@ -844,9 +852,9 @@
             datatype: 'json',
             mtype: 'GET',
             height: 100,
-            width: 740,
+            width: gw,
             rowNum: 5000,
-            colNames: ['Service ID', 'ID', 'Service Date', 'Type', 'Mechanic', 'Miles/Hours', '', 'Labor Cost', 'Parts Cost', 'Total Cost', 'Update Next Svc Due', 'Service Requested', 'Service Performed', 'Parts Required', 'Comments'],
+            colNames: ['Service ID', 'ID', 'Service Date', 'Type', 'Mechanic', 'Miles/Hours', '', 'Labor Cost', 'Parts Cost', 'Total Cost', 'Update Next Svc Due', 'Service Requested', 'Service Performed', 'Parts Required', 'Comments', '', ''],
             colModel: [
                 { name: 'service_id', hidden: true },
    		        { name: 'equip_id', index: 'equip_id', width: 65 },
@@ -862,13 +870,30 @@
                 { name: 'serv_reqstd', hidden: true },
                 { name: 'serv_perf_descr', hidden: true },
                 { name: 'parts_reqrd', hidden: true },
-                { name: 'comments', hidden: true }
+                { name: 'comments', hidden: true },
+                { name: 'attachment_path', hidden: true },
+                { name: 'attachment_flag', hidden: true }
             ],
             sortname: 'service_dt',
             sortorder: "desc",
             viewrecords: true,
+            afterInsertRow: function (rowid, rowdata, rowelem) {
+                if (rowelem[16] == 'HAS_ATTACHMENT') {
+                    jQuery("#equip_svc").setCell(rowid, 'equip_id', '', { 'background-color': '#FFFFCC' });
+                }
+            },
             pager: jQuery('#equipsvcp'),
-            caption: 'Services',
+            caption: 'Services ' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                 'ID Color Key: <div style="background-color:#FFFFCC;width: 125px;float:right;padding-right:20px">has attachment</div>',
             ondblClickRow: function (rowid) {
 
                 var data = $("#equip_svc").getRowData(curRowSvc);
@@ -969,6 +994,28 @@
               },
               position: "last"
           }).navButtonAdd('#equipsvcp', {
+              caption: "Attach Order",
+              buttonicon: "ui-icon-copy",
+              onClickButton: function () {
+                  var data = $("#equip_svc").getRowData(curRowSvc);
+                  if (data.equip_id == null)
+                      alert("  Please Select a Row!");
+                  else {
+                      $("#attach_loading").hide();
+                      var eID = document.getElementById("hdnSvcIDAttach");
+                      eID.value = data.service_id;
+                      var svcT = document.getElementById("hdnAttachType");
+                      svcT.value = "EQUIP_SVC";
+                      $("#svc_attachment_dialog").dialog('option', 'title', "Attach Service Order For: " + data.equip_id);
+
+                      $('#svcFileAttach').val('');
+                      $("#btnAttachFile").attr("disabled", "disabled");
+                      jQuery('#svc_attachment_dialog').dialog('open');
+                  }
+                  return false;
+              },
+              position: "last"
+          }).navButtonAdd('#equipsvcp', {
               caption: "Edit",
               buttonicon: "ui-icon-pencil",
               onClickButton: function () {
@@ -1059,7 +1106,7 @@
             datatype: 'json',
             mtype: 'GET',
             height: 100,
-            width: 740,
+            width: gw,
             rowNum: 5000,
             colNames: ['ID', 'Assign To', 'Date Assigned', 'Return Date', 'Assign Condition', 'Return Condition', 'Assign Miles', 'Return Miles', 'Assign Hours', 'Return Hours', 'Comments', 'AssignID', 'ImgCnt'],
             colModel: [
@@ -1311,7 +1358,7 @@
             hoverrows: false,
             altRows: false,
             height: 255,
-            width: 740,
+            width: gw,
             //            rowNum: 100,
             rowNum: 5000,
             colNames: ['ID', 'Item', 'Description', 'Manufacturer', 'Size', 'Work Loc', 'Reg By', 'Mng By', 'Calibrate Due', '', '', 'Managed By Date', 'Model #', 'Serial #', 'Year Bought', 'Cost', 'Stolen', 'Sold', 'Electrical', 'Lojack', 'In Repair', 'Totaled', 'Comments', '', '', 'Unknown', 'ImgCnt', 'To Be Sold'],
@@ -1373,6 +1420,7 @@
             },
             viewrecords: true,
             pager: jQuery('#toolgridp'),
+            caption: 'yo',
             //            caption: 'Inventory for ' + curDiv +
             //            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             //            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
@@ -1539,7 +1587,7 @@
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-             'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>,&nbsp<div style="background-color:#FFFFCC;width: 55px;float:right;padding-right:20px">has photo</div>';
+             'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>,&nbsp<div style="background-color:#FFFFCC;width: 75px;float:right;padding-right:20px">has photo</div>';
                 }
                 else {
 
@@ -1547,7 +1595,7 @@
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             '<font color="red">FILTER ON:</font>' + '&nbsp;&nbsp;&nbsp;' + uData.searchVal +
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-            'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>,&nbsp<div style="background-color:#FFFFCC;float:right">has photos</div>';
+            'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>,&nbsp<div style="background-color:#FFFFCC;width: 75px;float:right">has photos</div>';
                     if (uData.searchElectrical != '') {
                         alert(uData.searchVal + " is not available.\n Registered By: " + uData.searchRegBy + "\n Stolen: " + uData.searchStolen + "\n Unknown: " + uData.searchUnknown + "\n Sold: " + uData.searchSold + "\n Electrical: " + uData.searchElectrical + "\n In Repair: " + uData.searchInRepair + "\n Totaled: " + uData.searchTotaled + "\n ID: " + uData.searchId + "\n To Be Sold: " + uData.searchToBeSold);
                     }
@@ -1830,7 +1878,7 @@
             datatype: 'json',
             mtype: 'GET',
             height: 100,
-            width: 740,
+            width: gw,
             rowNum: 5000,
             colNames: ['Service ID', 'ID', 'Service Date', 'Type', 'Mechanic', 'Labor Cost', 'Parts Cost', 'Total Cost', 'Service Requested', 'Service Performed', 'Parts Required', 'Comments', '', ''],
             colModel: [
@@ -1873,7 +1921,7 @@
                 '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-                 'ID Color Key: <div style="background-color:#FFFFCC;width: 105px;float:right;padding-right:20px">has attachment</div>',
+                 'ID Color Key: <div style="background-color:#FFFFCC;width: 125px;float:right;padding-right:20px">has attachment</div>',
             ondblClickRow: function (rowid) {
 
                 var data = $("#tool_svc").getRowData(curToolRowSvc);
@@ -1973,11 +2021,11 @@
                       eID.value = data.service_id;
                       var svcT = document.getElementById("hdnAttachType");
                       svcT.value = "TOOL_SVC";
-                      $("#tool_svc_attachment_dialog").dialog('option', 'title', "Attach Service Order For: " + data.tool_id);
+                      $("#svc_attachment_dialog").dialog('option', 'title', "Attach Service Order For: " + data.tool_id);
 
-                      $('#toolSvcFileAttach').val('');
+                      $('#svcFileAttach').val('');
                       $("#btnAttachFile").attr("disabled", "disabled");
-                      jQuery('#tool_svc_attachment_dialog').dialog('open');
+                      jQuery('#svc_attachment_dialog').dialog('open');
                   }
                   return false;
               },
@@ -2062,7 +2110,7 @@
             datatype: 'json',
             mtype: 'GET',
             height: 100,
-            width: 740,
+            width: gw,
             rowNum: 5000,
             colNames: ['ID', 'Assign To', 'Date Assigned', 'Return Date', 'Assign Condition', 'Return Condition', 'Comments', 'AssignID', 'IMGCNT'],
             colModel: [
@@ -2289,9 +2337,9 @@
             hoverrows: false,
             altRows: false,
             height: 355,
-            width: 740,
+            width: gw,
             rowNum: 5000,
-            colNames: ['ID', 'Item', 'Description', 'Size', 'Manufacturer', 'Model#', 'Serial#', 'ID', 'Condition', 'Reg By', 'Mngd By', 'Managed By Dt', 'Assigned To', 'Assigned Dt', 'Return Dt', 'Shop', 'Comments', ''],
+            colNames: ['ID', 'Item', 'Description', 'Size', 'Manufacturer', 'Model#', 'Serial#', 'ID', 'Condition', 'Reg By', 'Mngd By', 'Managed By Dt', 'Assigned To', 'Assigned Dt', 'Calibrate Due', '', '', 'Return Dt', 'Shop', 'Comments', ''],
             colModel: [
                 { name: 'stID', hidden: true, editable: true, search: false },
    		        { name: 'item', index: 'item', width: 95, editable: true, search: true, searchoptions: { sopt: ['eq', 'bw', 'ew']} },
@@ -2299,8 +2347,8 @@
    		        { name: 'size', index: 'size', width: 95, editable: true, search: true, searchoptions: { sopt: ['eq', 'bw', 'ew']} },
    		        { name: 'MFG', index: 'MFG', width: 95, editable: true, search: true, searchoptions: { sopt: ['eq', 'bw', 'ew']} },
    		        { name: 'model', index: 'model', width: 95, editable: true, search: true, searchoptions: { sopt: ['eq', 'bw', 'ew']} },
-   		        { name: 'serNum', index: 'serNum', width: 95, editable: true, search: true, searchoptions: { sopt: ['eq', 'bw', 'ew']} },
-   		        { name: 'IDnum', editable: true, editrules: { edithidden: true }, searchoptions: { sopt: ['eq', 'bw', 'ew']} },
+   		        { name: 'serNum', index: 'serNum', width: 75, editable: true, search: true, searchoptions: { sopt: ['eq', 'bw', 'ew']} },
+   		        { name: 'IDnum', editable: true, width: 75, editrules: { edithidden: true }, searchoptions: { sopt: ['eq', 'bw', 'ew']} },
    		        { name: 'condition_descr', index: 'condition_descr', width: 80, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetConditions' }, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetConditions'} },
    		        { name: 'reg_by', index: 'reg_by', width: 85, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetDivisions' }, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetDivisions'} },
    		        { name: 'managed_by', index: 'managed_by', width: 85, editable: true, edittype: "select", editoptions: { dataUrl: '/EquipTrack/GetDivisions' }, search: true, stype: "select", searchoptions: { sopt: ['eq'], dataUrl: '/EquipTrack/GetDivisions'} },
@@ -2317,6 +2365,14 @@
                     }
                     }
                 },
+   		        { name: 'calibration_due_dt', index: 'calibration_due_dt', width: 80, editable: true, search: false,
+   		            editoptions: { size: 12, dataInit: function (el) {
+   		                $(el).datepicker({ dateFormat: 'mm/dd/yy' });
+   		            }
+   		            }
+   		        },
+   		        { name: 'calibration_due_warn', hidden: true, search: false },
+                { name: 'calibration_rmdr_wks', editable: true, hidden: true, edittype: "select", editoptions: { value: ":;1:1;2:2;3:3;4:4;5:5;6:6;7:7;8:8;9:9;10:10;11:11;12:12;13:13;14:14;15:15;16:16;17:17;18:18;19:19;20:20;21:21;22:22;23:23;24:24" }, editrules: { edithidden: true }, search: false },
                 { name: 'return_dt', index: 'return_dt', width: 100, editable: true, hidden: true, search: false, editrules: { edithidden: true },
                     editoptions: { size: 12, dataInit: function (el) {
                         $(el).datepicker({ dateFormat: 'mm/dd/yy' });
@@ -2330,15 +2386,19 @@
             sortname: 'item',
             sortorder: "asc",
             afterInsertRow: function (rowid, rowdata, rowelem) {
-                if (rowelem[17] == 'SET_GREEN') {
+                if (rowelem[15] == 'SET_RED') {
+                    jQuery("#smalltoolgrid").setCell(rowid, 'calibration_due_dt', '', { color: 'red' });
+                }
+                if (rowelem[20] == 'SET_GREEN') {
                     jQuery("#smalltoolgrid").setCell(rowid, 'item', '', { color: 'green' });
                 }
-                if (rowelem[17] == 'SET_PURPLE') {
+                if (rowelem[20] == 'SET_PURPLE') {
                     jQuery("#smalltoolgrid").setCell(rowid, 'item', '', { color: 'purple' });
                 }
             },
             viewrecords: true,
             pager: jQuery('#smalltoolgridp'),
+            caption: 'yo',
             //            caption: 'Inventory for ' + curDiv +
             //            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
             //            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
@@ -2369,6 +2429,8 @@
                     $("#dtSmallToolAsgnDt").val('');
                     $("#dtSmallToolRetDt").val('');
                     $("#txtSmallToolComment").val('');
+                    $("#dtStCalibrationDue").val('');
+                    $("#ddlStCalibrationRmndr").val('');
 
                     $("#hdnSmallToolID").val(data.stID);
                     $("#txtSmallToolItem").val(data.item);
@@ -2385,6 +2447,8 @@
                     $("#dtSmallToolAsgnDt").val(data.assigned_dt);
                     $("#dtSmallToolRetDt").val(data.return_dt);
                     $("#txtSmallToolComment").val(data.comments);
+                    $("#dtStCalibrationDue").val(data.calibration_due_dt);
+                    $("#ddlStCalibrationRmndr").val(data.calibration_rmdr_wks);
 
                     $("#smalltool_dlg_results").html('');
                     OpenSmallToolEditDlg(data);
@@ -2460,6 +2524,8 @@
                       $("#dtSmallToolAsgnDt").val('');
                       $("#dtSmallToolRetDt").val('');
                       $("#txtSmallToolComment").val('');
+                      $("#dtStCalibrationDue").val('');
+                      $("#ddlStCalibrationRmndr").val('');
 
                       $("#hdnSmallToolID").val(data.stID);
                       $("#txtSmallToolItem").val(data.item);
@@ -2475,6 +2541,8 @@
                       $("#dtSmallToolAsgnDt").val(data.assigned_dt);
                       $("#dtSmallToolRetDt").val(data.return_dt);
                       $("#txtSmallToolComment").val(data.comments);
+                      $("#dtStCalibrationDue").val(data.calibration_due_dt);
+                      $("#ddlStCalibrationRmndr").val(data.calibration_rmdr_wks);
 
                       $("#smalltool_dlg_results").html('');
 
@@ -2525,6 +2593,8 @@
                   $("#dtSmallToolAsgnDt").val('');
                   $("#dtSmallToolRetDt").val('');
                   $("#txtSmallToolComment").val('');
+                  $("#dtStCalibrationDue").val('');
+                  $("#ddlStCalibrationRmndr").val('');
 
                   $("#smalltool_dlg_results").html('');
 
@@ -2549,7 +2619,7 @@
         });
 
         $(function () {
-            $("#tool_svc_attachment_dialog").dialog({
+            $("#svc_attachment_dialog").dialog({
                 bgiframe: true,
                 width: 540,
                 modal: true,
@@ -2641,7 +2711,7 @@
         $(function () {
             $("#equip_svc_edit_dlg").dialog({
                 bgiframe: true,
-                width: 540,
+                width: 650,
                 modal: true,
                 autoOpen: false,
                 resizable: false,
@@ -2673,7 +2743,7 @@
         $(function () {
             $("#equip_asgn_edit_dlg").dialog({
                 bgiframe: true,
-                width: 450,
+                width: 480,
                 modal: true,
                 autoOpen: false,
                 resizable: false,
@@ -2691,7 +2761,7 @@
         $(function () {
             $("#tool_asgn_edit_dlg").dialog({
                 bgiframe: true,
-                width: 450,
+                width: 480,
                 modal: true,
                 autoOpen: false,
                 resizable: false,
@@ -2709,7 +2779,7 @@
         $(function () {
             $("#equip_edit_dlg").dialog({
                 bgiframe: true,
-                width: 775,
+                width: 780,
                 modal: true,
                 autoOpen: false,
                 resizable: false,
@@ -2732,7 +2802,7 @@
         $(function () {
             $("#tool_edit_dlg").dialog({
                 bgiframe: true,
-                width: 600,
+                width: 700,
                 modal: true,
                 autoOpen: false,
                 resizable: false,
@@ -2758,11 +2828,13 @@
                     $('#dtSmallToolMngByDt').datepicker('enable');
                     $('#dtSmallToolAsgnDt').datepicker('enable');
                     $('#dtSmallToolRetDt').datepicker('enable');
+                    $('#dtStCalibrationDue').datepicker('enable');
                 },
                 close: function (event, ui) {
                     $('#dtSmallToolMngByDt').datepicker('hide');
                     $('#dtSmallToolAsgnDt').datepicker('hide');
                     $('#dtSmallToolRetDt').datepicker('hide');
+                    $('#dtStCalibrationDue').datepicker('hide');
                 }
             });
         });
@@ -2804,7 +2876,7 @@
             $("#admin_xfer_assignments").dialog({
                 bgiframe: true,
                 width: 1050,
-                height: 625,
+                height: 725,
                 modal: true,
                 autoOpen: false,
                 resizable: false
@@ -2816,6 +2888,17 @@
                 bgiframe: true,
                 width: 700,
                 height: 350,
+                modal: true,
+                autoOpen: false,
+                resizable: false
+            });
+        });
+
+        $(function () {
+            $("#multiSelectAsgntoRptDlg").dialog({
+                bgiframe: true,
+                width: 450,
+                height: 400,
                 modal: true,
                 autoOpen: false,
                 resizable: false
@@ -3366,6 +3449,8 @@
                 var stoolRetDt = $("#dtSmallToolRetDt").val();
                 var stoolIDNum = $("#txtSmallToolID").val();
                 var stoolSerNum = $("#txtSmallToolSerNum").val();
+                var dtCalibrationDue = $("#dtStCalibrationDue").val();
+                var CalibrationRmndr = $("#ddlStCalibrationRmndr option:selected").text();
                 var stoolModelNum = $("#txtSmallToolModelNum").val();
                 var stoolComment = $("#txtSmallToolComment").val();
                 var stoolShop = $("#ddlSmallToolShop option:selected").text();
@@ -3384,6 +3469,8 @@
                     assigned_dt: stoolAsgnDt,
                     return_dt: stoolRetDt,
                     IDnum: stoolIDNum,
+                    calibration_due_dt: dtCalibrationDue,
+                    calibration_rmdr_wks: CalibrationRmndr,
                     comments: stoolComment,
                     inoutshop: stoolShop
                 };
@@ -3447,8 +3534,8 @@
             }
             else {
                 jQuery("#adminSuccess").show();
-                jQuery("#adminSuccess").html("Error saving.");
-                jQuery("#adminSuccess").fadeOut(6000);
+                jQuery("#adminSuccess").html("Error saving." + respArray[0]);
+                //           jQuery("#adminSuccess").fadeOut(6000);
             }
 
             $("#btnAdminAdd").removeAttr("disabled", "disabled");
@@ -3649,6 +3736,12 @@
                     jQuery("#tool_svc").setCell(curToolRowSvc, 'tool_id', '', { 'background-color': '#FFFFCC' });
                     jQuery("#tool_svc").setCell(curToolRowSvc, 'attachment_path', respArray[1]);
                 }
+                else if (iID.value == "EQUIP_SVC") {
+                    rdata = $("#equip_svc").getRowData(curRowSvc);
+                    id = rdata.equip_id;
+                    jQuery("#equip_svc").setCell(curRowSvc, 'equip_id', '', { 'background-color': '#FFFFCC' });
+                    jQuery("#equip_svc").setCell(curRowSvc, 'attachment_path', respArray[1]);
+                }
 
                 jQuery("#attach_success").show();
                 jQuery("#attach_success").html("Successfully attached.");
@@ -3813,8 +3906,17 @@
 
         $.get("/EquipTrack/GetEquipSvcEditDlg/", {}, function(data) {
         $("#equip_svc_results").html(data);
-            if(dta.serv_descr.length > 0 )  
+            if(dta.serv_descr.length > 0 )
                 $("#lstEquipSvcTypes option:econtains(" + dta.serv_descr + ")").prop('selected', 'selected');
+
+            if (dta.attachment_path.length > 0) {
+                $('#equip_svc_order_link').attr("href", dta.attachment_path);
+                $('#equip_svc_order_link').show();
+            }
+            else {
+                $('#equip_svc_order_link').hide();
+            }
+
         });
 
     }
@@ -3890,7 +3992,23 @@
 
         jQuery('#equip_asgn_edit_dlg').dialog('open');
 
-        $.get("/EquipTrack/GetEquipAsgnEditDlg/", {}, function(data) {
+        jQuery('#txtEquipAsgnMiles').on('input', function () {
+            CheckEquipAssignForm();
+        });
+
+        jQuery('#txtEquipAsgnHours').on('input', function () {
+            CheckEquipAssignForm();
+        });
+
+        jQuery('#txtEquipRetMiles').on('input', function () {
+            CheckEquipAssignForm();
+        });
+
+        jQuery('#txtEquipRetHours').on('input', function () {
+            CheckEquipAssignForm();
+        });
+
+        $.get("/EquipTrack/GetEquipAsgnEditDlg/", {}, function (data) {
             $("#equip_asgn_results").html(data);
             //            $("#ddlAssignedTo option:econtains(" + dta.assigned_to + ")").prop('selected', 'selected');
             $('#ddlAssignedTo').val(dta.assigned_to);
@@ -3985,12 +4103,12 @@
         if (chval3 == true) {
             $("#txtFuelCardNum").removeAttr("disabled", "disabled");
             $("#ddlFuelCardLoc").removeAttr("disabled", "disabled");
-            $('#divFuelCard').css('color', 'black');
-        }
+//            $('#divFuelCard').css('color', 'black');
+       }
         else {
             $("#txtFuelCardNum").attr("disabled", "disabled");
             $("#ddlFuelCardLoc").attr("disabled", "disabled");
-            $('#divFuelCard').css('color', 'gray');
+//            $('#divFuelCard').css('color', 'gray');
         }
 
         var chval4 = $("#chkOtherAntiTheft").prop('checked');
@@ -4078,6 +4196,7 @@
     }
 
     function OpenSmallToolEditDlg(dta) {
+
         $("#btnSmallToolSave").removeAttr("disabled", "disabled");
         var oper = $('#hdnSmallToolOper').val();
 
@@ -4087,15 +4206,23 @@
 
 //        $("#smalltool_edit_dlg").dialog('option', 'title', oper + " Small Tool")
         $("#smalltool_edit_dlg").dialog('option', 'title', oper + " Small Tool");
+        $("#txtAddSmallToolMultiplier").val('');
+        $('#dtStCalibrationDue').val('');
+        $('#dtStCalibrationDue').datepicker('disable');
+        $('#dtStCalibrationDue').val(dta.calibration_due_dt);
 
         jQuery('#smalltool_edit_dlg').dialog('open');
 
-        $.get("/EquipTrack/GetSmallToolEditDlg/", {}, function(data) {
+        $.get("/EquipTrack/GetSmallToolEditDlg/", {}, function (data) {
             $("#smalltool_dlg_results").html(data);
             if (oper == "Edit") {
                 $('#ddlSmallToolMngBy').val(dta.managed_by);
                 $('#ddlSmallToolRegBy').val(dta.reg_by);
                 $('#ddlSmallToolAsgnTo').val(dta.assigned_to);
+                $("#txtAddSmallToolMultiplier").attr("disabled", "disabled");
+            }
+            else {
+                $("#txtAddSmallToolMultiplier").removeAttr("disabled", "disabled");
             }
         });
     }

@@ -50,6 +50,8 @@
           <option value="UGI">UGI</option>
           <option value="WG">WG</option>
           <option value="PECO">PECO</option>
+          <option value="ULS">ULS</option>
+          <option value="GWS">GWS</option>
         </select></center>         
                 
         <center>

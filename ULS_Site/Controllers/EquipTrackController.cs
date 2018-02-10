@@ -45,10 +45,19 @@ namespace ULS_Site.Controllers
                     {
                         Session["division"] = "ULS-PA";
                     }
+                    else if (dd.div == "GW" || dd.div == "GW-PLUS")
+                    {
+                        Session["division"] = "GW";
+                    }
+                    else if (dd.div == "ULS-NJ" || dd.div == "NJ-PLUS")
+                    {
+                        Session["division"] = "ULS-NJ";
+                    }
                     else
                     {
                         Session["division"] = dd.div;
                     }
+
 
                     dd.lst_log_on = DateTime.Now;
                     ulsdb.SubmitChanges();
@@ -82,7 +91,9 @@ namespace ULS_Site.Controllers
             }
             else
             {
-                return View();
+                EquipTrackViewModel vm = new EquipTrackViewModel();
+                vm.DefaultDiv = ViewData["default_division"].ToString();
+                return View(vm);
             }
             
             
@@ -377,6 +388,34 @@ namespace ULS_Site.Controllers
         }
 
         [SessionExpireFilter]
+        public ActionResult GetMultiEquipAssignTo(string sidx, string sord, int page, int rows)
+        {
+            EquipTrak eqt = new EquipTrak();
+
+            var types = eqt.GetGridAssignTo(sidx, sord);
+
+            var dataJson = new
+            {
+
+                total =
+                page = 1,
+                records = 10000,
+                rows = (from t in types
+                        select new
+                        {
+                            id = t.assign_to_id,
+                            cell = new string[] {
+                    Convert.ToString(t.assign_to_id),
+                    t.assign_to1,
+//                    Convert.ToString(t.active_status) == "True" ? "ACTIVE" : "INACTIVE",
+                    t.work_loc
+                }
+                        }).ToArray()
+            };
+            return Json(dataJson, JsonRequestBehavior.AllowGet);
+        }
+
+        [SessionExpireFilter]
         public ActionResult GetAdminMakeTypes(string sidx, string sord, int page, int rows)
         {
             EquipTrak eqt = new EquipTrak();
@@ -467,20 +506,20 @@ namespace ULS_Site.Controllers
                     Convert.ToString(s.service_id),
                     s.equip_id,
                     String.Format("{0:MM/dd/yyyy}",s.service_dt),
-//                    Convert.ToString(s.service_dt),
-                    s.services_avt.serv_descr,
+                    s.serv_descr,
                     s.mechanic,
                     Convert.ToString(s.mileage),
                     Convert.ToString(s.hours),
                     Convert.ToString(s.labor_cost),
                     Convert.ToString(s.parts_cost),
                     Convert.ToString(s.labor_cost + s.parts_cost),
-//                    Convert.ToString(s.total_cost),
                     "True",
                     s.serv_reqstd,
                     s.serv_perf_descr,
                     s.parts_reqrd,
-                    s.comments
+                    s.comments,
+                    s.attachment_path,
+                    s.attachment_path.Length > 0 ? "HAS_ATTACHMENT" : "NO_ATTACHMENT"
                 }
                         }).ToArray()
             };
@@ -837,7 +876,11 @@ namespace ULS_Site.Controllers
                 total = 10000,
                 page = 1,
                 records = 10000,
-                userdata = new { searchVal = strSearchVal, searchLojack = strSearchLojack, searchStolen = strSearchStolen, searchUnknown = strSearchUnknown, searchSold = strSearchSold, searchInRepair = strSearchInRepair, searchTotaled = strSearchTotaled, searchRegBy = strSearchRegBy, searchId = strSearchId, searchLeased = strSearchLeased, searchToBeSold = strSearchToBeSold, searchOtherAntiTheft =  strSearchOtherAntiTheft },
+                userdata = new { searchVal = strSearchVal, searchLojack = strSearchLojack, searchStolen = strSearchStolen,
+                    searchUnknown = strSearchUnknown, searchSold = strSearchSold, searchInRepair = strSearchInRepair,
+                    searchTotaled = strSearchTotaled, searchRegBy = strSearchRegBy, searchId = strSearchId,
+                    searchLeased = strSearchLeased, searchToBeSold = strSearchToBeSold, searchOtherAntiTheft =  strSearchOtherAntiTheft,
+                    sidx = sidx, sord = sord, search = Convert.ToBoolean(_search), searchField = searchField, searchString = searchString, searchOper = searchOper},
                 rows = (from e in equipment
                         select new
                         {
@@ -977,7 +1020,10 @@ namespace ULS_Site.Controllers
 //                total = totalPages,
 //                page = page,
 //                records = recordCount,
-                userdata = new { searchVal = strSearchVal, searchElectrical = strSearchElectrical, searchStolen = strSearchStolen, searchUnknown = strSearchUnknown, searchSold = strSearchSold, searchInRepair = strSearchInRepair, searchTotaled = strSearchTotaled, searchRegBy = strSearchRegBy, searchId = strSearchId, searchToBeSold = strSearchToBeSold },
+                userdata = new { searchVal = strSearchVal, searchElectrical = strSearchElectrical, searchStolen = strSearchStolen,
+                    searchUnknown = strSearchUnknown, searchSold = strSearchSold, searchInRepair = strSearchInRepair,
+                    searchTotaled = strSearchTotaled, searchRegBy = strSearchRegBy, searchId = strSearchId, searchToBeSold = strSearchToBeSold,
+                    sidx = sidx, sord = sord, search = Convert.ToBoolean(_search), searchField = searchField, searchString = searchString, searchOper = searchOper},
                 rows = (from t in tools
                         select new
                         {
@@ -1060,7 +1106,7 @@ namespace ULS_Site.Controllers
 //                total = totalPages,
 //                page = page,
 //                records = recordCount,
-                userdata = new { searchVal = strSearchVal },
+                userdata = new { searchVal = strSearchVal, sidx = sidx, sord = sord, search = Convert.ToBoolean(_search), searchField = searchField, searchString = searchString, searchOper = searchOper },
                 rows = (from t in tools
                         select new
                         {
@@ -1077,18 +1123,16 @@ namespace ULS_Site.Controllers
                     t.condition_descr != null ?  t.condition_descr.TrimEnd().TrimStart() :  null,
 		            t.Reg_by,
 		            t.Managed_by,
-//                    t.managed_by_dt,
                     String.Format("{0:MM/dd/yyyy}",t.managed_by_dt),
 		            t.Assigned_to,
                     String.Format("{0:MM/dd/yyyy}",t.Assigned_dt),
-//                    t.Assigned_dt,
+                    String.Format("{0:MM/dd/yyyy}",t.calibration_due_dt),
+                    t.calibration_due_warn,
+                    Convert.ToString(t.calibration_rmdr_wks),
                     String.Format("{0:MM/dd/yyyy}",t.returned_dt),
-//                    t.return_dt,
-//                    t.inoutshop,
                     t.inoutshop != null ?  t.inoutshop.TrimEnd().TrimStart() :  null,
 		            t.comment,
-                    t.small_tool_loan_color == "SET_PURPLE"  ? (t.Reg_by != Convert.ToString(Session["division"])? t.small_tool_assign_color: "SET_PURPLE" ): t.small_tool_assign_color,
-
+                    t.small_tool_loan_color == "SET_PURPLE"  ? (t.Reg_by != Convert.ToString(Session["division"])? t.small_tool_assign_color: "SET_PURPLE" ): t.small_tool_assign_color
                 }
                         }).ToArray()
             };
@@ -1116,6 +1160,13 @@ namespace ULS_Site.Controllers
             EquipTrak eqt = new EquipTrak();
 
             string exportType = Request.Form["hdnExportType"];
+            string sidx = Request.Form["hdnExportSidx"];
+            string sord = Request.Form["hdnExportSord"];
+            string expSearch = Request.Form["hdnExportSearch"];
+            string searchField = Request.Form["hdnExportSearchField"];
+            string searchString = Request.Form["hdnExportSearchString"];
+            string searchOper = Request.Form["hdnExportSearchOper"];
+
 
             var grid = new GridView();
 
@@ -1129,7 +1180,8 @@ namespace ULS_Site.Controllers
 
                 outFileName = "Equipment.xls";
 
-                var equips = eqt.GetGridEquipExport(Convert.ToString(Session["division"]));
+                var equips = eqt.GetGridEquipment(sidx, sord, Convert.ToString(Session["division"]), Convert.ToBoolean(expSearch), searchField, searchString, searchOper).ToList();
+//                var equips = eqt.GetGridEquipExport(Convert.ToString(Session["division"]));
 
                 grid.DataSource = from e in equips
                                   select new
@@ -1160,13 +1212,15 @@ namespace ULS_Site.Controllers
                                       IsTotaled = Convert.ToString(e.totaled),
                                       IsSold = Convert.ToString(e.sold),
                                       IsLoJack = Convert.ToString(e.lojack),
+                                      IsOtherAntiTheft = Convert.ToString(e.other_antitheft),
+                                      OtherAntiTheftType = e.other_antitheft_type,
                                       IsGPS = Convert.ToString(e.gps),
                                       GPSNum = e.gps_num == null ? "" : Convert.ToString(e.gps_num),
-//                                      GPSNum = Convert.ToString(e.gps_num),
                                       IsEzPass = Convert.ToString(e.ezpass),
                                       EzPassNum = e.ezpass_num,
                                       IsFuelCard = Convert.ToString(e.fuelcard),
                                       FuelCardNum = e.fuelcard_num,
+                                      FuleCardLocation = e.fuel_card_loc,
                                       InpectionDue = e.insp_due_dt,
                                       Cost = Convert.ToString(e.cost),
                                       CurrentValue = Convert.ToString(e.current_value),
@@ -1175,9 +1229,6 @@ namespace ULS_Site.Controllers
                                       GCW = Convert.ToString(e.gross_c_wt),
                                       MilesHours = Convert.ToString(e.miles_hours),
                                       MileageDt = e.miles_dt,
-//                                      ServiceNum = Convert.ToString(e.service_due_num),
-//                                      InspectionRmndrWks = Convert.ToString(e.insp_rmdr_wks),
-//                                      TagRmndrWks = Convert.ToString(e.tag_expire_rmdr_wks),
                                       Comment = e.comment,
                                       AssignedTo = e.assigned_to
                                   };
@@ -1186,7 +1237,8 @@ namespace ULS_Site.Controllers
             {
                 outFileName = "Tools.xls";
 
-                var tools = eqt.GetGridToolsExport(Convert.ToString(Session["division"]));
+               //var tools = eqt.GetGridToolsExport(Convert.ToString(Session["division"]));
+                var tools = eqt.GetToolGridEquipment(sidx, sord, 0, 0, Convert.ToString(Session["division"]), Convert.ToBoolean(expSearch), searchField, searchString, searchOper).ToList();
 
                 grid.DataSource = from t in tools
                                   select new
@@ -1207,6 +1259,7 @@ namespace ULS_Site.Controllers
                                       CalibratonDueDt = t.calibration_due_dt,
                                       CalibratonRmndrWks = Convert.ToString(t.calibration_rmdr_wks),
                                       IsStolen = Convert.ToString(t.stolen),
+                                      IsLojack = Convert.ToString(t.lojack),
                                       IsSold = Convert.ToString(t.sold),
                                       IsElectrical = Convert.ToString(t.electrical),
                                       IsInRepair = Convert.ToString(t.in_repair),
@@ -1221,7 +1274,8 @@ namespace ULS_Site.Controllers
             {
                 outFileName = "SmallTools.xls";
 
-                var tools = eqt.GetGridSmallToolsExport(Convert.ToString(Session["division"]));
+               // var tools = eqt.GetGridSmallToolsExport(Convert.ToString(Session["division"]));
+                var tools = eqt.GetSmallToolGridEquipment(sidx, sord, 0, 10000, Convert.ToString(Session["division"]), Convert.ToBoolean(expSearch), searchField, searchString, searchOper).ToList();
 
                 grid.DataSource = from t in tools
                                   select new
@@ -1242,7 +1296,9 @@ namespace ULS_Site.Controllers
                                       AssignedDt = t.Assigned_dt,
                                       ReturnedDt = t.returned_dt,
                                       Shop = t.inoutshop,
-                                      Comment = t.comment
+                                      Comment = t.comment,
+                                      CalibratonDueDt = t.calibration_due_dt,
+                                      CalibratonRmndrWks = Convert.ToString(t.calibration_rmdr_wks)
                                   };
             }
 
@@ -2230,6 +2286,9 @@ namespace ULS_Site.Controllers
             string strMngByDt = Request.Form["dtSmallToolMngByDt"];
             string strAsgnDt = Request.Form["dtSmallToolAsgnDt"];
             string strRetDt = Request.Form["dtSmallToolRetDt"];
+            string strCalDueDt = Request.Form["dtStCalibrationDue"];
+            string strCalWarnWks = Request.Form["ddlStCalibrationRmndr"];
+            string strAddSmallToolMultiplier = Request.Form["txtAddSmallToolMultiplier"];
 
             try
             {
@@ -2291,14 +2350,63 @@ namespace ULS_Site.Controllers
 
                     smtool.inoutshop = strShop;
 
-
                     smtool.comment = strComment;
+                    if (IsDate(strCalDueDt))
+                    {
+                        smtool.calibration_due_dt = Convert.ToDateTime(strCalDueDt);
+                    }
+                    else
+                    {
+                        smtool.calibration_due_dt = null;
+                    }
+
+                    Int16 intCalRmndrWks;
+                    if (Int16.TryParse(strCalWarnWks, out intCalRmndrWks))
+                    {
+                        smtool.calibration_rmdr_wks = intCalRmndrWks;
+                    }
+
 
                 }
 
                 if (strOperation == "Add")
                 {
-                    db.smalltools.InsertOnSubmit(smtool);
+                    Int16 intAddSmallToolMultiplier;
+                    if (Int16.TryParse(strAddSmallToolMultiplier, out intAddSmallToolMultiplier))
+                    {
+                        List<smalltool> lstST = new List<smalltool>();
+                        for (int i = 0; i < intAddSmallToolMultiplier; i++)
+                        {
+                            var smToolnew = new smalltool();
+                            smToolnew.Assigned_dt = smtool.Assigned_dt;
+                            smToolnew.Assigned_to = smtool.Assigned_to;
+                            smToolnew.calibration_due_dt = smtool.calibration_due_dt;
+                            smToolnew.calibration_rmdr_wks = smtool.calibration_rmdr_wks;
+                            smToolnew.comment = smtool.comment;
+                            smToolnew.ConditionId = smtool.ConditionId;
+                            smToolnew.description =smtool.description;
+                            smToolnew.inoutshop = smtool.inoutshop;
+                            smToolnew.item = smtool.item;
+                            smToolnew.Managed_by = smtool.Managed_by;
+                            smToolnew.managed_by_dt = smtool.managed_by_dt;
+                            smToolnew.MFG = smtool.MFG;
+                            smToolnew.Model = smtool.Model;
+                            smToolnew.Reg_by = smtool.Reg_by;
+                            smToolnew.returned_dt = smtool.returned_dt;
+                            smToolnew.SerNum = smtool.SerNum;
+                            smToolnew.size = smtool.size;
+
+                            lstST.Add(smToolnew);
+
+                        }
+                            db.smalltools.InsertAllOnSubmit(lstST);
+//                            smtool.stID = -1;
+                    }
+                    else
+                    {
+                        db.smalltools.InsertOnSubmit(smtool);
+                    }
+
                 }
 
                 db.SubmitChanges();
@@ -2422,6 +2530,10 @@ namespace ULS_Site.Controllers
             string strComments = Request.Form["txtToolAsgnComments"];
             string strAsgnID = Request.Form["hdnToolAsgnID"];
 
+            string strLogEntry = "";
+            assign_log logEntry = new assign_log();
+
+
             try
             {
 
@@ -2441,36 +2553,65 @@ namespace ULS_Site.Controllers
                     assign.tool_id = strToolID;
                 }
 
+                logEntry.entity_id = assign.tool_id;
+
+                strLogEntry = CheckEditField("Assigned To", assign.assigned_to, strAsgndTo, strLogEntry);
+
                 assign.assigned_to = strAsgndTo;
 
                 if (IsDate(strAsgnDt))
                 {
+                    strLogEntry = CheckEditField("Assigned Date", assign.assigned_dt != null ? String.Format("{0:MM/dd/yyyy}", assign.assigned_dt) : "X", strAsgnDt, strLogEntry);
                     assign.assigned_dt = Convert.ToDateTime(strAsgnDt);
                     toool.assigned = true;
                 }
                 if (IsDate(strRetDt))
                 {
+                    strLogEntry = CheckEditField("Returned Date", assign.return_dt != null ? String.Format("{0:MM/dd/yyyy}", assign.return_dt) : "X", strRetDt, strLogEntry);
                     assign.return_dt = Convert.ToDateTime(strRetDt);
                     toool.assigned = false;
                 }
                 Int16 intAsignCond;
                 if (Int16.TryParse(strAsgnCond, out intAsignCond))
                 {
+                    strLogEntry = CheckEditField("Assigned Condition", assign.asgn_condition_id.ToString(), strAsgnCond, strLogEntry);
                     assign.asgn_condition_id = intAsignCond;
                 }
                 Int16 intRetCond;
                 if (Int16.TryParse(strRetCond, out intRetCond))
                 {
+                    strLogEntry = CheckEditField("Return Condition", assign.ret_condition_id.ToString(), strRetCond, strLogEntry);
                     assign.ret_condition_id = intRetCond;
                 }
 
                 assign.lst_upd_dt = DateTime.Now;
+
+                strLogEntry = CheckEditField("Comment", assign.comment_txt, strComments, strLogEntry);
                 assign.comment_txt = strComments;
 
                 if (strOperation == "Add")
                 {
                     db.tools_assigns.InsertOnSubmit(assign);
                 }
+
+                string userName;
+
+                if (User.Identity.Name.Length > 0)
+                {
+                    userName = User.Identity.Name;
+                }
+                else
+                {
+                    userName = "N/A";
+                }
+
+                logEntry.user_id = userName;
+
+
+                logEntry.assign_change = strLogEntry;
+                logEntry.assign_type = "Tool";
+                logEntry.change_dt = (DateTime)assign.lst_upd_dt;
+                db.assign_logs.InsertOnSubmit(logEntry);
 
                 db.SubmitChanges();
 
@@ -3233,11 +3374,34 @@ namespace ULS_Site.Controllers
 
                         strQueryString = "EquipInspectionDueMngBy,GetInspectionsDueReportMngBy," + Session["division"] + "," + startDt2 + "," + strendDt2;
                         break;
+                    case "ToolsCalibrationDue":
+                        string month3 = Request.Form["lstMonths"];
+                        string year3 = Request.Form["lstYears"];
+
+                        string startDt3 = month3 + "/1/" + year3;
+
+                        string strendDt3 = Convert.ToDateTime(startDt3).AddMonths(1).ToString("MM/dd/yyyy");
+
+                        strQueryString = "ToolsCalibrationDueRpt,GetToolsCalibrationDueReport," + Session["division"] + "," + startDt3 + "," + strendDt3;
+                        break;
+                    case "SmalltoolsCalibrationDue":
+                        string month4 = Request.Form["lstMonths"];
+                        string year4 = Request.Form["lstYears"];
+
+                        string startDt4 = month4 + "/1/" + year4;
+
+                        string strendDt4 = Convert.ToDateTime(startDt4).AddMonths(1).ToString("MM/dd/yyyy");
+
+                        strQueryString = "SmallToolsCalibrationDueReport,GetSmallToolsCailibrationDueReport," + Session["division"] + "," + startDt4 + "," + strendDt4;
+                        break;
                     case "EquipInvByLoc":
                         strQueryString = "EquipInvByLoc,GetInvByLocReport," + Session["division"] + "," + Request.Form["lstLocations"];
                         break;
                     case "EquipHUTInv":
                         strQueryString = "EquipHUTInv,GetHUTInventory," + Session["division"];
+                        break;
+                    case "EquipSvcDue":
+                        strQueryString = "EquipSvcDue,GetEquipServiceDue," + Session["division"];
                         break;
                     case "EquipApportionedInv":
                         strQueryString = "EquipApportionedInv,GetApportionedInventory," + Session["division"];
@@ -3372,6 +3536,18 @@ namespace ULS_Site.Controllers
                     case "ToolsChangeLogHist":
                         strQueryString = "ToolsChangeLogHist,GetToolChangeLogHist," + Request.Form["dtReportFrom"] + "," + Request.Form["dtReportTo"];
                         break;
+                    case "EquipAssignLogByID":
+                        strQueryString = "EquipAssignLogByID,GetEquipAssignChangeLogByID," + Request.Form["lstEquipID"];
+                        break;
+                    case "ToolsAssignLogByID":
+                        strQueryString = "ToolsAssignLogByID,GetToolAssignChangeLogByID," + Request.Form["lstToolID"];
+                        break;
+                    case "EquipAssignLogHist":
+                        strQueryString = "EquipAssignLogHist,GetEquipAssignChangeLogHist," + Request.Form["dtReportFrom"] + "," + Request.Form["dtReportTo"];
+                        break;
+                    case "ToolsAssignLogHist":
+                        strQueryString = "ToolsAssignLogHist,GetToolAssignChangeLogHist," + Request.Form["dtReportFrom"] + "," + Request.Form["dtReportTo"];
+                        break;
                     case "EquipFuelCardDivInv":
                         strQueryString = "EquipFuelCardDivInv,GetEquipFuelCardDivInv," + Request.Form["ddlFCDivs"];
                         break;
@@ -3391,8 +3567,46 @@ namespace ULS_Site.Controllers
 
                 return Content("Failure");
             }
+        }
 
-            
+        [SessionExpireFilter]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ShowMultiAssignToReport()
+        {
+            string strQueryString;
+            string rptType;
+            string iDs;
+
+            rptType = Request.Form["hdnMultiAssigntoType"];
+            iDs = Request.Form["hdnMultiAssignTos"];
+
+            //reportname,storedProcName,parm1,parm2,parm3
+            try
+            {
+                switch (rptType)
+                {
+                    case "EQUIP":
+                        strQueryString = "EquipMultiAssignedTo,GetMultiAssignedToReport," + iDs;
+                        break;
+                    case "TOOL":
+                        strQueryString = "ToolMultiAssignedTo,GetMultiToolsAssignedToReport," + iDs;
+                        break;
+                    default:
+                        strQueryString = "";
+                        break;
+                }
+
+                return RedirectToAction("Index", "CrystalRptViewer", new { value1 = strQueryString });
+
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+
+                //                strRet = "Failure";
+
+                return Content("Failure");
+            }
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -4205,6 +4419,9 @@ namespace ULS_Site.Controllers
             string strRetOldMiles = Request.Form["hdnRetOldMileage"];
             string strRetOldHours = Request.Form["hdnRetOldHours"];
 
+            string strLogEntry = "";
+            assign_log logEntry = new assign_log();
+
             try
             {
                 string strValidateFail = Request.Form["hdnAsgnFail"];
@@ -4230,37 +4447,49 @@ namespace ULS_Site.Controllers
                     assign = new assignment();
                     assign.equip_id = strEquipID;
                 }
+
                 if (strOperation == "Edit" || strOperation == "Add")
                 {
+                    logEntry.entity_id = assign.equip_id;
+                    strLogEntry = CheckEditField("Assigned To", assign.assigned_to, strAsgndTo, strLogEntry);
+
                     assign.assigned_to = strAsgndTo;
 
                     if (IsDate(strAsgnDt))
                     {
+                        strLogEntry = CheckEditField("Assigned Date", assign.assigned_dt != null ? String.Format("{0:MM/dd/yyyy}", assign.assigned_dt) : "X", strAsgnDt, strLogEntry);
                         assign.assigned_dt = Convert.ToDateTime(strAsgnDt);
                         equip.assigned = true;
                     }
                     if (IsDate(strRetDt))
                     {
+                        strLogEntry = CheckEditField("Returned Date", assign.return_dt != null ? String.Format("{0:MM/dd/yyyy}", assign.return_dt) : "X", strRetDt, strLogEntry);
                         assign.return_dt = Convert.ToDateTime(strRetDt);
                         equip.assigned = false;
                     }
                     Int16 intAsignCond;
                     if (Int16.TryParse(strAsgnCond, out intAsignCond))
                     {
+                        strLogEntry = CheckEditField("Assigned Condition", assign.asgn_condition_id.ToString(), strAsgnCond, strLogEntry);
                         assign.asgn_condition_id = intAsignCond;
                     }
                     Int16 intRetCond;
                     if (Int16.TryParse(strRetCond, out intRetCond))
                     {
+                        strLogEntry = CheckEditField("Return Condition", assign.ret_condition_id.ToString(), strRetCond, strLogEntry);
                         assign.ret_condition_id = intRetCond;
                     }
 
+//                    assign.lst_upd_dt = DateTime.Now.Date;
                     assign.lst_upd_dt = DateTime.Now;
+
+                    strLogEntry = CheckEditField("Comment", assign.comment_txt, strComments, strLogEntry);
                     assign.comment_txt = strComments;
 
                     Int32 intMiles;
                     if (Int32.TryParse(strAsgnMiles, out intMiles))
                     {
+                        strLogEntry = CheckEditField("Assign Miles", assign.asgn_miles.ToString(), strAsgnMiles, strLogEntry);
                         assign.asgn_miles = intMiles;
 
                         int intAsgnOldMilage;
@@ -4278,6 +4507,7 @@ namespace ULS_Site.Controllers
                     Int32 intHours;
                     if (Int32.TryParse(strAsgnHours, out intHours))
                     {
+                        strLogEntry = CheckEditField("Assign Hours", assign.asgn_hours.ToString(), strAsgnHours, strLogEntry);
                         assign.asgn_hours = intHours;
                         int intAsgnOldHours;
 
@@ -4294,6 +4524,7 @@ namespace ULS_Site.Controllers
                     Int32 intRetMiles;
                     if (Int32.TryParse(strRetMiles, out intRetMiles))
                     {
+                        strLogEntry = CheckEditField("Return Miles", assign.ret_miles.ToString(), strRetMiles, strLogEntry);
                         assign.ret_miles = intRetMiles;
                         int intRetOldMilage;
 
@@ -4310,6 +4541,7 @@ namespace ULS_Site.Controllers
                     Int32 intRetHours;
                     if (Int32.TryParse(strRetHours, out intRetHours))
                     {
+                        strLogEntry = CheckEditField("Return Hours", assign.ret_hours.ToString(), strRetHours, strLogEntry);
                         assign.ret_hours = intRetHours;
                         int intRetOldHours;
 
@@ -4356,6 +4588,25 @@ namespace ULS_Site.Controllers
                     }
 
                 }
+
+                string userName;
+                if (User.Identity.Name.Length > 0)
+                {
+                    userName = User.Identity.Name;
+                }
+                else
+                {
+                    userName = "N/A";
+                }
+
+                logEntry.user_id = userName;
+
+
+                logEntry.assign_change = strLogEntry;
+                logEntry.assign_type = "Equip";
+                logEntry.change_dt = (DateTime)assign.lst_upd_dt;
+                db.assign_logs.InsertOnSubmit(logEntry);
+
 
                 db.SubmitChanges();
 
@@ -4409,8 +4660,6 @@ namespace ULS_Site.Controllers
 
             return strLogEntry;
         }
-
-
 
         [SessionExpireFilter]
         [AcceptVerbs(HttpVerbs.Post)]
@@ -4505,7 +4754,18 @@ namespace ULS_Site.Controllers
                 equip_edit_log logentry = new equip_edit_log();
                 service_due_parm svcdue = new service_due_parm();
 
-                logentry.user_id = User.Identity.Name;
+                string userName;
+
+                if (User.Identity.Name.Length > 0)
+                {
+                    userName = User.Identity.Name;
+                }
+                else
+                {
+                    userName = "N/A";
+                }
+
+                logentry.user_id = userName;
                 logentry.edit_dt = DateTime.Today;
                 logentry.equip_id = strEquipID;
 
@@ -4763,6 +5023,11 @@ namespace ULS_Site.Controllers
                         }
                         equip.insp_due_dt = Convert.ToDateTime(strInspDue);
                     }
+                    else
+                    {
+                        equip.insp_due_dt = null;
+
+                    }
                     Int16 intInspRmndr;
                     if (Int16.TryParse(strInspRmdrWks, out intInspRmndr))
                     {
@@ -4882,6 +5147,12 @@ namespace ULS_Site.Controllers
                         }
                         equip.managed_by_dt = Convert.ToDateTime(strMngByDt);
                     }
+                    else
+                    {
+                        equip.managed_by_dt = null;
+
+                    }
+
                     if (IsDate(strMilesDt))
                     {
                         if (strOperation == "Edit")
@@ -4889,6 +5160,11 @@ namespace ULS_Site.Controllers
                             strLogEntry = CheckEditField("Milage Date", equip.miles_dt != null ? String.Format("{0:MM/dd/yyyy}", equip.miles_dt) : "X", strMilesDt, strLogEntry);
                         }
                         equip.miles_dt = Convert.ToDateTime(strMilesDt);
+                    }
+                    else
+                    {
+                        equip.miles_dt = null;
+
                     }
                     Single sngMilesHrs;
                     if (Single.TryParse(strMilesHours, out sngMilesHrs))
@@ -4983,6 +5259,10 @@ namespace ULS_Site.Controllers
                             strLogEntry = CheckEditField("Tag Expire Date", equip.tag_expire_dt != null ? String.Format("{0:MM/dd/yyyy}", equip.tag_expire_dt) : "X", strTagExpDt, strLogEntry);
                         }
                         equip.tag_expire_dt = Convert.ToDateTime(strTagExpDt);
+                    }
+                    else
+                    {
+                        equip.tag_expire_dt = null;
                     }
 
                     Int16 intTagRmndrWks;

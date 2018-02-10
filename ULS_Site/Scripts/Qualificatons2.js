@@ -4,8 +4,10 @@ var curQualsColor;
 var curRowAdmin;
 var curRowEmailAdmin;
 
-jQuery(document).ready(function() {
-
+jQuery(document).ready(function () {
+    var ww = $(window).width();
+    var tw = ((ww * 5) / 6) - 25;
+    var gw = tw - 50;
     curRowQuals = -1;
 
     jQuery("#empgrid").jqGrid({
@@ -16,7 +18,7 @@ jQuery(document).ready(function() {
         hoverrows: false,
         altRows: false,
         height: 255,
-        width: 740,
+        width: gw,
         rowNum: 5000,
         colNames: ['Last', 'First', 'Middle', 'Suffix', 'empID', 'Status', 'OpArea', 'oqId', 'comment', 'ssn', 'address1', 'address2', 'city', 'state', 'zip', 'email', 'employeeid', 'homephone', 'cellphone', 'payRate', 'jobClass', 'oparea', 'MVRcheckDt', 'CBGcheckDt', 'DandAcheckDt', 'DandAresult', 'birthDate', 'DLnum', 'DLstate', 'DLclass', 'DLexpDate', 'medicalCardExpDt'],
         colModel: [
@@ -58,7 +60,7 @@ jQuery(document).ready(function() {
         viewrecords: true,
         pager: jQuery('#empgridp'),
         caption: 'Employees',
-        ondblClickRow: function(rowid) {
+        ondblClickRow: function (rowid) {
             var data = $("#empgrid").getRowData(curRow);
             if (data.employeeid == null)
                 alert("  Please Select a Row!");
@@ -124,7 +126,7 @@ jQuery(document).ready(function() {
             }
             return false;
         },
-        onSelectRow: function(ids) {
+        onSelectRow: function (ids) {
             if (ids != null) {
                 curRowQuals = -1;
                 curRow = ids;
@@ -139,7 +141,7 @@ jQuery(document).ready(function() {
          {}, // edit options
          {}, // add options
          {reloadAfterSubmit: false, closeOnEscape: true, closeAfterAdd: true,
-         afterSubmit: function(response, postdata) {
+         afterSubmit: function (response, postdata) {
 
              curRow = null;
 
@@ -164,7 +166,7 @@ jQuery(document).ready(function() {
           ).navButtonAdd('#empgridp', {
               caption: "Edit",
               buttonicon: "ui-icon-pencil",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#empgrid").getRowData(curRow);
                   if (data.employeeid == null)
                       alert("  Please Select a Row!");
@@ -236,7 +238,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#empgridp', {
               caption: "Add",
               buttonicon: "ui-icon-plus",
-              onClickButton: function() {
+              onClickButton: function () {
 
                   var data = "";
                   var eID = document.getElementById("hdnEditOper");
@@ -280,7 +282,7 @@ jQuery(document).ready(function() {
         datatype: 'json',
         mtype: 'GET',
         height: 355,
-        width: 740,
+        width: gw,
         rowNum: 5000,
         colNames: ['ID', 'Description', 'Company', 'Test Date', 'Expire Date', 'Evaluator', 'expirewarn', 'employeeid'],
         colModel: [
@@ -345,7 +347,7 @@ jQuery(document).ready(function() {
 
         //            return false;
         //        },
-        afterInsertRow: function(rowid, rowdata, rowelem) {
+        afterInsertRow: function (rowid, rowdata, rowelem) {
             if (rowelem[6] == 'SET_RED') {
                 jQuery("#empqualsgrid").setCell(rowid, 'qualExpire', '', { color: 'red' })
             }
@@ -353,7 +355,7 @@ jQuery(document).ready(function() {
                 jQuery("#empqualsgrid").setCell(rowid, 'qualExpire', '', { color: 'orange' })
             }
         },
-        onSelectRow: function(ids) {
+        onSelectRow: function (ids) {
             if (ids != null) {
                 curRowQuals = ids;
             }
@@ -362,7 +364,7 @@ jQuery(document).ready(function() {
     {}, // edit options
     {}, // add options
     {reloadAfterSubmit: false, closeOnEscape: true, closeAfterAdd: true,
-    afterSubmit: function(response, postdata) {
+    afterSubmit: function (response, postdata) {
 
         if (response.responseText == "Success") {
             jQuery("#success").show();
@@ -376,7 +378,7 @@ jQuery(document).ready(function() {
             return [false, response.responseText]
         }
     },
-    onclickSubmit: function(params) {
+    onclickSubmit: function (params) {
         var ajaxData = {};
 
         var selArr = $("#empqualsgrid").getGridParam("selarrrow");
@@ -404,7 +406,7 @@ jQuery(document).ready(function() {
     ).navButtonAdd('#empqualsgridp', {
         caption: "Edit",
         buttonicon: "ui-icon-pencil",
-        onClickButton: function() {
+        onClickButton: function () {
             var selArr = $("#empqualsgrid").getGridParam("selarrrow");
             var testDt = "";
             var expDt = "";
@@ -468,7 +470,7 @@ jQuery(document).ready(function() {
     }).navButtonAdd('#empqualsgridp', {
         caption: "Add",
         buttonicon: "ui-icon-plus",
-        onClickButton: function() {
+        onClickButton: function () {
             var data = $("#empgrid").getRowData(curRow);
             if (data.employeeid == null)
                 alert("  Please select an employee!");
@@ -493,14 +495,14 @@ jQuery(document).ready(function() {
 $('#empqualsgridp_center').remove();
 $('#empqualsgridp_right').remove();
 
-$(function() {
+$(function () {
     $("#employee_edit_dlg").dialog({
         bgiframe: true,
-        width: 590,
+        width: 630,
         modal: true,
         autoOpen: false,
         resizable: false,
-        open: function(event, ui) {
+        open: function (event, ui) {
             $('#dtMVRcheckDt').datepicker('enable');
             $('#dtCBGcheckDt').datepicker('enable');
             $('#dtDandAcheckDt').datepicker('enable');
@@ -508,7 +510,7 @@ $(function() {
             $('#dtMedCrdExpDt').datepicker('enable');
             $('#dtDLExpDt').datepicker('enable');
         },
-        close: function(event, ui) {
+        close: function (event, ui) {
             $('#dtMVRcheckDt').datepicker('hide');
             $('#dtCBGcheckDt').datepicker('hide');
             $('#dtDandAcheckDt').datepicker('hide');
@@ -519,18 +521,18 @@ $(function() {
     })
 });
 
-$(function() {
+$(function () {
     $("#empqual_edit_dlg").dialog({
         bgiframe: true,
-        width: 500,
+        width: 520,
         modal: true,
         autoOpen: false,
         resizable: false,
-        open: function(event, ui) {
+        open: function (event, ui) {
             $('#dtTestDt').datepicker('enable');
             $('#dtExpireDt').datepicker('enable');
         },
-        close: function(event, ui) {
+        close: function (event, ui) {
             $('#dtTestDt').datepicker('hide');
             $('#dtExpireDt').datepicker('hide');
         }
@@ -538,7 +540,7 @@ $(function() {
     })
 });
 
-$('#employee_edit_form').ajaxForm(function(data) {
+$('#employee_edit_form').ajaxForm(function (data) {
     jQuery('#employee_loading').hide();
 
     if (data == "Success") {
@@ -556,7 +558,7 @@ $('#employee_edit_form').ajaxForm(function(data) {
     return [true, "Success"]
 });
 
-$('#empqual_edit_form').ajaxForm(function(data) {
+$('#empqual_edit_form').ajaxForm(function (data) {
     jQuery('#empqual_loading').hide();
 
     if (data == "Success") {
@@ -574,7 +576,7 @@ $('#empqual_edit_form').ajaxForm(function(data) {
     return [true, "Success"]
 });
 
-$(function() {
+$(function () {
     $("#rpt_dialog").dialog({
         bgiframe: true,
         width: 540,
@@ -584,24 +586,24 @@ $(function() {
     })
 });
 
-$(function() {
+$(function () {
     $("#empWarnRecognition_dialog").dialog({
         bgiframe: true,
         width: 600,
         modal: true,
         autoOpen: false,
         resizable: false,
-        open: function(event, ui) {
+        open: function (event, ui) {
             //            $('#dtWarning').datepicker('enable');
         },
-        close: function(event, ui) {
+        close: function (event, ui) {
             $('#dtWarning').datepicker('hide');
         }
 
     })
 });
 
-$(function() {
+$(function () {
     $("#help_popup").dialog({
         bgiframe: true,
         width: 300,
@@ -612,18 +614,18 @@ $(function() {
     })
 });
 
-$(function() {
+$(function () {
     $("#admin_dialog").dialog({
         bgiframe: true,
         width: 1100,
-        height: 330,
+        height: 370,
         modal: true,
         autoOpen: false,
         resizable: false
     })
 });
 
-$(function() {
+$(function () {
     $("#admin_email_dialog").dialog({
         bgiframe: true,
         width: 520,
@@ -634,7 +636,7 @@ $(function() {
     })
 });
 
-$('#adminDlgForm').ajaxForm(function(data) {
+$('#adminDlgForm').ajaxForm(function (data) {
 
     if (data == "Success") {
 
@@ -656,7 +658,7 @@ $('#adminDlgForm').ajaxForm(function(data) {
     $("#btnAdminSave").attr("disabled", "disabled");
 });
 
-$('#adminEmailDlgForm').ajaxForm(function(data) {
+$('#adminEmailDlgForm').ajaxForm(function (data) {
 
     if (data == "Success") {
 
@@ -678,14 +680,14 @@ $('#adminEmailDlgForm').ajaxForm(function(data) {
     $("#btnAdminSave").attr("disabled", "disabled");
 });
 
-$('#empWarnRecognitionForm').ajaxForm(function(data) {
+$('#empWarnRecognitionForm').ajaxForm(function (data) {
 
     if (data == "Success") {
 
         var EmpID = $('#hdnEditID').val();
         var type = $('#hdnWRType').val();
 
-        $.get("/Qualification/GetEmpWarnRecogDates/" + EmpID + "/" + type, {}, function(data) {
+        $.get("/Qualification/GetEmpWarnRecogDates/" + EmpID + "/" + type, {}, function (data) {
 
             $("#empwarnrecog_results").html(data);
         });
@@ -707,7 +709,7 @@ $('#empWarnRecognitionForm').ajaxForm(function(data) {
 
 
 
-});                                                    //ready function end
+});                                                     //ready function end
 
 function OpenEmployeeEditDlg(dta) {
 

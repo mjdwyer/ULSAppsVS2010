@@ -10,8 +10,10 @@ $.expr[":"].econtains = function(obj, index, meta, stack) {
 }
 
 
-jQuery(document).ready(function() {
-
+jQuery(document).ready(function () {
+    var ww = $(window).width();
+    var tw = ((ww * 5) / 6) - 25;
+    var gw = tw - 50;
     curDiv = $("#hdnDivision").val();
     curDefaultDiv = $("#hdnDefaultDiv").val();
 
@@ -23,7 +25,7 @@ jQuery(document).ready(function() {
         hoverrows: false,
         altRows: false,
         height: 255,
-        width: 740,
+        width: gw,
         rowNum: 5000,
         colNames: ['ID', 'Type', 'Make', 'Model', 'Year', 'Location', 'Reg By', 'Mngd By', 'Mngd By Dt', 'Serial Num', 'Air Card Num', 'Cost', 'Stolen', 'In Repair', 'Totaled', 'Unknown', 'Comment', '', ''],
         colModel: [
@@ -49,7 +51,7 @@ jQuery(document).ready(function() {
             ],
         sortname: 'electronics_id',
         sortorder: "asc",
-        afterInsertRow: function(rowid, rowdata, rowelem) {
+        afterInsertRow: function (rowid, rowdata, rowelem) {
 
             if (rowelem[17] == 'SET_GREEN') {
                 jQuery("#electronicsgrid").setCell(rowid, 'electronics_id', '', { color: 'green' })
@@ -67,7 +69,7 @@ jQuery(document).ready(function() {
         //            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
         //            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
         //             'ID Color Key: assigned, <font color="green">available</font>, <font color="purple">on loan</font>',
-        ondblClickRow: function(rowid) {
+        ondblClickRow: function (rowid) {
             var data = $("#electronicsgrid").getRowData(curRow);
             if (data.electronics_id == null)
                 alert("  Please Select a Row!");
@@ -151,7 +153,7 @@ jQuery(document).ready(function() {
             }
             return false;
         },
-        onSelectRow: function(ids) {
+        onSelectRow: function (ids) {
             if (ids != null) {
                 curRowAsgn = -1;
                 curRow = ids;
@@ -161,7 +163,7 @@ jQuery(document).ready(function() {
                 curElectronicsAssignColor = data.electronics_assign_color;
             }
         },
-        loadComplete: function() {
+        loadComplete: function () {
             var uData = jQuery('#electronicsgrid').getGridParam('userData');
             var strCap;
 
@@ -192,7 +194,7 @@ jQuery(document).ready(function() {
     }).navGrid('#electronicsgridp', { deltext: "Delete", searchtext: "Find", refreshtext: "Reload", edit: false, add: false, del: true, search: true, refresh: true }, //options
          {}, // edit options
          {}, // add options
-        {mtype: "POST", reloadAfterSubmit: true, onclickSubmit: function(params) {
+        {mtype: "POST", reloadAfterSubmit: true, onclickSubmit: function (params) {
             var ajaxData = {};
 
             var rowData = $("#electronicsgrid").getRowData(curRow);
@@ -200,7 +202,8 @@ jQuery(document).ready(function() {
             ajaxData = { id: '1', oper: 'del', intElectronicsID: rowData.electronics_id };
 
             return ajaxData;
-        }}, // del options
+        } 
+    }, // del options
             {odata: ['equals', 'not equal', 'less', 'less or equal', 'greater', 'greater or equal', 'begins with', 'does not begin with', 'is in', 'is not in', 'ends with', 'does not end with', 'contains', 'does not contain'],
             closeAfterSearch: true, closeOnEscape: true
         }, // search options
@@ -208,7 +211,7 @@ jQuery(document).ready(function() {
           ).navButtonAdd('#electronicsgridp', {
               caption: "Print",
               buttonicon: "ui-icon-print",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#electronicsgrid").getRowData(curRow);
                   if (data.electronics_id == null)
                       alert("  Please Select a Row!");
@@ -228,7 +231,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#electronicsgridp', {
               caption: "Edit",
               buttonicon: "ui-icon-pencil",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#electronicsgrid").getRowData(curRow);
                   if (data.electronics_id == null)
                       alert("  Please Select a Row!");
@@ -314,7 +317,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#electronicsgridp', {
               caption: "Add",
               buttonicon: "ui-icon-plus",
-              onClickButton: function() {
+              onClickButton: function () {
 
                   var data = "";
 
@@ -361,7 +364,7 @@ jQuery(document).ready(function() {
         datatype: 'json',
         mtype: 'GET',
         height: 100,
-        width: 740,
+        width: gw,
         rowNum: 5000,
         colNames: ['ID', 'Assign To', 'Date Assigned', 'Return Date', 'Assign Condition', 'Return Condition', 'Comments', 'AssignID'],
         colModel: [
@@ -379,7 +382,7 @@ jQuery(document).ready(function() {
         viewrecords: true,
         pager: jQuery('#electronicsasgnp'),
         caption: 'Assignments',
-        ondblClickRow: function(rowid) {
+        ondblClickRow: function (rowid) {
             var data = $("#electronics_asgn").getRowData(curRowAsgn);
             if (data.electronics_id == null)
                 alert("  Please Select an Assignment Row!");
@@ -414,7 +417,7 @@ jQuery(document).ready(function() {
 
             return false;
         },
-        onSelectRow: function(ids) {
+        onSelectRow: function (ids) {
             if (ids != null) {
                 curRowAsgn = ids;
                 var data = $("#electronics_asgn").getRowData(curRowAsgn);
@@ -427,7 +430,7 @@ jQuery(document).ready(function() {
          {}, // edit options
          {}, // add options
          {reloadAfterSubmit: false, closeOnEscape: true, closeAfterAdd: true,
-         afterSubmit: function(response, postdata) {
+         afterSubmit: function (response, postdata) {
 
              if (response.responseText == "Success") {
                  jQuery("#success").show();
@@ -446,7 +449,7 @@ jQuery(document).ready(function() {
           ).navButtonAdd('#electronicsasgnp', {
               caption: "Edit",
               buttonicon: "ui-icon-pencil",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#electronics_asgn").getRowData(curRowAsgn);
                   if (data.electronics_id == null)
                       alert("  Please Select an Assignment Row!");
@@ -485,7 +488,7 @@ jQuery(document).ready(function() {
           }).navButtonAdd('#electronicsasgnp', {
               caption: "Add",
               buttonicon: "ui-icon-plus",
-              onClickButton: function() {
+              onClickButton: function () {
                   var data = $("#electronicsgrid").getRowData(curRow);
                   if (data.electronics_id == null)
                       alert("  Please Select a Row!");
@@ -519,7 +522,7 @@ jQuery(document).ready(function() {
     $('#electronicsasgnp_center').remove();
     $('#electronicsasgnp_right').remove();
 
-    $(function() {
+    $(function () {
         $("#rpt_dialog").dialog({
             bgiframe: true,
             width: 540,
@@ -529,59 +532,59 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#rpt_dialog_hist").dialog({
             bgiframe: true,
             width: 540,
             modal: true,
             autoOpen: false,
             resizable: false,
-            open: function(event, ui) {
+            open: function (event, ui) {
                 $('#dtReportFrom').datepicker('enable');
                 $('#dtReportTo').datepicker('enable');
             },
-            close: function(event, ui) {
+            close: function (event, ui) {
                 $('#dtReportFrom').datepicker('hide');
                 $('#dtReportTo').datepicker('hide');
             }
         })
     });
 
-    $(function() {
+    $(function () {
         $("#electronics_asgn_edit_dlg").dialog({
             bgiframe: true,
             width: 450,
             modal: true,
             autoOpen: false,
             resizable: false,
-            open: function(event, ui) {
+            open: function (event, ui) {
                 $('#dtElectronicsAsgnDt').datepicker('enable');
                 $('#dtElectronicsRetDt').datepicker('enable');
             },
-            close: function(event, ui) {
+            close: function (event, ui) {
                 $('#dtElectronicsAsgnDt').datepicker('hide');
                 $('#dtElectronicsRetDt').datepicker('hide');
             }
         })
     });
 
-    $(function() {
+    $(function () {
         $("#electronics_edit_dlg").dialog({
             bgiframe: true,
             width: 650,
             modal: true,
             autoOpen: false,
             resizable: false,
-            open: function(event, ui) {
+            open: function (event, ui) {
                 $('#dtElectronicsMngByDt').datepicker('enable');
             },
-            close: function(event, ui) {
+            close: function (event, ui) {
                 $('#dtElectronicsMngByDt').datepicker('hide');
             }
         })
     });
 
-    $(function() {
+    $(function () {
         $("#admin_dialog").dialog({
             bgiframe: true,
             width: 600,
@@ -592,7 +595,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#admin_loc_dlg").dialog({
             bgiframe: true,
             width: 600,
@@ -603,7 +606,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#admin_users_dlg").dialog({
             bgiframe: true,
             width: 650,
@@ -614,7 +617,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#admin_assignto_dlg").dialog({
             bgiframe: true,
             width: 700,
@@ -625,7 +628,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#admin_id_dlg").dialog({
             bgiframe: true,
             width: 600,
@@ -636,7 +639,7 @@ jQuery(document).ready(function() {
         })
     });
 
-    $(function() {
+    $(function () {
         $("#help_popup").dialog({
             bgiframe: true,
             width: 300,
@@ -651,11 +654,11 @@ jQuery(document).ready(function() {
     //                    alert('here');
     //                });
 
-    $('#adminidform').ajaxForm(function(data) {
+    $('#adminidform').ajaxForm(function (data) {
 
     });
 
-    $('#electronics_asgn_edit_form').ajaxForm(function(data) {
+    $('#electronics_asgn_edit_form').ajaxForm(function (data) {
 
 
         jQuery('#electronics_asgn_loading').hide();
@@ -686,7 +689,7 @@ jQuery(document).ready(function() {
     });
 
 
-    $('#electronics_edit_form').ajaxForm(function(data) {
+    $('#electronics_edit_form').ajaxForm(function (data) {
         var respArray = data.split(",");
         jQuery('#electronics_loading').hide();
 
@@ -802,7 +805,7 @@ jQuery(document).ready(function() {
 
 
 
-    $('#adminDlgForm').ajaxForm(function(data) {
+    $('#adminDlgForm').ajaxForm(function (data) {
 
         var respArray = data.split(",");
 
@@ -827,7 +830,7 @@ jQuery(document).ready(function() {
     });
 
 
-    $('#adminlocform').ajaxForm(function(data) {
+    $('#adminlocform').ajaxForm(function (data) {
         if (data == "Success") {
 
             jQuery("#adminlocgrid").trigger("reloadGrid");
@@ -848,7 +851,7 @@ jQuery(document).ready(function() {
         $("#btnSaveLoc").attr("disabled", "disabled");
     });
 
-    $('#adminusersform').ajaxForm(function(data) {
+    $('#adminusersform').ajaxForm(function (data) {
         if (data == "Success") {
 
             jQuery("#adminusersgrid").trigger("reloadGrid");
@@ -869,7 +872,7 @@ jQuery(document).ready(function() {
         $("#btnSaveUser").attr("disabled", "disabled");
     });
 
-    $('#adminassigntoform').ajaxForm(function(data) {
+    $('#adminassigntoform').ajaxForm(function (data) {
 
         if (data == "Success") {
 

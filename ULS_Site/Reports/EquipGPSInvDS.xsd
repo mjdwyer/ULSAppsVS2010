@@ -9,7 +9,7 @@
         <Tables>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="GetGPSInventoryTableAdapter" GeneratorDataComponentClassName="GetGPSInventoryTableAdapter" Name="GetGPSInventory" UserDataComponentName="GetGPSInventoryTableAdapter">
             <MainSource>
-              <DbSource ConnectionRef="ULS_db1ConnectionString (Web.config)" DbObjectName="ULS_db1.dbo.GetGPSInventory" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+              <DbSource ConnectionRef="ULS_db1ConnectionString (Web.config)" DbObjectName="ULS_db1.dbo.GetGPSInventory" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
                 <SelectCommand>
                   <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
                     <CommandText>dbo.GetGPSInventory</CommandText>
@@ -31,6 +31,7 @@
               <Mapping SourceColumn="managed_by" DataSetColumn="managed_by" />
               <Mapping SourceColumn="vin_num" DataSetColumn="vin_num" />
               <Mapping SourceColumn="gps_num" DataSetColumn="gps_num" />
+              <Mapping SourceColumn="assigned_to" DataSetColumn="assigned_to" />
             </Mappings>
             <Sources />
           </TableAdapter>
@@ -39,72 +40,79 @@
       </DataSource>
     </xs:appinfo>
   </xs:annotation>
-  <xs:element name="EquipGPSInvDS" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="EquipGPSInvDS" msprop:Generator_DataSetName="EquipGPSInvDS" msprop:EnableTableAdapterManager="true">
+  <xs:element name="EquipGPSInvDS" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="EquipGPSInvDS" msprop:Generator_UserDSName="EquipGPSInvDS">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="GetGPSInventory" msprop:Generator_UserTableName="GetGPSInventory" msprop:Generator_RowDeletedName="GetGPSInventoryRowDeleted" msprop:Generator_TableClassName="GetGPSInventoryDataTable" msprop:Generator_RowChangedName="GetGPSInventoryRowChanged" msprop:Generator_RowClassName="GetGPSInventoryRow" msprop:Generator_RowChangingName="GetGPSInventoryRowChanging" msprop:Generator_RowEvArgName="GetGPSInventoryRowChangeEvent" msprop:Generator_RowEvHandlerName="GetGPSInventoryRowChangeEventHandler" msprop:Generator_TablePropName="GetGPSInventory" msprop:Generator_TableVarName="tableGetGPSInventory" msprop:Generator_RowDeletingName="GetGPSInventoryRowDeleting">
+        <xs:element name="GetGPSInventory" msprop:Generator_TableClassName="GetGPSInventoryDataTable" msprop:Generator_TableVarName="tableGetGPSInventory" msprop:Generator_TablePropName="GetGPSInventory" msprop:Generator_RowDeletingName="GetGPSInventoryRowDeleting" msprop:Generator_RowChangingName="GetGPSInventoryRowChanging" msprop:Generator_RowEvHandlerName="GetGPSInventoryRowChangeEventHandler" msprop:Generator_RowDeletedName="GetGPSInventoryRowDeleted" msprop:Generator_UserTableName="GetGPSInventory" msprop:Generator_RowChangedName="GetGPSInventoryRowChanged" msprop:Generator_RowEvArgName="GetGPSInventoryRowChangeEvent" msprop:Generator_RowClassName="GetGPSInventoryRow">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="equip_id" msprop:Generator_UserColumnName="equip_id" msprop:Generator_ColumnPropNameInRow="equip_id" msprop:Generator_ColumnVarNameInTable="columnequip_id" msprop:Generator_ColumnPropNameInTable="equip_idColumn">
+              <xs:element name="equip_id" msprop:Generator_ColumnVarNameInTable="columnequip_id" msprop:Generator_ColumnPropNameInRow="equip_id" msprop:Generator_ColumnPropNameInTable="equip_idColumn" msprop:Generator_UserColumnName="equip_id">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="30" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="type_desc" msprop:Generator_UserColumnName="type_desc" msprop:Generator_ColumnPropNameInRow="type_desc" msprop:Generator_ColumnVarNameInTable="columntype_desc" msprop:Generator_ColumnPropNameInTable="type_descColumn" minOccurs="0">
+              <xs:element name="type_desc" msprop:Generator_ColumnVarNameInTable="columntype_desc" msprop:Generator_ColumnPropNameInRow="type_desc" msprop:Generator_ColumnPropNameInTable="type_descColumn" msprop:Generator_UserColumnName="type_desc" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="50" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="make_descr" msprop:Generator_UserColumnName="make_descr" msprop:Generator_ColumnPropNameInRow="make_descr" msprop:Generator_ColumnVarNameInTable="columnmake_descr" msprop:Generator_ColumnPropNameInTable="make_descrColumn" minOccurs="0">
+              <xs:element name="make_descr" msprop:Generator_ColumnVarNameInTable="columnmake_descr" msprop:Generator_ColumnPropNameInRow="make_descr" msprop:Generator_ColumnPropNameInTable="make_descrColumn" msprop:Generator_UserColumnName="make_descr" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="25" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="model_descr" msprop:Generator_UserColumnName="model_descr" msprop:Generator_ColumnPropNameInRow="model_descr" msprop:Generator_ColumnVarNameInTable="columnmodel_descr" msprop:Generator_ColumnPropNameInTable="model_descrColumn" minOccurs="0">
+              <xs:element name="model_descr" msprop:Generator_ColumnVarNameInTable="columnmodel_descr" msprop:Generator_ColumnPropNameInRow="model_descr" msprop:Generator_ColumnPropNameInTable="model_descrColumn" msprop:Generator_UserColumnName="model_descr" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="25" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="equip_year" msprop:Generator_UserColumnName="equip_year" msprop:Generator_ColumnPropNameInRow="equip_year" msprop:Generator_ColumnVarNameInTable="columnequip_year" msprop:Generator_ColumnPropNameInTable="equip_yearColumn" minOccurs="0">
+              <xs:element name="equip_year" msprop:Generator_ColumnVarNameInTable="columnequip_year" msprop:Generator_ColumnPropNameInRow="equip_year" msprop:Generator_ColumnPropNameInTable="equip_yearColumn" msprop:Generator_UserColumnName="equip_year" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="4" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="registered_by" msprop:Generator_UserColumnName="registered_by" msprop:Generator_ColumnPropNameInRow="registered_by" msprop:Generator_ColumnVarNameInTable="columnregistered_by" msprop:Generator_ColumnPropNameInTable="registered_byColumn" minOccurs="0">
+              <xs:element name="registered_by" msprop:Generator_ColumnVarNameInTable="columnregistered_by" msprop:Generator_ColumnPropNameInRow="registered_by" msprop:Generator_ColumnPropNameInTable="registered_byColumn" msprop:Generator_UserColumnName="registered_by" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="50" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="managed_by" msprop:Generator_UserColumnName="managed_by" msprop:Generator_ColumnPropNameInRow="managed_by" msprop:Generator_ColumnVarNameInTable="columnmanaged_by" msprop:Generator_ColumnPropNameInTable="managed_byColumn" minOccurs="0">
+              <xs:element name="managed_by" msprop:Generator_ColumnVarNameInTable="columnmanaged_by" msprop:Generator_ColumnPropNameInRow="managed_by" msprop:Generator_ColumnPropNameInTable="managed_byColumn" msprop:Generator_UserColumnName="managed_by" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="50" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="vin_num" msprop:Generator_UserColumnName="vin_num" msprop:Generator_ColumnPropNameInRow="vin_num" msprop:Generator_ColumnVarNameInTable="columnvin_num" msprop:Generator_ColumnPropNameInTable="vin_numColumn" minOccurs="0">
+              <xs:element name="vin_num" msprop:Generator_ColumnVarNameInTable="columnvin_num" msprop:Generator_ColumnPropNameInRow="vin_num" msprop:Generator_ColumnPropNameInTable="vin_numColumn" msprop:Generator_UserColumnName="vin_num" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="50" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="gps_num" msprop:Generator_UserColumnName="gps_num" msprop:Generator_ColumnPropNameInRow="gps_num" msprop:Generator_ColumnVarNameInTable="columngps_num" msprop:Generator_ColumnPropNameInTable="gps_numColumn" minOccurs="0">
+              <xs:element name="gps_num" msprop:Generator_ColumnVarNameInTable="columngps_num" msprop:Generator_ColumnPropNameInRow="gps_num" msprop:Generator_ColumnPropNameInTable="gps_numColumn" msprop:Generator_UserColumnName="gps_num" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="60" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="assigned_to" msprop:Generator_ColumnVarNameInTable="columnassigned_to" msprop:Generator_ColumnPropNameInRow="assigned_to" msprop:Generator_ColumnPropNameInTable="assigned_toColumn" msprop:Generator_UserColumnName="assigned_to" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>

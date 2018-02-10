@@ -9,7 +9,7 @@
     });
 
 </script>
- <div class="pageboxsplash" style="border-style:none">
+ <div class="pageboxsplash" style="border-style:none; background-color:#FFFFFC">
  
     <table>
     <tr style="height:465px">

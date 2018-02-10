@@ -140,51 +140,6 @@
       <Association Name="services_avt_service" Member="services" ThisKey="serv_id" OtherKey="serv_perf_id" Type="service" />
     </Type>
   </Table>
-  <Table Name="dbo.smalltools" Member="smalltools">
-    <Type Name="smalltool">
-      <Column Name="stID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="item" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="description" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="size" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="MFG" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Model" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="SerNum" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="ID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="ConditionId" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
-      <Column Name="Reg_by" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Managed_by" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Assigned_to" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Assigned_dt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="comment" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="managed_by_dt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="returned_dt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="inoutshop" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
-      <Column Name="pipeline" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
-  <Table Name="dbo.vw_SmallToolsGrid" Member="vw_SmallToolsGrids">
-    <Type Name="vw_SmallToolsGrid">
-      <Column Name="stID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="item" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="description" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="size" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="MFG" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Model" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="SerNum" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="ID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="condition_descr" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
-      <Column Name="Reg_by" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Managed_by" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Assigned_to" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Assigned_dt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="comment" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="managed_by_dt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="returned_dt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="inoutshop" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
-      <Column Name="small_tool_loan_color" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="small_tool_assign_color" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
   <Table Name="dbo.tools_assign" Member="tools_assigns">
     <Type Name="tools_assign">
       <Column Name="assign_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -811,6 +766,84 @@
       <Column Name="service_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="attachment_path" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
       <Column Name="attach_cnt" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_EquipServiceGrid" Member="vw_EquipServiceGrids">
+    <Type Name="vw_EquipServiceGrid">
+      <Column Name="equip_id" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="mechanic" Type="System.String" DbType="NVarChar(25)" CanBeNull="true" />
+      <Column Name="service_dt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="labor_cost" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="parts_cost" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="mileage" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="hours" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="serv_descr" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="serv_reqstd" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="serv_perf_descr" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="parts_reqrd" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="comments" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="service_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="attachment_path" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_SmallToolsGrid" Member="vw_SmallToolsGrids">
+    <Type Name="vw_SmallToolsGrid">
+      <Column Name="stID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="item" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="description" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="size" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MFG" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Model" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SerNum" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="condition_descr" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="Reg_by" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Managed_by" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Assigned_to" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Assigned_dt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="comment" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="managed_by_dt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="returned_dt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="inoutshop" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="small_tool_loan_color" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="small_tool_assign_color" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="calibration_due_dt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="calibration_due_warn" Type="System.String" DbType="VarChar(7) NOT NULL" CanBeNull="false" />
+      <Column Name="calibration_rmdr_wks" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.smalltools" Member="smalltools">
+    <Type Name="smalltool">
+      <Column Name="stID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="item" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="description" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="size" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MFG" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Model" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SerNum" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ConditionId" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Reg_by" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Managed_by" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Assigned_to" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Assigned_dt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="comment" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="managed_by_dt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="returned_dt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="inoutshop" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="pipeline" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="calibration_due_dt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="calibration_rmdr_wks" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.assign_log" Member="assign_logs">
+    <Type Name="assign_log">
+      <Column Name="user_id" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="change_dt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="assign_change" Type="System.String" DbType="VarChar(2000) NOT NULL" CanBeNull="false" />
+      <Column Name="log_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="entity_id" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="assign_type" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.UpdateObsoleteId" Method="UpdateObsoleteId">

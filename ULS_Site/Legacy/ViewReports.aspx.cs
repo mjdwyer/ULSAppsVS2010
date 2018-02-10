@@ -99,6 +99,20 @@ namespace ULS_Site
 
                         break;
 
+                    case "EquipMultiAssignedTo":
+                        strReportPath = Server.MapPath("~/Reports/EquipMultiAssignedTo.rpt");
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@assignedTos", System.Data.SqlDbType.VarChar, 500));
+                        comand.Parameters["@assignedTos"].Value = strParm1;
+
+                        break;
+
+                    case "ToolMultiAssignedTo":
+                        strReportPath = Server.MapPath("~/Reports/ToolsMutiAssignedTo.rpt");
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@assignedTos", System.Data.SqlDbType.VarChar, 500));
+                        comand.Parameters["@assignedTos"].Value = strParm1;
+
+                        break;
+
                     case "EquipAssignToHist":
                         strReportPath = Server.MapPath("~/Reports/EquipAssignToHist.rpt");
                         comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@assignedTo", System.Data.SqlDbType.VarChar, 50));
@@ -188,6 +202,28 @@ namespace ULS_Site
 
                         break;
 
+                    case "ToolsCalibrationDueRpt":
+                        strReportPath = Server.MapPath("~/Reports/ToolsCalibrationDueRpt.rpt");
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@regBy", System.Data.SqlDbType.VarChar, 50));
+                        comand.Parameters["@regBy"].Value = strParm1;
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@startDt", System.Data.SqlDbType.DateTime));
+                        comand.Parameters["@startDt"].Value = Convert.ToDateTime(strParm2);
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@endDt", System.Data.SqlDbType.DateTime));
+                        comand.Parameters["@endDt"].Value = Convert.ToDateTime(strParm3);
+
+                        break;
+
+                    case "SmallToolsCalibrationDueReport":
+                        strReportPath = Server.MapPath("~/Reports/SmallToolsCalibrationDueReport.rpt");
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@regBy", System.Data.SqlDbType.VarChar, 50));
+                        comand.Parameters["@regBy"].Value = strParm1;
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@startDt", System.Data.SqlDbType.DateTime));
+                        comand.Parameters["@startDt"].Value = Convert.ToDateTime(strParm2);
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@endDt", System.Data.SqlDbType.DateTime));
+                        comand.Parameters["@endDt"].Value = Convert.ToDateTime(strParm3);
+
+                        break;
+
                     case "EquipInvByLoc":
                         strReportPath = Server.MapPath("~/Reports/EquipInvByLoc.rpt");
                         comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@regBy", System.Data.SqlDbType.VarChar, 50));
@@ -209,6 +245,14 @@ namespace ULS_Site
                     case "EquipHUTInv":
 
                         strReportPath = Server.MapPath("~/Reports/EquipHUTInv.rpt");
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@div", System.Data.SqlDbType.VarChar, 50));
+                        comand.Parameters["@div"].Value = strParm1;
+
+                        break;
+
+                    case "EquipSvcDue":
+
+                        strReportPath = Server.MapPath("~/Reports/EquipSvcDue.rpt");
                         comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@div", System.Data.SqlDbType.VarChar, 50));
                         comand.Parameters["@div"].Value = strParm1;
 
@@ -579,9 +623,25 @@ namespace ULS_Site
 
                         break;
 
+                    case "EquipAssignLogByID":
+
+                        strReportPath = Server.MapPath("~/Reports/EquipAssignLogById.rpt");
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@equip_id", System.Data.SqlDbType.VarChar, 15));
+                        comand.Parameters["@equip_id"].Value = strParm1;
+
+                        break;
+
                     case "ToolsChangeLogByID":
 
-                        strReportPath = Server.MapPath("~/Reports/ToolsChangeLogByID.rpt");
+                        strReportPath = Server.MapPath("~/Reports/ToolsChangeLogById.rpt");
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@tool_id", System.Data.SqlDbType.VarChar, 15));
+                        comand.Parameters["@tool_id"].Value = strParm1;
+
+                        break;
+
+                    case "ToolsAssignLogByID":
+
+                        strReportPath = Server.MapPath("~/Reports/ToolsAssignLogById.rpt");
                         comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@tool_id", System.Data.SqlDbType.VarChar, 15));
                         comand.Parameters["@tool_id"].Value = strParm1;
 
@@ -596,8 +656,26 @@ namespace ULS_Site
 
                         break;
 
+                    case "EquipAssignLogHist":
+                        strReportPath = Server.MapPath("~/Reports/EquipAssignLogHist.rpt");
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@fromDt", System.Data.SqlDbType.DateTime));
+                        comand.Parameters["@fromDt"].Value = Convert.ToDateTime(strParm1);
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@toDt", System.Data.SqlDbType.DateTime));
+                        comand.Parameters["@toDt"].Value = Convert.ToDateTime(strParm2);
+
+                        break;
+
                     case "ToolsChangeLogHist":
-                        strReportPath = Server.MapPath("~/Reports/ToolsChangeLogHist.rpt");
+                        strReportPath = Server.MapPath("~/Reports/ToolChangeLogHist.rpt");
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@fromDt", System.Data.SqlDbType.DateTime));
+                        comand.Parameters["@fromDt"].Value = Convert.ToDateTime(strParm1);
+                        comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@toDt", System.Data.SqlDbType.DateTime));
+                        comand.Parameters["@toDt"].Value = Convert.ToDateTime(strParm2);
+
+                        break;
+
+                    case "ToolsAssignLogHist":
+                        strReportPath = Server.MapPath("~/Reports/ToolAssignLogHist.rpt");
                         comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@fromDt", System.Data.SqlDbType.DateTime));
                         comand.Parameters["@fromDt"].Value = Convert.ToDateTime(strParm1);
                         comand.Parameters.Add(new System.Data.SqlClient.SqlParameter("@toDt", System.Data.SqlDbType.DateTime));
@@ -640,7 +718,21 @@ namespace ULS_Site
                 string msg = ex.Message;
                 Logit(msg);
             }
+            finally
+            {
+//                CrystalReportViewer1.ReportSource.Close();
+            }
         }
+
+//        private void CleanOutViewer(
+//            if !(this.CrystalReportViewer1.ReportSource()
+//    If Not Me.CrystalReportViewer1.ReportSource() Is Nothing Then
+//        CType(Me.CrystalReportViewer1.ReportSource(), CrystalDecisions.CrystalReports.Engine.ReportDocument).Close()
+//        CType(Me.CrystalReportViewer1.ReportSource(), CrystalDecisions.CrystalReports.Engine.ReportDocument).Dispose()
+//        Me.CrystalReportViewer1.ReportSource() = Nothing
+//        GC.Collect()
+//    End If
+//End Sub
 
         public void Logit(string strMsg)
         {

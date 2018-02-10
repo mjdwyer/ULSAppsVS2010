@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema id="ToolsInvByTypeDS" targetNamespace="http://tempuri.org/ToolsInvByTypeDS.xsd" xmlns:mstns="http://tempuri.org/ToolsInvByTypeDS.xsd" xmlns="http://tempuri.org/ToolsInvByTypeDS.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+<xs:schema id="ToolInvByTypeDS" targetNamespace="http://tempuri.org/ToolInvByTypeDS.xsd" xmlns:mstns="http://tempuri.org/ToolInvByTypeDS.xsd" xmlns="http://tempuri.org/ToolInvByTypeDS.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
   <xs:annotation>
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
       <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
@@ -9,7 +9,7 @@
         <Tables>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="GetToolsByTypeReportTableAdapter" GeneratorDataComponentClassName="GetToolsByTypeReportTableAdapter" Name="GetToolsByTypeReport" UserDataComponentName="GetToolsByTypeReportTableAdapter">
             <MainSource>
-              <DbSource ConnectionRef="ULS_db1ConnectionString (Web.config)" DbObjectName="ULS_db1.dbo.GetToolsByTypeReport" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+              <DbSource ConnectionRef="ULS_db1ConnectionString (Web.config)" DbObjectName="ULS_db1.dbo.GetToolsByTypeReport" DbObjectType="StoredProcedure" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
                 <SelectCommand>
                   <DbCommand CommandType="StoredProcedure" ModifiedByUser="false">
                     <CommandText>dbo.GetToolsByTypeReport</CommandText>
@@ -32,6 +32,7 @@
               <Mapping SourceColumn="managed_by_dt" DataSetColumn="managed_by_dt" />
               <Mapping SourceColumn="registered_by" DataSetColumn="registered_by" />
               <Mapping SourceColumn="managed_by" DataSetColumn="managed_by" />
+              <Mapping SourceColumn="assigned_to" DataSetColumn="assigned_to" />
             </Mappings>
             <Sources />
           </TableAdapter>
@@ -40,56 +41,63 @@
       </DataSource>
     </xs:appinfo>
   </xs:annotation>
-  <xs:element name="ToolsInvByTypeDS" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_DataSetName="ToolsInvByTypeDS" msprop:Generator_UserDSName="ToolsInvByTypeDS" msprop:EnableTableAdapterManager="true">
+  <xs:element name="ToolInvByTypeDS" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="ToolInvByTypeDS" msprop:Generator_UserDSName="ToolInvByTypeDS">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="GetToolsByTypeReport" msprop:Generator_UserTableName="GetToolsByTypeReport" msprop:Generator_RowDeletedName="GetToolsByTypeReportRowDeleted" msprop:Generator_TableClassName="GetToolsByTypeReportDataTable" msprop:Generator_RowChangedName="GetToolsByTypeReportRowChanged" msprop:Generator_RowClassName="GetToolsByTypeReportRow" msprop:Generator_RowChangingName="GetToolsByTypeReportRowChanging" msprop:Generator_RowEvArgName="GetToolsByTypeReportRowChangeEvent" msprop:Generator_RowEvHandlerName="GetToolsByTypeReportRowChangeEventHandler" msprop:Generator_TablePropName="GetToolsByTypeReport" msprop:Generator_TableVarName="tableGetToolsByTypeReport" msprop:Generator_RowDeletingName="GetToolsByTypeReportRowDeleting">
+        <xs:element name="GetToolsByTypeReport" msprop:Generator_TableClassName="GetToolsByTypeReportDataTable" msprop:Generator_TableVarName="tableGetToolsByTypeReport" msprop:Generator_TablePropName="GetToolsByTypeReport" msprop:Generator_RowDeletingName="GetToolsByTypeReportRowDeleting" msprop:Generator_RowChangingName="GetToolsByTypeReportRowChanging" msprop:Generator_RowEvHandlerName="GetToolsByTypeReportRowChangeEventHandler" msprop:Generator_RowDeletedName="GetToolsByTypeReportRowDeleted" msprop:Generator_UserTableName="GetToolsByTypeReport" msprop:Generator_RowChangedName="GetToolsByTypeReportRowChanged" msprop:Generator_RowEvArgName="GetToolsByTypeReportRowChangeEvent" msprop:Generator_RowClassName="GetToolsByTypeReportRow">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="tool_id" msprop:Generator_UserColumnName="tool_id" msprop:Generator_ColumnPropNameInRow="tool_id" msprop:Generator_ColumnVarNameInTable="columntool_id" msprop:Generator_ColumnPropNameInTable="tool_idColumn" minOccurs="0">
+              <xs:element name="tool_id" msprop:Generator_ColumnVarNameInTable="columntool_id" msprop:Generator_ColumnPropNameInRow="tool_id" msprop:Generator_ColumnPropNameInTable="tool_idColumn" msprop:Generator_UserColumnName="tool_id">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="15" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="tools_type_descr" msprop:Generator_UserColumnName="tools_type_descr" msprop:Generator_ColumnPropNameInRow="tools_type_descr" msprop:Generator_ColumnVarNameInTable="columntools_type_descr" msprop:Generator_ColumnPropNameInTable="tools_type_descrColumn" minOccurs="0">
+              <xs:element name="tools_type_descr" msprop:Generator_ColumnVarNameInTable="columntools_type_descr" msprop:Generator_ColumnPropNameInRow="tools_type_descr" msprop:Generator_ColumnPropNameInTable="tools_type_descrColumn" msprop:Generator_UserColumnName="tools_type_descr" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="25" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="tools_descr_descr" msprop:Generator_UserColumnName="tools_descr_descr" msprop:Generator_ColumnPropNameInRow="tools_descr_descr" msprop:Generator_ColumnVarNameInTable="columntools_descr_descr" msprop:Generator_ColumnPropNameInTable="tools_descr_descrColumn" minOccurs="0">
+              <xs:element name="tools_descr_descr" msprop:Generator_ColumnVarNameInTable="columntools_descr_descr" msprop:Generator_ColumnPropNameInRow="tools_descr_descr" msprop:Generator_ColumnPropNameInTable="tools_descr_descrColumn" msprop:Generator_UserColumnName="tools_descr_descr" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="50" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="size_descr" msprop:Generator_UserColumnName="size_descr" msprop:Generator_ColumnPropNameInRow="size_descr" msprop:Generator_ColumnVarNameInTable="columnsize_descr" msprop:Generator_ColumnPropNameInTable="size_descrColumn" minOccurs="0">
+              <xs:element name="size_descr" msprop:Generator_ColumnVarNameInTable="columnsize_descr" msprop:Generator_ColumnPropNameInRow="size_descr" msprop:Generator_ColumnPropNameInTable="size_descrColumn" msprop:Generator_UserColumnName="size_descr" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="50" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="tool_mfg_descr" msprop:Generator_UserColumnName="tool_mfg_descr" msprop:Generator_ColumnPropNameInRow="tool_mfg_descr" msprop:Generator_ColumnVarNameInTable="columntool_mfg_descr" msprop:Generator_ColumnPropNameInTable="tool_mfg_descrColumn" minOccurs="0">
+              <xs:element name="tool_mfg_descr" msprop:Generator_ColumnVarNameInTable="columntool_mfg_descr" msprop:Generator_ColumnPropNameInRow="tool_mfg_descr" msprop:Generator_ColumnPropNameInTable="tool_mfg_descrColumn" msprop:Generator_UserColumnName="tool_mfg_descr" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="50" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="managed_by_dt" msprop:Generator_UserColumnName="managed_by_dt" msprop:Generator_ColumnPropNameInRow="managed_by_dt" msprop:Generator_ColumnVarNameInTable="columnmanaged_by_dt" msprop:Generator_ColumnPropNameInTable="managed_by_dtColumn" type="xs:dateTime" minOccurs="0" />
-              <xs:element name="registered_by" msprop:Generator_UserColumnName="registered_by" msprop:Generator_ColumnPropNameInRow="registered_by" msprop:Generator_ColumnVarNameInTable="columnregistered_by" msprop:Generator_ColumnPropNameInTable="registered_byColumn" minOccurs="0">
+              <xs:element name="managed_by_dt" msprop:Generator_ColumnVarNameInTable="columnmanaged_by_dt" msprop:Generator_ColumnPropNameInRow="managed_by_dt" msprop:Generator_ColumnPropNameInTable="managed_by_dtColumn" msprop:Generator_UserColumnName="managed_by_dt" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="registered_by" msprop:Generator_ColumnVarNameInTable="columnregistered_by" msprop:Generator_ColumnPropNameInRow="registered_by" msprop:Generator_ColumnPropNameInTable="registered_byColumn" msprop:Generator_UserColumnName="registered_by" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="50" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="managed_by" msprop:Generator_UserColumnName="managed_by" msprop:Generator_ColumnPropNameInRow="managed_by" msprop:Generator_ColumnVarNameInTable="columnmanaged_by" msprop:Generator_ColumnPropNameInTable="managed_byColumn" minOccurs="0">
+              <xs:element name="managed_by" msprop:Generator_ColumnVarNameInTable="columnmanaged_by" msprop:Generator_ColumnPropNameInRow="managed_by" msprop:Generator_ColumnPropNameInTable="managed_byColumn" msprop:Generator_UserColumnName="managed_by" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="assigned_to" msprop:Generator_ColumnVarNameInTable="columnassigned_to" msprop:Generator_ColumnPropNameInRow="assigned_to" msprop:Generator_ColumnPropNameInTable="assigned_toColumn" msprop:Generator_UserColumnName="assigned_to" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="50" />
@@ -101,5 +109,9 @@
         </xs:element>
       </xs:choice>
     </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:GetToolsByTypeReport" />
+      <xs:field xpath="mstns:tool_id" />
+    </xs:unique>
   </xs:element>
 </xs:schema>

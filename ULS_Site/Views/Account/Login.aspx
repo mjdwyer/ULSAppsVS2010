@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="ULS_Site.Views.Account.Login" EnableSessionState="False"%>
 
 <asp:Content ID="loginContent" ContentPlaceHolderID="MainContent" runat="server">
-
+<div style="background-color:#FFFFFC">
 
     <center>
     <br />
@@ -12,7 +12,7 @@
     <br />
     <br />
     <br />
-    <h2>Login</h2>
+    <h4>Login</h4>
     <p>
         Please enter your username and password below. 
 <!--        please <%= Html.ActionLink("register", "Register") %>. -->
@@ -52,4 +52,5 @@
         </div>
     </form>
     </center>
+    </div>
 </asp:Content>
